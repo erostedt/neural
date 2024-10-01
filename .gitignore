@@ -1,0 +1,6 @@
+*.ppm
+.DS_Store
+build
+compile_commands.json
+.clang_format
+.cache

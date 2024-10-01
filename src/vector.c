@@ -1,0 +1,29 @@
+#include <assert.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "vector.h"
+
+neural_vector_t neural_vector_zero(size_t count)
+{
+    neural_vector_t vector;
+    vector.count = count;
+    vector.elements = malloc(neural_vector_element_bytes(vector));
+    assert(vector.elements != NULL);
+    memset(vector.elements, 0, neural_vector_element_bytes(vector));
+    return vector;
+}
+
+float neural_vector_dot(neural_vector_t v1, neural_vector_t v2)
+{
+    assert(v1.count == v2.count);
+    size_t n = v1.count;
+    float dot = 0.0f;
+    for (size_t i = 0; i < n; ++i)
+    {
+        dot += v1.elements[i] * v2.elements[i];
+    }
+    return dot;
+}
