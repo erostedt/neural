@@ -1,6 +1,8 @@
 #include "utest.h"
 
 #include "matrix.h"
+#include "operations.h"
+#include "vector.h"
 
 UTEST(matrix, zero)
 {
@@ -14,4 +16,14 @@ UTEST(matrix, zero)
             ASSERT_EQ(neural_matrix_at(matrix, row, col), 0);
         }
     }
+}
+
+UTEST(matrix, matmul)
+{
+    neural_matrix_t matrix = {2, 3, (float[6]){1, 2, 3, 4, 5, 6}};
+    neural_vector_t vector = {3, (float[3]){7, 8, 9}};
+    neural_vector_t dst = neural_vector_zero(2);
+    neural_multiply_matrix_vector(dst, matrix, vector);
+    ASSERT_EQ(neural_vector_at(dst, 0), 50);
+    ASSERT_EQ(neural_vector_at(dst, 1), 122);
 }

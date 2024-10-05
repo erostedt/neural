@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stddef.h>
 
 #define neural_vector_at(vec, index) (vec).elements[(index)]

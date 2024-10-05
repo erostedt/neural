@@ -10,7 +10,7 @@ neural_vector_t neural_matrix_row_vector(neural_matrix_t matrix, size_t row)
 void neural_multiply_matrix_vector(neural_vector_t output, neural_matrix_t matrix, neural_vector_t vector)
 {
     assert(matrix.cols == vector.count);
-    assert(output.count == vector.count);
+    assert(matrix.rows == output.count);
 
     for (size_t row = 0; row < matrix.rows; ++row)
     {

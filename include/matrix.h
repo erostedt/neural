@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stddef.h>
 
 #define neural_matrix_at(mat, row, col) (mat).elements[(row) * (mat).cols + (col)]
