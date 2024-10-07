@@ -13,14 +13,14 @@ float uniform(float min, float max)
     return min + u * (max - min);
 }
 
-neural_matrix_t neural_matrix_zero(size_t rows, size_t cols)
+
+neural_matrix_t neural_matrix_alloc(size_t rows, size_t cols)
 {
     neural_matrix_t matrix;
     matrix.rows = rows;
     matrix.cols = cols;
     matrix.elements = malloc(neural_matrix_element_bytes(matrix));
     assert(matrix.elements != NULL);
-    memset(matrix.elements, 0, neural_matrix_element_bytes(matrix));
     return matrix;
 }
 

@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdbool.h>
 
+#include "matrix.h"
 #include "utest.h"
 
 #include "vector.h"
@@ -12,7 +13,8 @@ bool isclose(float x, float y)
 
 UTEST(vector, zero)
 {
-    neural_vector_t vector = neural_vector_zero(3);
+    neural_vector_t vector = neural_vector_alloc(3);
+    neural_vector_set_zero(vector);
     ASSERT_EQ(vector.count, 3);
     for (size_t i = 0; i < vector.count; ++i)
     {

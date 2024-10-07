@@ -7,13 +7,12 @@
 #include "vector.h"
 
 
-neural_vector_t neural_vector_zero(size_t count)
+neural_vector_t neural_vector_alloc(size_t count)
 {
     neural_vector_t vector;
     vector.count = count;
     vector.elements = malloc(neural_vector_element_bytes(vector));
     assert(vector.elements != NULL);
-    neural_vector_set_zero(vector);
     return vector;
 }
 
