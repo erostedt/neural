@@ -3,18 +3,18 @@
 #include <stddef.h>
 #include <memory.h>
 
-#define neural_vector_at(vec, index) (vec).elements[(index)]
-#define neural_vector_set_zero(vector) memset((vector).elements, 0, neural_vector_element_bytes((vector)))
-#define neural_vector_element_count(vec) (vec).count
-#define neural_vector_element_bytes(vec) neural_vector_element_count(vec) * sizeof(*(vec).elements)
+#define VECTOR_AT(vec, index) (vec).elements[(index)]
+#define VECTOR_ELEMENT_COUNT(vec) (vec).count
+#define VECTOR_ELEMENT_BYTES(vec) VECTOR_ELEMENT_COUNT(vec) * sizeof(*(vec).elements)
+#define VECTOR_ZERO(vector) memset((vector).elements, 0, VECTOR_ELEMENT_BYTES((vector)))
 
-typedef struct neural_vector_t
+typedef struct vector_t
 {
     size_t count;
     float *elements;
 
-} neural_vector_t;
+} vector_t;
 
-neural_vector_t neural_vector_alloc(size_t count);
-float neural_vector_dot(neural_vector_t v1, neural_vector_t v2);
-void neural_vector_add(neural_vector_t dst, neural_vector_t lhs, neural_vector_t rhs);
+vector_t vector_alloc(size_t count);
+float vector_dot(vector_t v1, vector_t v2);
+void vector_add(vector_t dst, vector_t lhs, vector_t rhs);

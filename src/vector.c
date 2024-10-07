@@ -7,16 +7,16 @@
 #include "vector.h"
 
 
-neural_vector_t neural_vector_alloc(size_t count)
+vector_t vector_alloc(size_t count)
 {
-    neural_vector_t vector;
+    vector_t vector;
     vector.count = count;
-    vector.elements = malloc(neural_vector_element_bytes(vector));
+    vector.elements = malloc(VECTOR_ELEMENT_BYTES(vector));
     assert(vector.elements != NULL);
     return vector;
 }
 
-float neural_vector_dot(neural_vector_t v1, neural_vector_t v2)
+float vector_dot(vector_t v1, vector_t v2)
 {
     assert(v1.count == v2.count);
     size_t n = v1.count;
@@ -29,7 +29,7 @@ float neural_vector_dot(neural_vector_t v1, neural_vector_t v2)
 }
 
 
-void neural_vector_add(neural_vector_t dst, neural_vector_t lhs, neural_vector_t rhs)
+void vector_add(vector_t dst, vector_t lhs, vector_t rhs)
 {
     assert(lhs.count == rhs.count);
     assert(dst.count == rhs.count);
