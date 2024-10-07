@@ -1,8 +1,10 @@
 #pragma once
 
 #include <stddef.h>
+#include <string.h>
 
 #define neural_matrix_at(mat, row, col) (mat).elements[(row) * (mat).cols + (col)]
+#define neural_vector_set_zero(mat) memset((mat).elements, 0, neural_matrix_element_bytes((mat)))
 #define neural_matrix_element_count(mat) (mat).rows *(mat).cols
 #define neural_matrix_element_bytes(mat) neural_matrix_element_count(mat) * sizeof(*(mat).elements)
 
