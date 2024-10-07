@@ -18,6 +18,15 @@ matrix_t matrix_alloc(size_t rows, size_t cols)
     return matrix;
 }
 
+void matrix_free(matrix_t* matrix)
+{
+    matrix->rows = 0;
+    matrix->cols = 0;
+    matrix->row_stride = 0;
+    matrix->col_stride = 0;
+    free(matrix->elements);
+}
+
 void matrix_transpose(matrix_t* mat)
 {
     size_t temp = mat->rows;
@@ -28,3 +37,5 @@ void matrix_transpose(matrix_t* mat)
     mat->row_stride = mat->col_stride;
     mat->col_stride = temp;
 }
+
+

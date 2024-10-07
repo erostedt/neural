@@ -1,7 +1,14 @@
 #include <assert.h>
 #include <stddef.h>
 
+#include "matrix.h"
+#include "vector.h"
 #include "operations.h"
+
+vector_t row_vector(matrix_t mat, size_t row) 
+{
+    return (vector_t){ mat.cols, &MATRIX_AT(mat, row, 0) };
+}
 
 void matrix_multiply(matrix_t output, matrix_t lhs, matrix_t rhs)
 {
@@ -21,4 +28,23 @@ void matrix_multiply(matrix_t output, matrix_t lhs, matrix_t rhs)
         }
     }
 
+}
+
+float sum_row(matrix_t mat, size_t row)
+{
+    float sum = 0.0f;
+    for (size_t col = 0; col < mat.cols; ++col)
+    {
+        sum += MATRIX_AT(mat, row, col);
+    }
+    return sum;
+}
+
+void sum_rows(matrix_t mat, vector_t output)
+{
+    VECTOR_ZERO(output);
+    for (size_t row = 0; row < mat.rows; ++row)
+    {
+        VECTOR_AT(output, row) = sum_row(mat, row);
+    }
 }

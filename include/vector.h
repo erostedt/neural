@@ -16,5 +16,6 @@ typedef struct vector_t
 } vector_t;
 
 vector_t vector_alloc(size_t count);
+void vector_free(vector_t* vector);
 float vector_dot(vector_t v1, vector_t v2);
 void vector_add(vector_t dst, vector_t lhs, vector_t rhs);

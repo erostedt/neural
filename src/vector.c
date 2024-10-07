@@ -16,6 +16,12 @@ vector_t vector_alloc(size_t count)
     return vector;
 }
 
+void vector_free(vector_t* vector)
+{
+    vector->count = 0;
+    free(vector->elements);
+}
+
 float vector_dot(vector_t v1, vector_t v2)
 {
     assert(v1.count == v2.count);

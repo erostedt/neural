@@ -15,8 +15,8 @@ typedef struct matrix_t
     size_t row_stride;
     size_t col_stride;
     float *elements;
-
 } matrix_t;
 
 matrix_t matrix_alloc(size_t rows, size_t cols);
+void matrix_free(matrix_t* matrix);
 void matrix_transpose(matrix_t* mat);
