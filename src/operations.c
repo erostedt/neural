@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stddef.h>
 
 #include "operations.h"
 
@@ -17,4 +18,24 @@ void neural_multiply_matrix_vector(neural_vector_t output, neural_matrix_t matri
         neural_vector_t row_vector = neural_matrix_row_vector(matrix, row);
         output.elements[row] = neural_vector_dot(row_vector, vector);
     }
+}
+
+void neural_multiply_matrix_matrix(neural_matrix_t output, neural_matrix_t lhs, neural_matrix_t rhs)
+{
+    assert(lhs.cols == rhs.rows);
+    assert(lhs.rows == output.rows);
+    assert(rhs.cols == output.cols);
+
+    for (size_t i = 0; i < lhs.rows; ++i)
+    {
+        for (size_t j = 0; j < rhs.cols; ++j)
+        {
+            neural_matrix_at(output, i, j) = 0.0f;
+            for (size_t k = 0; k < lhs.cols; ++k)
+            {
+                neural_matrix_at(output, i, j) += neural_matrix_at(lhs, i, k) * neural_matrix_at(rhs, k, j);
+            }
+        }
+    }
+
 }
