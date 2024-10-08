@@ -1,4 +1,7 @@
 #include <assert.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <stddef.h>
 
 #include "matrix.h"
@@ -46,5 +49,25 @@ void sum_rows(matrix_t mat, vector_t output)
     for (size_t row = 0; row < mat.rows; ++row)
     {
         VECTOR_AT(output, row) = sum_row(mat, row);
+    }
+}
+
+float uniform(float min, float max)
+{
+    float x = (float)rand() / RAND_MAX;
+    return min + x * (max - min);
+}
+
+void matrix_randomize_xavier(matrix_t matrix)
+{
+    float max = sqrtf(6) / (sqrtf(matrix.rows + matrix.cols));
+    float min = -max;
+
+    for (size_t row = 0; row < matrix.rows; ++row)
+    {
+        for (size_t col = 0; col < matrix.cols; ++col)
+        {
+            MATRIX_AT(matrix, row, col) = uniform(min, max);
+        }
     }
 }

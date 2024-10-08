@@ -39,3 +39,41 @@ void matrix_transpose(matrix_t* mat)
 }
 
 
+void matrix_copy(matrix_t dst, matrix_t src)
+{
+    assert(dst.rows == src.rows);
+    assert(dst.cols == src.cols);
+    for (size_t row = 0; row < src.rows; ++row)
+    {
+        for (size_t col = 0; col < src.cols; ++col)
+        {
+            MATRIX_AT(dst, row, col) = MATRIX_AT(src, row, col);
+        }
+    }
+}
+
+void matrix_subtract(matrix_t dst, matrix_t src)
+{
+    assert(dst.rows == src.rows);
+    assert(dst.cols == src.cols);
+    for (size_t row = 0; row < src.rows; ++row)
+    {
+        for (size_t col = 0; col < src.cols; ++col)
+        {
+            MATRIX_AT(dst, row, col) -= MATRIX_AT(src, row, col);
+        }
+    }
+}
+
+void matrix_scale(matrix_t matrix, float scalar)
+{
+    for (size_t row = 0; row < matrix.rows; ++row)
+    {
+        for (size_t col = 0; col < matrix.cols; ++col)
+        {
+            MATRIX_AT(matrix, row, col) *= scalar;
+        }
+    }
+}
+
+

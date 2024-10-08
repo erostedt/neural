@@ -10,11 +10,11 @@ matrix_t make_and()
     MATRIX_AT(and, 0, 0) = 0;
     MATRIX_AT(and, 0, 1) = 0;
 
-    MATRIX_AT(and, 1, 0) = 0;
+    MATRIX_AT(and, 1, 0) = 1;
     MATRIX_AT(and, 1, 1) = 0;
 
     MATRIX_AT(and, 2, 0) = 0;
-    MATRIX_AT(and, 2, 1) = 0;
+    MATRIX_AT(and, 2, 1) = 1;
 
     MATRIX_AT(and, 3, 0) = 1;
     MATRIX_AT(and, 3, 1) = 1;
@@ -24,12 +24,13 @@ matrix_t make_and()
 UTEST(layer, forward)
 {
     layer_t layer = layer_alloc(4, 2, 1);
-    MATRIX_AT(layer.weights, 0, 0) = 1.0f;
-    MATRIX_AT(layer.weights, 1, 0) = 1.0f;
-    VECTOR_AT(layer.biases, 0) = -1.0f;
+    MATRIX_AT(layer.weights, 0, 0) = 20.0f;
+    MATRIX_AT(layer.weights, 1, 0) = 20.0f;
+    VECTOR_AT(layer.biases, 0) = -30.0f;
     matrix_t and = make_and();
     layer_forward(&layer, and);
     matrix_t pred = layer.outputs;
+
     ASSERT_LT(MATRIX_AT(pred, 0, 0), 0);
     ASSERT_LT(MATRIX_AT(pred, 1, 0), 0);
     ASSERT_LT(MATRIX_AT(pred, 2, 0), 0);

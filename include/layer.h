@@ -21,3 +21,5 @@ layer_t layer_alloc(size_t batch_size, size_t num_inputs, size_t num_neurons);
 void layer_free(layer_t* layer);
 matrix_t layer_forward(layer_t *layer, matrix_t inputs);
 matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient);
+void layer_update(layer_t *layer, float learning_rate);
+void layer_randomize(layer_t *layer);
