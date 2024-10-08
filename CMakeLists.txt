@@ -21,11 +21,11 @@ foreach(example ${examples})
   message("Building: ${example}")
   file(GLOB sources ${example}/*.c)
   add_executable(${example_name} ${sources})
-  target_link_libraries(${example_name} neural)
+  target_link_libraries(${example_name} neural -lm)
 endforeach()
 
 
 file(GLOB test_files ${TEST_PATH}/*.c)
 
 add_executable(run_tests ${test_files})
-target_link_libraries(run_tests neural)
+target_link_libraries(run_tests neural -lm)
