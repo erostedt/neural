@@ -28,8 +28,7 @@ UTEST(layer, forward)
     MATRIX_AT(layer.weights, 1, 0) = 1.0f;
     VECTOR_AT(layer.biases, 0) = -1.0f;
     matrix_t and = make_and();
-    layer_input(&layer, and);
-    layer_forward(&layer);
+    layer_forward(&layer, and);
     matrix_t pred = layer.outputs;
     ASSERT_LT(MATRIX_AT(pred, 0, 0), 0);
     ASSERT_LT(MATRIX_AT(pred, 1, 0), 0);
