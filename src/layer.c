@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stddef.h>
 
 #include "layer.h"
@@ -28,6 +29,34 @@ void layer_free(layer_t* layer)
 }
 
 
+float sigmoidf(float x)
+{
+    return 1.0f / (1.0f + expf(-x));
+}
+
+void activate_sigmoid(matrix_t matrix)
+{
+    for (size_t row = 0; row < matrix.rows; ++row)
+    {
+        for (size_t col = 0; col < matrix.cols; ++col)
+        {
+            MATRIX_AT(matrix, row, col) = sigmoidf(MATRIX_AT(matrix, row, col));
+        }
+    }
+}
+
+void activate_sigmoid_derivative(matrix_t sigmoid_output)
+{
+    for (size_t row = 0; row < sigmoid_output.rows; ++row)
+    {
+        for (size_t col = 0; col < sigmoid_output.cols; ++col)
+        {
+            float sigmoid = MATRIX_AT(sigmoid_output, row, col);
+            MATRIX_AT(sigmoid_output, row, col) = sigmoid * (1.0f - sigmoid);
+        }
+    }
+}
+
 matrix_t layer_forward(layer_t *layer, matrix_t inputs)
 {
     layer->inputs = inputs;
@@ -39,15 +68,21 @@ matrix_t layer_forward(layer_t *layer, matrix_t inputs)
         vector_t output = row_vector(layer->outputs, row);
         vector_add(output, output, layer->biases);
     }
+    activate_sigmoid(layer->outputs);
     return layer->outputs;
 }
 
 
 matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
 {
+
     // d_inputs = dZ W^T
     // d_weights = X^T dZ
     // d_biases = sum_i dZ_i
+
+    activate_sigmoid_derivative(layer->outputs);
+    matrix_element_multiply(upstream_gradient, layer->outputs);
+
     matrix_transpose(&layer->weights);
     matrix_multiply(layer->d_inputs, upstream_gradient, layer->weights);
     matrix_transpose(&layer->weights);
