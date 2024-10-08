@@ -36,7 +36,8 @@ matrix_t make_or_targets()
 int main()
 {
     srand(time(0));
-    network_t network = network_alloc(4, 2, 1);
+    network_t network = network_alloc(4, (size_t[2]){2, 1}, 2);
+    network_summary(&network);
     matrix_t inputs = make_or_features();
     matrix_t targets = make_or_targets();
     for (size_t i = 0; i < 10000; ++i)

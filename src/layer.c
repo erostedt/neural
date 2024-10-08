@@ -60,7 +60,6 @@ void activate_sigmoid_derivative(matrix_t sigmoid_output)
 matrix_t layer_forward(layer_t *layer, matrix_t inputs)
 {
     layer->inputs = inputs;
-
     // z = XW + b
     matrix_multiply(layer->outputs, layer->inputs, layer->weights);
     for (size_t row = 0; row < layer->outputs.rows; ++row)

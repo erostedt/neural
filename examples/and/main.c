@@ -33,7 +33,7 @@ matrix_t make_and_targets()
 
 int main()
 {
-    network_t network = network_alloc(4, 2, 1);
+    network_t network = network_alloc(4, (size_t[2]){2, 1}, 2);
     matrix_t inputs = make_and_features();
     matrix_t targets = make_and_targets();
     for (size_t i = 0; i < 10000; ++i)
