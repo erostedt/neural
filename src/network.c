@@ -9,6 +9,13 @@ network_t network_alloc(size_t batch_size, size_t num_inputs, size_t num_outputs
     return network;
 }
 
+
+void network_free(network_t* network)
+{
+    layer_free(&network->layer);
+    loss_free(&network->loss);
+}
+
 matrix_t network_forward(network_t* network, matrix_t inputs)
 {
     return layer_forward(&network->layer, inputs);

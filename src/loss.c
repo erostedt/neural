@@ -1,4 +1,5 @@
 #include "loss.h"
+#include "matrix.h"
 
 loss_t loss_alloc(size_t input_count, size_t feature_count)
 {
@@ -7,6 +8,11 @@ loss_t loss_alloc(size_t input_count, size_t feature_count)
     loss.gradient = matrix_alloc(input_count, feature_count);
     MATRIX_ZERO(loss.gradient);
     return loss;
+}
+
+void loss_free(loss_t* loss)
+{
+    matrix_free(&loss->gradient);
 }
 
 
