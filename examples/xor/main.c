@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-#include "network.h"
 #include "loss.h"
 #include "matrix.h"
+#include "network.h"
 
 matrix_t make_xor_features()
 {
@@ -33,6 +34,7 @@ matrix_t make_xor_targets()
 
 int main()
 {
+    srand(37);
     network_t network = network_alloc(4, (size_t[4]){2, 4, 1}, 3);
     matrix_t inputs = make_xor_features();
     matrix_t targets = make_xor_targets();
