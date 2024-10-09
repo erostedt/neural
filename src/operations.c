@@ -66,7 +66,7 @@ void matrix_randomize_xavier(matrix_t matrix)
 
 void matrix_randomize_he(matrix_t matrix)
 {
-    float std = sqrtf(2.0f / matrix.row_stride);
+    float std = sqrtf(2.0f / matrix.rows);
     for (size_t row = 0; row < matrix.rows; ++row)
     {
         for (size_t col = 0; col < matrix.cols; ++col)

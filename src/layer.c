@@ -7,7 +7,6 @@
 #include "operations.h"
 #include "vector.h"
 
-#define MAX(x, y) x > y ? x : y
 #define UNREACHABLE(message) assert(0 && message)
 
 layer_t layer_alloc(size_t batch_size, layer_spec_t spec)
@@ -67,7 +66,10 @@ void activate_relu(matrix_t matrix)
     {
         for (size_t col = 0; col < matrix.cols; ++col)
         {
-            MATRIX_AT(matrix, row, col) = MAX(MATRIX_AT(matrix, row, col), 0.0f);
+            if (MATRIX_AT(matrix, row, col) < 0.0f)
+            {
+                MATRIX_AT(matrix, row, col) = 0.0f;
+            }
         }
     }
 }

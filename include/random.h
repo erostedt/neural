@@ -12,6 +12,6 @@ static float normal(float mean, float std)
     float u1 = uniform(0.0f, 1.0f);
     float u2 = uniform(0.0f, 1.0f);
 
-    float z0 = sqrtf(-2.0 * logf(u1)) * cosf(2.0 * M_PI * u2);
+    float z0 = sqrtf(-2.0f * logf(u1)) * cosf(2.0f * M_PI * u2);
     return z0 * std + mean;
 }
