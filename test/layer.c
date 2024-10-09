@@ -23,7 +23,7 @@ matrix_t make_and()
 
 UTEST(layer, forward)
 {
-    layer_t layer = layer_alloc(4, 2, 1);
+    layer_t layer = layer_alloc(4, (layer_spec_t){2, 1, SIGMOID});
     MATRIX_AT(layer.weights, 0, 0) = 20.0f;
     MATRIX_AT(layer.weights, 1, 0) = 20.0f;
     VECTOR_AT(layer.biases, 0) = -30.0f;
