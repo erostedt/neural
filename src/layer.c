@@ -7,6 +7,9 @@
 #include "operations.h"
 #include "vector.h"
 
+#define MAX(x, y) x > y ? x : y
+#define UNREACHABLE(message) assert(0 && message)
+
 layer_t layer_alloc(size_t batch_size, layer_spec_t spec)
 {
     layer_t layer;
@@ -58,6 +61,28 @@ void activate_sigmoid_derivative(matrix_t sigmoid_output)
     }
 }
 
+void activate_relu(matrix_t matrix)
+{
+    for (size_t row = 0; row < matrix.rows; ++row)
+    {
+        for (size_t col = 0; col < matrix.cols; ++col)
+        {
+            MATRIX_AT(matrix, row, col) = MAX(MATRIX_AT(matrix, row, col), 0.0f);
+        }
+    }
+}
+
+void activate_relu_derivative(matrix_t relu_output)
+{
+    for (size_t row = 0; row < relu_output.rows; ++row)
+    {
+        for (size_t col = 0; col < relu_output.cols; ++col)
+        {
+            MATRIX_AT(relu_output, row, col) = MATRIX_AT(relu_output, row, col) > 0.0f ? 1.0f : 0.0f;
+        }
+    }
+}
+
 void activate(matrix_t matrix, activation_type_t activation_type)
 {
     switch (activation_type)
@@ -65,8 +90,13 @@ void activate(matrix_t matrix, activation_type_t activation_type)
     case SIGMOID:
         activate_sigmoid(matrix);
         return;
+    case RELU:
+        activate_relu(matrix);
+        return;
+    case NONE:
+        return;
     default:
-        assert(0);
+        UNREACHABLE("Unexpected activation");
     }
 }
 
@@ -77,8 +107,13 @@ void activate_derivative(matrix_t matrix, activation_type_t activation_type)
     case SIGMOID:
         activate_sigmoid_derivative(matrix);
         return;
+    case RELU:
+        activate_relu_derivative(matrix);
+        return;
+    case NONE:
+        return;
     default:
-        assert(0);
+        UNREACHABLE("Unexpected activation");
     }
 }
 
@@ -120,7 +155,16 @@ matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
 
 void layer_randomize(layer_t *layer)
 {
-    matrix_randomize_xavier(layer->weights);
+    switch (layer->activation)
+    {
+    case SIGMOID:
+    case NONE:
+        matrix_randomize_xavier(layer->weights);
+        break;
+    case RELU:
+        matrix_randomize_he(layer->weights);
+        break;
+    }
     VECTOR_ZERO(layer->biases);
 }
 

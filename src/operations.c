@@ -1,16 +1,15 @@
 #include <assert.h>
 #include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <stddef.h>
 
 #include "matrix.h"
-#include "vector.h"
 #include "operations.h"
+#include "random.h"
+#include "vector.h"
 
-vector_t row_vector(matrix_t mat, size_t row) 
+vector_t row_vector(matrix_t mat, size_t row)
 {
-    return (vector_t){ mat.cols, &MATRIX_AT(mat, row, 0) };
+    return (vector_t){mat.cols, &MATRIX_AT(mat, row, 0)};
 }
 
 void matrix_multiply(matrix_t output, matrix_t lhs, matrix_t rhs)
@@ -30,7 +29,6 @@ void matrix_multiply(matrix_t output, matrix_t lhs, matrix_t rhs)
             }
         }
     }
-
 }
 
 float sum_row(matrix_t mat, size_t row)
@@ -52,12 +50,6 @@ void sum_rows(matrix_t mat, vector_t output)
     }
 }
 
-float uniform(float min, float max)
-{
-    float x = (float)rand() / RAND_MAX;
-    return min + x * (max - min);
-}
-
 void matrix_randomize_xavier(matrix_t matrix)
 {
     float max = sqrtf(6) / (sqrtf(matrix.rows + matrix.cols));
@@ -68,6 +60,18 @@ void matrix_randomize_xavier(matrix_t matrix)
         for (size_t col = 0; col < matrix.cols; ++col)
         {
             MATRIX_AT(matrix, row, col) = uniform(min, max);
+        }
+    }
+}
+
+void matrix_randomize_he(matrix_t matrix)
+{
+    float std = sqrtf(2.0f / matrix.row_stride);
+    for (size_t row = 0; row < matrix.rows; ++row)
+    {
+        for (size_t col = 0; col < matrix.cols; ++col)
+        {
+            MATRIX_AT(matrix, row, col) = normal(0.0f, std);
         }
     }
 }
