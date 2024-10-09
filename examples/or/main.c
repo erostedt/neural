@@ -35,7 +35,10 @@ matrix_t make_or_targets()
 int main()
 {
     srand(37);
-    network_t network = network_alloc(4, (size_t[2]){2, 1}, 2);
+    layer_spec_t spec[2];
+    spec[0] = (layer_spec_t){2, 4, SIGMOID};
+    spec[1] = (layer_spec_t){4, 1, SIGMOID};
+    network_t network = network_alloc(4, spec, 2);
     network_summary(&network);
     matrix_t inputs = make_or_features();
     matrix_t targets = make_or_targets();

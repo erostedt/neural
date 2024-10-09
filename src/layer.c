@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <math.h>
 #include <stddef.h>
 
@@ -6,28 +7,28 @@
 #include "operations.h"
 #include "vector.h"
 
-
-
-layer_t layer_alloc(size_t batch_size, size_t num_inputs, size_t num_neurons)
+layer_t layer_alloc(size_t batch_size, layer_spec_t spec)
 {
     layer_t layer;
+    size_t num_inputs = spec.num_inputs;
+    size_t num_neurons = spec.num_neurons;
     layer.weights = matrix_alloc(num_inputs, num_neurons);
     layer.biases = vector_alloc(num_neurons);
     layer.outputs = matrix_alloc(batch_size, num_neurons);
     layer.d_inputs = matrix_alloc(batch_size, num_inputs);
     layer.d_weights = matrix_alloc(num_inputs, num_neurons);
     layer.d_biases = vector_alloc(num_neurons);
+    layer.activation = spec.activation;
     return layer;
 }
 
-void layer_free(layer_t* layer)
+void layer_free(layer_t *layer)
 {
     matrix_free(&layer->weights);
     vector_free(&layer->biases);
     matrix_free(&layer->d_weights);
     vector_free(&layer->d_biases);
 }
-
 
 float sigmoidf(float x)
 {
@@ -57,6 +58,30 @@ void activate_sigmoid_derivative(matrix_t sigmoid_output)
     }
 }
 
+void activate(matrix_t matrix, activation_type_t activation_type)
+{
+    switch (activation_type)
+    {
+    case SIGMOID:
+        activate_sigmoid(matrix);
+        return;
+    default:
+        assert(0);
+    }
+}
+
+void activate_derivative(matrix_t matrix, activation_type_t activation_type)
+{
+    switch (activation_type)
+    {
+    case SIGMOID:
+        activate_sigmoid_derivative(matrix);
+        return;
+    default:
+        assert(0);
+    }
+}
+
 matrix_t layer_forward(layer_t *layer, matrix_t inputs)
 {
     layer->inputs = inputs;
@@ -67,10 +92,9 @@ matrix_t layer_forward(layer_t *layer, matrix_t inputs)
         vector_t output = row_vector(layer->outputs, row);
         vector_add(output, output, layer->biases);
     }
-    activate_sigmoid(layer->outputs);
+    activate(layer->outputs, layer->activation);
     return layer->outputs;
 }
-
 
 matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
 {
@@ -79,7 +103,7 @@ matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
     // d_weights = X^T dZ
     // d_biases = sum_i dZ_i
 
-    activate_sigmoid_derivative(layer->outputs);
+    activate_derivative(layer->outputs, layer->activation);
     matrix_element_multiply(upstream_gradient, layer->outputs);
 
     matrix_transpose(&layer->weights);
@@ -94,13 +118,11 @@ matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
     return layer->d_inputs;
 }
 
-
 void layer_randomize(layer_t *layer)
 {
     matrix_randomize_xavier(layer->weights);
     VECTOR_ZERO(layer->biases);
 }
-
 
 void layer_update(layer_t *layer, float learning_rate)
 {
