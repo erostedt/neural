@@ -1,8 +1,8 @@
 #include "utest.h"
 
+#include "layer.h"
 #include "matrix.h"
 #include "vector.h"
-#include "layer.h"
 
 matrix_t make_and()
 {
@@ -31,10 +31,10 @@ UTEST(layer, forward)
     layer_forward(&layer, and);
     matrix_t pred = layer.outputs;
 
-    ASSERT_LT(MATRIX_AT(pred, 0, 0), 0);
-    ASSERT_LT(MATRIX_AT(pred, 1, 0), 0);
-    ASSERT_LT(MATRIX_AT(pred, 2, 0), 0);
-    ASSERT_GT(MATRIX_AT(pred, 3, 0), 0);
+    ASSERT_LT(MATRIX_AT(pred, 0, 0), 0.5f);
+    ASSERT_LT(MATRIX_AT(pred, 1, 0), 0.5f);
+    ASSERT_LT(MATRIX_AT(pred, 2, 0), 0.5f);
+    ASSERT_GT(MATRIX_AT(pred, 3, 0), 0.5f);
 }
 
 /*
