@@ -3,7 +3,7 @@
 #include "loss.h"
 #include "matrix.h"
 
-typedef struct network_t
+typedef struct
 {
     layer_t *layers;
     size_t layer_count;

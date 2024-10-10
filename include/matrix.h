@@ -1,14 +1,14 @@
 #pragma once
 
-#include <stddef.h>
 #include <memory.h>
+#include <stddef.h>
 
 #define MATRIX_AT(mat, row, col) (mat).elements[(row) * (mat).row_stride + (col) * (mat).col_stride]
 #define MATRIX_ELEMENT_COUNT(mat) (mat).rows *(mat).cols
 #define MATRIX_ELEMENT_BYTES(mat) MATRIX_ELEMENT_COUNT(mat) * sizeof(*(mat).elements)
 #define MATRIX_ZERO(mat) memset((mat).elements, 0, MATRIX_ELEMENT_BYTES((mat)))
 
-typedef struct matrix_t
+typedef struct
 {
     size_t rows;
     size_t cols;
@@ -18,8 +18,8 @@ typedef struct matrix_t
 } matrix_t;
 
 matrix_t matrix_alloc(size_t rows, size_t cols);
-void matrix_free(matrix_t* matrix);
-void matrix_transpose(matrix_t* mat);
+void matrix_free(matrix_t *matrix);
+void matrix_transpose(matrix_t *mat);
 void matrix_copy(matrix_t dst, matrix_t src);
 
 void matrix_randomize_xavier(matrix_t matrix);

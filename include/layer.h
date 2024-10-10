@@ -4,21 +4,21 @@
 #include "matrix.h"
 #include "vector.h"
 
-typedef enum activation_type_t
+typedef enum
 {
     RELU,
     SIGMOID,
     NONE,
 } activation_type_t;
 
-typedef struct layer_spec_t
+typedef struct
 {
     size_t num_inputs;
     size_t num_neurons;
     activation_type_t activation;
 } layer_spec_t;
 
-typedef struct layer_t
+typedef struct
 {
     matrix_t inputs;
     matrix_t weights;
