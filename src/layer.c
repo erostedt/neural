@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stddef.h>
 
+#include "activation.h"
 #include "layer.h"
 #include "matrix.h"
 #include "operations.h"
@@ -69,7 +70,7 @@ void layer_randomize(layer_t *layer)
     switch (layer->activation)
     {
     case SIGMOID:
-    case NONE:
+    case LINEAR:
         matrix_randomize_xavier(layer->weights);
         break;
     case RELU:

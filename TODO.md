@@ -1,6 +1,5 @@
 Use adam optimizer
 
-Rename activation NONE to LINEAR
 Add activation SOFTMAX
 Add activation TANH?
 

@@ -71,7 +71,7 @@ void activate(matrix_t matrix, activation_type_t activation_type)
     case RELU:
         activate_relu(matrix);
         return;
-    case NONE:
+    case LINEAR:
         return;
     default:
         UNREACHABLE("Unexpected activation");
@@ -88,7 +88,7 @@ void activate_derivative(matrix_t matrix, matrix_t upstream_gradient, activation
     case RELU:
         activate_relu_derivative(matrix, upstream_gradient);
         return;
-    case NONE:
+    case LINEAR:
         return;
     default:
         UNREACHABLE("Unexpected activation");
