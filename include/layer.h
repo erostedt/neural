@@ -1,15 +1,9 @@
 #pragma once
 #include <stddef.h>
 
+#include "activation.h"
 #include "matrix.h"
 #include "vector.h"
-
-typedef enum
-{
-    RELU,
-    SIGMOID,
-    NONE,
-} activation_type_t;
 
 typedef struct
 {
