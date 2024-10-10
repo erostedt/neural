@@ -13,3 +13,6 @@ Simplify construction of NN
 
 Clean up repo structure
 Remove unnecessary functions
+
+use double instead of float?
+#pragma omp parallel for?
