@@ -48,14 +48,14 @@ void activate_sigmoid(matrix_t matrix)
     }
 }
 
-void activate_sigmoid_derivative(matrix_t sigmoid_output)
+void activate_sigmoid_derivative(matrix_t sigmoid_output, matrix_t upstream_gradient)
 {
     for (size_t row = 0; row < sigmoid_output.rows; ++row)
     {
         for (size_t col = 0; col < sigmoid_output.cols; ++col)
         {
             float sigmoid = MATRIX_AT(sigmoid_output, row, col);
-            MATRIX_AT(sigmoid_output, row, col) = sigmoid * (1.0f - sigmoid);
+            MATRIX_AT(upstream_gradient, row, col) *= sigmoid * (1.0f - sigmoid);
         }
     }
 }
@@ -74,13 +74,16 @@ void activate_relu(matrix_t matrix)
     }
 }
 
-void activate_relu_derivative(matrix_t relu_output)
+void activate_relu_derivative(matrix_t relu_output, matrix_t upstream_gradient)
 {
     for (size_t row = 0; row < relu_output.rows; ++row)
     {
         for (size_t col = 0; col < relu_output.cols; ++col)
         {
-            MATRIX_AT(relu_output, row, col) = MATRIX_AT(relu_output, row, col) > 0.0f ? 1.0f : 0.0f;
+            if (MATRIX_AT(relu_output, row, col) < 0.0f)
+            {
+                MATRIX_AT(upstream_gradient, row, col) = 0.0f;
+            }
         }
     }
 }
@@ -102,15 +105,15 @@ void activate(matrix_t matrix, activation_type_t activation_type)
     }
 }
 
-void activate_derivative(matrix_t matrix, activation_type_t activation_type)
+void activate_derivative(matrix_t matrix, matrix_t upstream_gradient, activation_type_t activation_type)
 {
     switch (activation_type)
     {
     case SIGMOID:
-        activate_sigmoid_derivative(matrix);
+        activate_sigmoid_derivative(matrix, upstream_gradient);
         return;
     case RELU:
-        activate_relu_derivative(matrix);
+        activate_relu_derivative(matrix, upstream_gradient);
         return;
     case NONE:
         return;
@@ -140,8 +143,7 @@ matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
     // d_weights = X^T dZ
     // d_biases = sum_i dZ_i
 
-    activate_derivative(layer->outputs, layer->activation);
-    matrix_element_multiply(upstream_gradient, layer->outputs);
+    activate_derivative(layer->outputs, upstream_gradient, layer->activation);
 
     matrix_transpose(&layer->weights);
     matrix_multiply(layer->d_inputs, upstream_gradient, layer->weights);
