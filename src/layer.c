@@ -53,13 +53,8 @@ matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
 
     activate_derivative(layer->outputs, upstream_gradient, layer->activation);
 
-    matrix_transpose(&layer->weights);
-    matrix_multiply(layer->d_inputs, upstream_gradient, layer->weights);
-    matrix_transpose(&layer->weights);
-
-    matrix_transpose(&layer->inputs);
-    matrix_multiply(layer->d_weights, layer->inputs, upstream_gradient);
-    matrix_transpose(&layer->inputs);
+    matrix_multiply_ABT(layer->d_inputs, upstream_gradient, layer->weights);
+    matrix_multiply_ATB(layer->d_weights, layer->inputs, upstream_gradient);
 
     sum_rows(upstream_gradient, layer->d_biases);
     return layer->d_inputs;

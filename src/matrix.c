@@ -27,17 +27,6 @@ void matrix_free(matrix_t *matrix)
     free(matrix->elements);
 }
 
-void matrix_transpose(matrix_t *mat)
-{
-    size_t temp = mat->rows;
-    mat->rows = mat->cols;
-    mat->cols = temp;
-
-    temp = mat->row_stride;
-    mat->row_stride = mat->col_stride;
-    mat->col_stride = temp;
-}
-
 void matrix_copy(matrix_t dst, matrix_t src)
 {
     assert(dst.rows == src.rows);

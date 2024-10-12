@@ -21,29 +21,3 @@ UTEST(matrix, matmulmat)
     ASSERT_EQ(MATRIX_AT(dst, 2, 1), 106);
     ASSERT_EQ(MATRIX_AT(dst, 2, 2), 117);
 }
-
-UTEST(matrix, mattranspose)
-{
-    matrix_t m = matrix_alloc(3, 2);
-    m.elements = (double[6]){1, 2, 3, 4, 5, 6};
-
-    matrix_t t = m;
-    matrix_transpose(&t);
-    ASSERT_EQ(m.rows, 3);
-    ASSERT_EQ(m.cols, 2);
-    ASSERT_EQ(m.row_stride, 2);
-    ASSERT_EQ(m.col_stride, 1);
-
-    ASSERT_EQ(t.rows, 2);
-    ASSERT_EQ(t.cols, 3);
-    ASSERT_EQ(t.row_stride, 1);
-    ASSERT_EQ(t.col_stride, 2);
-
-    for (size_t row = 0; row < 3; ++row)
-    {
-        for (size_t col = 0; col < 2; ++col)
-        {
-            ASSERT_EQ(MATRIX_AT(m, row, col), MATRIX_AT(t, col, row));
-        }
-    }
-}

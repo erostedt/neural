@@ -19,7 +19,6 @@ typedef struct
 
 matrix_t matrix_alloc(size_t rows, size_t cols);
 void matrix_free(matrix_t *matrix);
-void matrix_transpose(matrix_t *mat);
 void matrix_copy(matrix_t dst, matrix_t src);
 
 void matrix_randomize_xavier(matrix_t matrix);
