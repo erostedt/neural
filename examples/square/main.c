@@ -1,3 +1,4 @@
+#include "layer.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -36,10 +37,12 @@ int main()
 {
     srand(37);
     size_t batch_size = 8;
-    layer_spec_t spec[2];
-    spec[0] = (layer_spec_t){5, RELU};
-    spec[1] = (layer_spec_t){1, LINEAR};
-    network_t network = network_alloc(batch_size, 1, spec, 2);
+    layer_spec_t layers[] = {
+        RELU_LAYER(5),
+        LINEAR_LAYER(1),
+    };
+    network_t network = network_alloc(8, 1, layers, ARRAY_LEN(layers));
+
     network_summary(&network);
 
     matrix_t inputs = matrix_alloc(batch_size, 1);

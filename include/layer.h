@@ -5,6 +5,27 @@
 #include "matrix.h"
 #include "vector.h"
 
+#define RELU_LAYER(neuron_count)                                                                                       \
+    (layer_spec_t)                                                                                                     \
+    {                                                                                                                  \
+        (neuron_count), RELU                                                                                           \
+    }
+#define LINEAR_LAYER(neuron_count)                                                                                     \
+    (layer_spec_t)                                                                                                     \
+    {                                                                                                                  \
+        (neuron_count), LINEAR                                                                                         \
+    }
+#define TANH_LAYER(neuron_count)                                                                                       \
+    (layer_spec_t)                                                                                                     \
+    {                                                                                                                  \
+        (neuron_count), TANH                                                                                           \
+    }
+#define SIGMOID_LAYER(neuron_count)                                                                                    \
+    (layer_spec_t)                                                                                                     \
+    {                                                                                                                  \
+        (neuron_count), SIGMOID                                                                                        \
+    }
+
 typedef struct
 {
     size_t neuron_count;
