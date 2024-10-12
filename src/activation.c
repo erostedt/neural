@@ -22,7 +22,7 @@ void activate_sigmoid(matrix_t matrix)
     }
 }
 
-void activate_sigmoid_derivative(matrix_t sigmoid_output, matrix_t upstream_gradient)
+void activate_sigmoid_gradient(matrix_t sigmoid_output, matrix_t upstream_gradient)
 {
     for (size_t row = 0; row < sigmoid_output.rows; ++row)
     {
@@ -59,7 +59,7 @@ void activate_softmax(matrix_t matrix)
     }
 }
 
-void activate_softmax_derivative(matrix_t softmax_output, matrix_t upstream_gradient)
+void activate_softmax_gradient(matrix_t softmax_output, matrix_t upstream_gradient)
 {
     matrix_subtract(upstream_gradient, softmax_output, upstream_gradient);
 }
@@ -78,7 +78,7 @@ void activate_relu(matrix_t matrix)
     }
 }
 
-void activate_relu_derivative(matrix_t relu_output, matrix_t upstream_gradient)
+void activate_relu_gradient(matrix_t relu_output, matrix_t upstream_gradient)
 {
     for (size_t row = 0; row < relu_output.rows; ++row)
     {
@@ -103,7 +103,7 @@ void activate_tanh(matrix_t matrix)
     }
 }
 
-void activate_tanh_derivative(matrix_t tanh_output, matrix_t upstream_gradient)
+void activate_tanh_gradient(matrix_t tanh_output, matrix_t upstream_gradient)
 {
     for (size_t row = 0; row < tanh_output.rows; ++row)
     {
@@ -135,18 +135,18 @@ void activate(matrix_t matrix, activation_type_t activation_type)
     }
 }
 
-void activate_derivative(matrix_t matrix, matrix_t upstream_gradient, activation_type_t activation_type)
+void activate_gradient(matrix_t matrix, matrix_t upstream_gradient, activation_type_t activation_type)
 {
     switch (activation_type)
     {
     case SIGMOID:
-        activate_sigmoid_derivative(matrix, upstream_gradient);
+        activate_sigmoid_gradient(matrix, upstream_gradient);
         return;
     case RELU:
-        activate_relu_derivative(matrix, upstream_gradient);
+        activate_relu_gradient(matrix, upstream_gradient);
         return;
     case TANH:
-        activate_tanh_derivative(matrix, upstream_gradient);
+        activate_tanh_gradient(matrix, upstream_gradient);
         return;
     case LINEAR:
         return;

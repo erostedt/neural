@@ -50,7 +50,7 @@ matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
     // d_weights = X^T dZ
     // d_biases = sum_i dZ_i
 
-    activate_derivative(layer->outputs, upstream_gradient, layer->activation);
+    activate_gradient(layer->outputs, upstream_gradient, layer->activation);
 
     matrix_multiply_ABT(layer->d_inputs, upstream_gradient, layer->weights);
     matrix_multiply_ATB(layer->d_weights, layer->inputs, upstream_gradient);
