@@ -2,6 +2,7 @@
 #include <stddef.h>
 
 #include "activation.h"
+#include "initialization.h"
 #include "layer.h"
 #include "matrix.h"
 #include "operations.h"
@@ -55,7 +56,7 @@ matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
     matrix_multiply_ABT(layer->d_inputs, upstream_gradient, layer->weights);
     matrix_multiply_ATB(layer->d_weights, layer->inputs, upstream_gradient);
 
-    sum_rows(upstream_gradient, layer->d_biases);
+    sum_rows(layer->d_biases, upstream_gradient);
     return layer->d_inputs;
 }
 

@@ -77,7 +77,7 @@ double sum_row(matrix_t mat, size_t row)
     return sum;
 }
 
-void sum_rows(matrix_t mat, vector_t output)
+void sum_rows(vector_t output, matrix_t mat)
 {
     VECTOR_ZERO(output);
     for (size_t row = 0; row < mat.rows; ++row)
