@@ -6,9 +6,9 @@
 UTEST(matrix, matmulmat)
 {
     matrix_t lhs = matrix_alloc(3, 2);
-    lhs.elements = (float[6]){1, 2, 3, 4, 5, 6};
+    lhs.elements = (double[6]){1, 2, 3, 4, 5, 6};
     matrix_t rhs = matrix_alloc(2, 3);
-    rhs.elements = (float[6]){7, 8, 9, 10, 11, 12};
+    rhs.elements = (double[6]){7, 8, 9, 10, 11, 12};
     matrix_t dst = matrix_alloc(3, 3);
     matrix_multiply(dst, lhs, rhs);
     ASSERT_EQ(MATRIX_AT(dst, 0, 0), 27);
@@ -25,7 +25,7 @@ UTEST(matrix, matmulmat)
 UTEST(matrix, mattranspose)
 {
     matrix_t m = matrix_alloc(3, 2);
-    m.elements = (float[6]){1, 2, 3, 4, 5, 6};
+    m.elements = (double[6]){1, 2, 3, 4, 5, 6};
 
     matrix_t t = m;
     matrix_transpose(&t);

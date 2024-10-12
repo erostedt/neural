@@ -51,7 +51,7 @@ matrix_t network_backward(network_t *network, matrix_t loss_gradient)
     return loss_gradient;
 }
 
-void network_update(network_t *network, float learning_rate)
+void network_update(network_t *network, double learning_rate)
 {
     for (size_t i = 0; i < network->layer_count; ++i)
     {
@@ -59,7 +59,7 @@ void network_update(network_t *network, float learning_rate)
     }
 }
 
-void network_train(network_t *network, matrix_t inputs, matrix_t targets, float learning_rate)
+void network_train(network_t *network, matrix_t inputs, matrix_t targets, double learning_rate)
 {
     matrix_t pred = network_forward(network, inputs);
     loss_mse(&network->loss, targets, pred);

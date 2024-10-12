@@ -13,5 +13,5 @@ typedef struct
 network_t network_alloc(size_t batch_size, layer_spec_t *layer_specs, size_t size);
 void network_free(network_t *network);
 matrix_t network_forward(network_t *network, matrix_t inputs);
-void network_train(network_t *network, matrix_t inputs, matrix_t targets, float learning_rate);
+void network_train(network_t *network, matrix_t inputs, matrix_t targets, double learning_rate);
 void network_summary(network_t *network);

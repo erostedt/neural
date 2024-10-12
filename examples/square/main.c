@@ -8,7 +8,7 @@
 #include "network.h"
 #include "random.h"
 
-void set_features(matrix_t features, float min, float max)
+void set_features(matrix_t features, double min, double max)
 {
     assert(features.cols == 1);
     for (size_t i = 0; i < features.rows; ++i)
@@ -28,7 +28,7 @@ void set_targets(matrix_t features, matrix_t targets)
     }
 }
 
-void linspace(matrix_t features, float min, float max)
+void linspace(matrix_t features, double min, double max)
 {
     assert(features.cols == 1);
     for (size_t i = 0; i < features.rows; ++i)
@@ -49,21 +49,21 @@ int main()
 
     matrix_t inputs = matrix_alloc(batch_size, 1);
     matrix_t targets = matrix_alloc(batch_size, 1);
-    float min = -1.0f;
-    float max = 1.0f;
+    double min = -1.0;
+    double max = 1.0;
 
     for (size_t i = 0; i < 10000; ++i)
     {
         set_features(inputs, min, max);
         set_targets(inputs, targets);
-        network_train(&network, inputs, targets, 1e-3f);
-        printf("loss: %f\n", network.loss.value);
+        network_train(&network, inputs, targets, 1e-3);
+        printf("loss: %lf\n", network.loss.value);
     }
     linspace(inputs, min, max);
     set_targets(inputs, targets);
     matrix_t pred = network_forward(&network, inputs);
     for (size_t i = 0; i < pred.rows; ++i)
     {
-        printf("(%f)^2 = %f (%f)\n", MATRIX_AT(inputs, i, 0), MATRIX_AT(pred, i, 0), MATRIX_AT(targets, i, 0));
+        printf("(%lf)^2 = %lf (%lf)\n", MATRIX_AT(inputs, i, 0), MATRIX_AT(pred, i, 0), MATRIX_AT(targets, i, 0));
     }
 }

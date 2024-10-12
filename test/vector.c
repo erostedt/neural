@@ -1,14 +1,13 @@
 #include <math.h>
 #include <stdbool.h>
 
-#include "matrix.h"
 #include "utest.h"
 
 #include "vector.h"
 
-bool isclose(float x, float y)
+bool isclose(double x, double y)
 {
-    return fabsf(x - y) < 1e-7;
+    return fabs(x - y) < 1e-7;
 }
 
 UTEST(vector, zero)
@@ -24,8 +23,8 @@ UTEST(vector, zero)
 
 UTEST(vector, dot)
 {
-    vector_t v1 = {3, (float[]){1.0f, 2.0f, 3.0f}};
-    vector_t v2 = {3, (float[]){4.0f, 5.0f, 6.0f}};
-    float dot = vector_dot(v1, v2);
-    ASSERT_TRUE(isclose(dot, 32.0f));
+    vector_t v1 = {3, (double[]){1.0, 2.0, 3.0}};
+    vector_t v2 = {3, (double[]){4.0, 5.0, 6.0}};
+    double dot = vector_dot(v1, v2);
+    ASSERT_TRUE(isclose(dot, 32.0));
 }

@@ -43,13 +43,14 @@ int main()
     matrix_t targets = make_xor_targets();
     for (size_t i = 0; i < 10000; ++i)
     {
-        network_train(&network, inputs, targets, 1e-0f);
-        printf("loss: %f\n", network.loss.value);
+        network_train(&network, inputs, targets, 1e-0);
+        printf("loss: %lf\n", network.loss.value);
     }
 
     matrix_t pred = network_forward(&network, inputs);
-    printf("%f ^ %f = %f\n", MATRIX_AT(inputs, 0, 0), MATRIX_AT(inputs, 0, 1), MATRIX_AT(pred, 0, 0));
-    printf("%f ^ %f = %f\n", MATRIX_AT(inputs, 1, 0), MATRIX_AT(inputs, 1, 1), MATRIX_AT(pred, 1, 0));
-    printf("%f ^ %f = %f\n", MATRIX_AT(inputs, 2, 0), MATRIX_AT(inputs, 2, 1), MATRIX_AT(pred, 2, 0));
-    printf("%f ^ %f = %f\n", MATRIX_AT(inputs, 3, 0), MATRIX_AT(inputs, 3, 1), MATRIX_AT(pred, 3, 0));
+    for (size_t i = 0; i < pred.rows; ++i)
+    {
+        printf("%lf ^ %lf = %lf (%lf)\n", MATRIX_AT(inputs, i, 0), MATRIX_AT(inputs, i, 1), MATRIX_AT(pred, i, 0),
+               MATRIX_AT(targets, i, 0));
+    }
 }

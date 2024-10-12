@@ -6,7 +6,6 @@
 
 #include "vector.h"
 
-
 vector_t vector_alloc(size_t count)
 {
     vector_t vector;
@@ -16,24 +15,23 @@ vector_t vector_alloc(size_t count)
     return vector;
 }
 
-void vector_free(vector_t* vector)
+void vector_free(vector_t *vector)
 {
     vector->count = 0;
     free(vector->elements);
 }
 
-float vector_dot(vector_t v1, vector_t v2)
+double vector_dot(vector_t v1, vector_t v2)
 {
     assert(v1.count == v2.count);
     size_t n = v1.count;
-    float dot = 0.0f;
+    double dot = 0.0;
     for (size_t i = 0; i < n; ++i)
     {
         dot += v1.elements[i] * v2.elements[i];
     }
     return dot;
 }
-
 
 void vector_add(vector_t dst, vector_t lhs, vector_t rhs)
 {

@@ -1,17 +1,17 @@
 #include <math.h>
 #include <stdlib.h>
 
-static float uniform(float min, float max)
+static double uniform(double min, double max)
 {
-    float x = (float)rand() / RAND_MAX;
+    double x = (double)rand() / RAND_MAX;
     return min + x * (max - min);
 }
 
-static float normal(float mean, float std)
+static double normal(double mean, double std)
 {
-    float u1 = uniform(0.0f, 1.0f);
-    float u2 = uniform(0.0f, 1.0f);
+    double u1 = uniform(0.0, 1.0);
+    double u2 = uniform(0.0, 1.0);
 
-    float z0 = sqrtf(-2.0f * logf(u1)) * cosf(2.0f * M_PI * u2);
-    return z0 * std + mean;
+    double z = sqrt(-2.0 * log(u1)) * cos(2.0 * M_PI * u2);
+    return z * std + mean;
 }

@@ -18,7 +18,7 @@ matrix_t matrix_alloc(size_t rows, size_t cols)
     return matrix;
 }
 
-void matrix_free(matrix_t* matrix)
+void matrix_free(matrix_t *matrix)
 {
     matrix->rows = 0;
     matrix->cols = 0;
@@ -27,7 +27,7 @@ void matrix_free(matrix_t* matrix)
     free(matrix->elements);
 }
 
-void matrix_transpose(matrix_t* mat)
+void matrix_transpose(matrix_t *mat)
 {
     size_t temp = mat->rows;
     mat->rows = mat->cols;
@@ -37,7 +37,6 @@ void matrix_transpose(matrix_t* mat)
     mat->row_stride = mat->col_stride;
     mat->col_stride = temp;
 }
-
 
 void matrix_copy(matrix_t dst, matrix_t src)
 {
@@ -65,7 +64,7 @@ void matrix_subtract(matrix_t dst, matrix_t src)
     }
 }
 
-void matrix_scale(matrix_t matrix, float scalar)
+void matrix_scale(matrix_t matrix, double scalar)
 {
     for (size_t row = 0; row < matrix.rows; ++row)
     {
@@ -75,7 +74,6 @@ void matrix_scale(matrix_t matrix, float scalar)
         }
     }
 }
-
 
 void matrix_element_multiply(matrix_t dst, matrix_t src)
 {

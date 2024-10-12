@@ -22,7 +22,7 @@ void matrix_multiply(matrix_t output, matrix_t lhs, matrix_t rhs)
     {
         for (size_t j = 0; j < rhs.cols; ++j)
         {
-            MATRIX_AT(output, i, j) = 0.0f;
+            MATRIX_AT(output, i, j) = 0.0;
             for (size_t k = 0; k < lhs.cols; ++k)
             {
                 MATRIX_AT(output, i, j) += MATRIX_AT(lhs, i, k) * MATRIX_AT(rhs, k, j);
@@ -31,9 +31,9 @@ void matrix_multiply(matrix_t output, matrix_t lhs, matrix_t rhs)
     }
 }
 
-float sum_row(matrix_t mat, size_t row)
+double sum_row(matrix_t mat, size_t row)
 {
-    float sum = 0.0f;
+    double sum = 0.0;
     for (size_t col = 0; col < mat.cols; ++col)
     {
         sum += MATRIX_AT(mat, row, col);
@@ -52,8 +52,8 @@ void sum_rows(matrix_t mat, vector_t output)
 
 void matrix_randomize_xavier(matrix_t matrix)
 {
-    float max = sqrtf(6) / (sqrtf(matrix.rows + matrix.cols));
-    float min = -max;
+    double max = sqrt(6) / (sqrt(matrix.rows + matrix.cols));
+    double min = -max;
 
     for (size_t row = 0; row < matrix.rows; ++row)
     {
@@ -66,12 +66,12 @@ void matrix_randomize_xavier(matrix_t matrix)
 
 void matrix_randomize_he(matrix_t matrix)
 {
-    float std = sqrtf(2.0f / matrix.rows);
+    double std = sqrt(2.0 / matrix.rows);
     for (size_t row = 0; row < matrix.rows; ++row)
     {
         for (size_t col = 0; col < matrix.cols; ++col)
         {
-            MATRIX_AT(matrix, row, col) = normal(0.0f, std);
+            MATRIX_AT(matrix, row, col) = normal(0.0, std);
         }
     }
 }

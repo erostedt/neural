@@ -4,7 +4,7 @@
 loss_t loss_alloc(size_t input_count, size_t feature_count)
 {
     loss_t loss;
-    loss.value = 0.0f;
+    loss.value = 0.0;
     loss.gradient = matrix_alloc(input_count, feature_count);
     MATRIX_ZERO(loss.gradient);
     return loss;
@@ -22,7 +22,7 @@ void loss_mse(loss_t *loss, matrix_t y_true, matrix_t y_pred)
     assert(loss->gradient.rows == y_true.rows);
     assert(loss->gradient.cols == y_true.cols);
 
-    loss->value = 0.0f;
+    loss->value = 0.0;
     MATRIX_ZERO(loss->gradient);
     matrix_copy(loss->gradient, y_pred);
     matrix_subtract(loss->gradient, y_true);
@@ -35,5 +35,5 @@ void loss_mse(loss_t *loss, matrix_t y_true, matrix_t y_pred)
         }
     }
 
-    matrix_scale(loss->gradient, 2.0f / MATRIX_ELEMENT_COUNT(y_true));
+    matrix_scale(loss->gradient, 2.0 / MATRIX_ELEMENT_COUNT(y_true));
 }

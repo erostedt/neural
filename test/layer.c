@@ -24,17 +24,17 @@ matrix_t make_and()
 UTEST(layer, forward)
 {
     layer_t layer = layer_alloc(4, (layer_spec_t){2, 1, SIGMOID});
-    MATRIX_AT(layer.weights, 0, 0) = 20.0f;
-    MATRIX_AT(layer.weights, 1, 0) = 20.0f;
-    VECTOR_AT(layer.biases, 0) = -30.0f;
+    MATRIX_AT(layer.weights, 0, 0) = 20.0;
+    MATRIX_AT(layer.weights, 1, 0) = 20.0;
+    VECTOR_AT(layer.biases, 0) = -30.0;
     matrix_t and = make_and();
     layer_forward(&layer, and);
     matrix_t pred = layer.outputs;
 
-    ASSERT_LT(MATRIX_AT(pred, 0, 0), 0.5f);
-    ASSERT_LT(MATRIX_AT(pred, 1, 0), 0.5f);
-    ASSERT_LT(MATRIX_AT(pred, 2, 0), 0.5f);
-    ASSERT_GT(MATRIX_AT(pred, 3, 0), 0.5f);
+    ASSERT_LT(MATRIX_AT(pred, 0, 0), 0.5);
+    ASSERT_LT(MATRIX_AT(pred, 1, 0), 0.5);
+    ASSERT_LT(MATRIX_AT(pred, 2, 0), 0.5);
+    ASSERT_GT(MATRIX_AT(pred, 3, 0), 0.5);
 }
 
 /*

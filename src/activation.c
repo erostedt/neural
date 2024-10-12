@@ -5,9 +5,9 @@
 
 #define UNREACHABLE(message) assert(0 && message)
 
-float sigmoidf(float x)
+double sigmoid(double x)
 {
-    return 1.0f / (1.0f + expf(-x));
+    return 1.0 / (1.0 + exp(-x));
 }
 
 void activate_sigmoid(matrix_t matrix)
@@ -16,7 +16,7 @@ void activate_sigmoid(matrix_t matrix)
     {
         for (size_t col = 0; col < matrix.cols; ++col)
         {
-            MATRIX_AT(matrix, row, col) = sigmoidf(MATRIX_AT(matrix, row, col));
+            MATRIX_AT(matrix, row, col) = sigmoid(MATRIX_AT(matrix, row, col));
         }
     }
 }
@@ -27,8 +27,8 @@ void activate_sigmoid_derivative(matrix_t sigmoid_output, matrix_t upstream_grad
     {
         for (size_t col = 0; col < sigmoid_output.cols; ++col)
         {
-            float sigmoid = MATRIX_AT(sigmoid_output, row, col);
-            MATRIX_AT(upstream_gradient, row, col) *= sigmoid * (1.0f - sigmoid);
+            double sig = MATRIX_AT(sigmoid_output, row, col);
+            MATRIX_AT(upstream_gradient, row, col) *= sig * (1.0 - sig);
         }
     }
 }
@@ -39,9 +39,9 @@ void activate_relu(matrix_t matrix)
     {
         for (size_t col = 0; col < matrix.cols; ++col)
         {
-            if (MATRIX_AT(matrix, row, col) < 0.0f)
+            if (MATRIX_AT(matrix, row, col) < 0.0)
             {
-                MATRIX_AT(matrix, row, col) = 0.0f;
+                MATRIX_AT(matrix, row, col) = 0.0;
             }
         }
     }
@@ -53,9 +53,9 @@ void activate_relu_derivative(matrix_t relu_output, matrix_t upstream_gradient)
     {
         for (size_t col = 0; col < relu_output.cols; ++col)
         {
-            if (MATRIX_AT(relu_output, row, col) < 0.0f)
+            if (MATRIX_AT(relu_output, row, col) < 0.0)
             {
-                MATRIX_AT(upstream_gradient, row, col) = 0.0f;
+                MATRIX_AT(upstream_gradient, row, col) = 0.0;
             }
         }
     }

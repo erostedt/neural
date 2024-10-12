@@ -5,7 +5,7 @@
 
 typedef struct
 {
-    float value;
+    double value;
     matrix_t gradient;
 } loss_t;
 

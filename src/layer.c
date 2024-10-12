@@ -80,7 +80,7 @@ void layer_randomize(layer_t *layer)
     VECTOR_ZERO(layer->biases);
 }
 
-void layer_update(layer_t *layer, float learning_rate)
+void layer_update(layer_t *layer, double learning_rate)
 {
     for (size_t row = 0; row < layer->d_weights.rows; ++row)
     {
