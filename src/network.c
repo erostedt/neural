@@ -5,7 +5,7 @@
 #include "vector.h"
 #include <stdio.h>
 
-network_t network_alloc(size_t batch_size, size_t num_inputs, layer_spec_t *layer_specs, size_t size)
+network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *layer_specs, size_t size)
 {
     assert(size > 0);
 
@@ -15,13 +15,13 @@ network_t network_alloc(size_t batch_size, size_t num_inputs, layer_spec_t *laye
     for (size_t layer_index = 0; layer_index < size; ++layer_index)
     {
         layer_spec_t spec = layer_specs[layer_index];
-        layer_t layer = layer_alloc(batch_size, num_inputs, spec);
-        num_inputs = spec.num_neurons;
+        layer_t layer = layer_alloc(batch_size, input_count, spec);
+        input_count = spec.neuron_count;
         layer_randomize(&layer);
         network.layers[layer_index] = layer;
     }
     network.layer_count = size;
-    network.loss = loss_alloc(batch_size, layer_specs[size - 1].num_neurons);
+    network.loss = loss_alloc(batch_size, layer_specs[size - 1].neuron_count);
     return network;
 }
 

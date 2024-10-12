@@ -7,7 +7,7 @@
 
 typedef struct
 {
-    size_t num_neurons;
+    size_t neuron_count;
     activation_type_t activation;
 } layer_spec_t;
 
@@ -23,7 +23,7 @@ typedef struct
     activation_type_t activation;
 } layer_t;
 
-layer_t layer_alloc(size_t batch_size, size_t num_inputs, layer_spec_t spec);
+layer_t layer_alloc(size_t batch_size, size_t input_count, layer_spec_t spec);
 void layer_free(layer_t *layer);
 matrix_t layer_forward(layer_t *layer, matrix_t inputs);
 matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient);
