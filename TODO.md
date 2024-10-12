@@ -7,7 +7,6 @@
 
 * Make forwarding after training not requiring same batch size as training?
 
-* Make layer_spec not take input size
 * Simplify construction of NN
 
 * Clean up repo structure
