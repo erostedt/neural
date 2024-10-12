@@ -21,18 +21,6 @@ void vector_free(vector_t *vector)
     free(vector->elements);
 }
 
-double vector_dot(vector_t v1, vector_t v2)
-{
-    assert(v1.count == v2.count);
-    size_t n = v1.count;
-    double dot = 0.0;
-    for (size_t i = 0; i < n; ++i)
-    {
-        dot += v1.elements[i] * v2.elements[i];
-    }
-    return dot;
-}
-
 void vector_add(vector_t dst, vector_t lhs, vector_t rhs)
 {
     assert(lhs.count == rhs.count);
@@ -41,14 +29,5 @@ void vector_add(vector_t dst, vector_t lhs, vector_t rhs)
     for (size_t i = 0; i < n; ++i)
     {
         dst.elements[i] = lhs.elements[i] + rhs.elements[i];
-    }
-}
-
-void vector_copy(vector_t dst, vector_t src)
-{
-    assert(dst.count == src.count);
-    for (size_t i = 0; i < src.count; ++i)
-    {
-        VECTOR_AT(dst, i) = VECTOR_AT(src, i);
     }
 }

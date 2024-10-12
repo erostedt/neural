@@ -20,11 +20,3 @@ UTEST(vector, zero)
         ASSERT_EQ(VECTOR_AT(vector, i), 0);
     }
 }
-
-UTEST(vector, dot)
-{
-    vector_t v1 = {3, (double[]){1.0, 2.0, 3.0}};
-    vector_t v2 = {3, (double[]){4.0, 5.0, 6.0}};
-    double dot = vector_dot(v1, v2);
-    ASSERT_TRUE(isclose(dot, 32.0));
-}
