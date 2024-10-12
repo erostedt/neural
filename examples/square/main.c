@@ -42,9 +42,9 @@ int main()
     srand(37);
     size_t batch_size = 8;
     layer_spec_t spec[2];
-    spec[0] = (layer_spec_t){1, 5, RELU};
-    spec[1] = (layer_spec_t){5, 1, LINEAR};
-    network_t network = network_alloc(batch_size, spec, 2);
+    spec[0] = (layer_spec_t){5, RELU};
+    spec[1] = (layer_spec_t){1, LINEAR};
+    network_t network = network_alloc(batch_size, 1, spec, 2);
     network_summary(&network);
 
     matrix_t inputs = matrix_alloc(batch_size, 1);

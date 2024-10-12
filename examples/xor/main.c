@@ -9,9 +9,9 @@ int main()
 {
     srand(37);
     layer_spec_t spec[2];
-    spec[0] = (layer_spec_t){2, 4, SIGMOID};
-    spec[1] = (layer_spec_t){4, 1, SIGMOID};
-    network_t network = network_alloc(4, spec, 2);
+    spec[0] = (layer_spec_t){4, SIGMOID};
+    spec[1] = (layer_spec_t){1, SIGMOID};
+    network_t network = network_alloc(4, 2, spec, 2);
     matrix_t inputs = (matrix_t){4, 2, (double[]){0, 0, 1, 0, 0, 1, 1, 1}};
     matrix_t targets = (matrix_t){4, 1, (double[]){0, 1, 1, 0}};
     for (size_t i = 0; i < 10000; ++i)

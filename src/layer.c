@@ -7,10 +7,9 @@
 #include "operations.h"
 #include "vector.h"
 
-layer_t layer_alloc(size_t batch_size, layer_spec_t spec)
+layer_t layer_alloc(size_t batch_size, size_t num_inputs, layer_spec_t spec)
 {
     layer_t layer;
-    size_t num_inputs = spec.num_inputs;
     size_t num_neurons = spec.num_neurons;
     layer.weights = matrix_alloc(num_inputs, num_neurons);
     layer.biases = vector_alloc(num_neurons);
