@@ -3,7 +3,7 @@
 #include <memory.h>
 #include <stddef.h>
 
-#define MATRIX_AT(mat, row, col) (mat).elements[(row) * (mat).row_stride + (col) * (mat).col_stride]
+#define MATRIX_AT(mat, row, col) (mat).elements[(row) * (mat).cols + (col)]
 #define MATRIX_ELEMENT_COUNT(mat) (mat).rows *(mat).cols
 #define MATRIX_ELEMENT_BYTES(mat) MATRIX_ELEMENT_COUNT(mat) * sizeof(*(mat).elements)
 #define MATRIX_ZERO(mat) memset((mat).elements, 0, MATRIX_ELEMENT_BYTES((mat)))
@@ -12,8 +12,6 @@ typedef struct
 {
     size_t rows;
     size_t cols;
-    size_t row_stride;
-    size_t col_stride;
     double *elements;
 } matrix_t;
 
