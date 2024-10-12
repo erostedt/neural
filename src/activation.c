@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include "activation.h"
+#include "matrix.h"
 
 #define UNREACHABLE(message) assert(0 && message)
 
@@ -31,6 +32,36 @@ void activate_sigmoid_derivative(matrix_t sigmoid_output, matrix_t upstream_grad
             MATRIX_AT(upstream_gradient, row, col) *= sig * (1.0 - sig);
         }
     }
+}
+
+void activate_softmax(matrix_t matrix)
+{
+    for (size_t row = 0; row < matrix.rows; ++row)
+    {
+        double max_value = MATRIX_AT(matrix, row, 0);
+        for (size_t col = 1; col < matrix.cols; ++col)
+        {
+            if (MATRIX_AT(matrix, row, col) > max_value)
+            {
+                max_value = MATRIX_AT(matrix, row, col);
+            }
+        }
+        double sum = 0.0;
+        for (size_t col = 0; col < matrix.cols; ++col)
+        {
+            sum += exp(MATRIX_AT(matrix, row, col) - max_value);
+        }
+
+        for (size_t col = 0; col < matrix.cols; ++col)
+        {
+            MATRIX_AT(matrix, row, col) = exp(MATRIX_AT(matrix, row, col) - max_value) / sum;
+        }
+    }
+}
+
+void activate_softmax_derivative(matrix_t softmax_output, matrix_t upstream_gradient)
+{
+    matrix_subtract(upstream_gradient, softmax_output, upstream_gradient);
 }
 
 void activate_relu(matrix_t matrix)
