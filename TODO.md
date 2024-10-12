@@ -14,3 +14,4 @@
 * Remove unnecessary functions
 
 * #pragma omp parallel for?
+* Add more tests
