@@ -41,7 +41,7 @@ int main()
         RELU_LAYER(5),
         LINEAR_LAYER(1),
     };
-    network_t network = network_alloc(8, 1, layers, ARRAY_LEN(layers));
+    network_t network = network_alloc(8, 1, layers, ARRAY_LEN(layers), MSE);
 
     network_summary(&network);
 

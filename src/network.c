@@ -1,12 +1,13 @@
 #include <stdio.h>
 
 #include "layer.h"
+#include "loss.h"
 #include "matrix.h"
 #include "network.h"
 #include "stdlib.h"
 #include "vector.h"
 
-network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *layer_specs, size_t size)
+network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *layer_specs, size_t size, loss_type_t loss)
 {
     assert(size > 0);
 
@@ -23,6 +24,7 @@ network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *lay
     }
     network.layer_count = size;
     network.loss = loss_alloc(batch_size, layer_specs[size - 1].neuron_count);
+    network.loss_type = loss;
     return network;
 }
 
@@ -66,7 +68,7 @@ void network_update(network_t *network, double learning_rate)
 void network_train(network_t *network, matrix_t inputs, matrix_t targets, double learning_rate)
 {
     matrix_t pred = network_forward(network, inputs);
-    loss_mse(&network->loss, targets, pred);
+    loss_calculate(&network->loss, network->loss_type, targets, pred);
     network_backward(network, network->loss.gradient);
     network_update(network, learning_rate);
 }
