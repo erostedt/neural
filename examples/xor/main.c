@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "loss.h"
-#include "matrix.h"
-#include "network.h"
+#include <neural.h>
 
 int main()
 {

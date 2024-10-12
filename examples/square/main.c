@@ -1,12 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "activation.h"
-#include "layer.h"
-#include "loss.h"
-#include "matrix.h"
-#include "network.h"
-#include "random.h"
+#include <neural.h>
 
 void set_features(matrix_t features, double min, double max)
 {

@@ -1,9 +1,10 @@
-#include "network.h"
+#include <stdio.h>
+
 #include "layer.h"
 #include "matrix.h"
+#include "network.h"
 #include "stdlib.h"
 #include "vector.h"
-#include <stdio.h>
 
 network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *layer_specs, size_t size)
 {
