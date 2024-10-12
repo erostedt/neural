@@ -28,7 +28,7 @@ void loss_mse(loss_t *loss, matrix_t y_true, matrix_t y_pred)
     loss->value = 0.0;
     MATRIX_ZERO(loss->gradient);
     matrix_copy(loss->gradient, y_pred);
-    matrix_subtract(loss->gradient, y_true);
+    matrix_subtract(loss->gradient, loss->gradient, y_true);
 
     for (size_t row = 0; row < loss->gradient.rows; ++row)
     {
@@ -57,7 +57,7 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
     loss->value = 0.0;
     MATRIX_ZERO(loss->gradient);
     matrix_copy(loss->gradient, y_pred);
-    matrix_subtract(loss->gradient, y_true);
+    matrix_subtract(loss->gradient, loss->gradient, y_true);
 
     double min = 1e-15;
     double max = 1.0 - min;

@@ -36,16 +36,15 @@ void matrix_copy(matrix_t dst, matrix_t src)
     }
 }
 
-void matrix_subtract(matrix_t dst, matrix_t src)
+void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs)
 {
-    assert(dst.rows == src.rows);
-    assert(dst.cols == src.cols);
-    for (size_t row = 0; row < src.rows; ++row)
+    assert(lhs.rows == rhs.rows);
+    assert(lhs.cols == rhs.cols);
+    assert(lhs.rows == dst.rows);
+    assert(lhs.cols == dst.cols);
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(lhs); ++i)
     {
-        for (size_t col = 0; col < src.cols; ++col)
-        {
-            MATRIX_AT(dst, row, col) -= MATRIX_AT(src, row, col);
-        }
+        MATRIX_AT_INDEX(dst, i) = MATRIX_AT_INDEX(lhs, i) - MATRIX_AT_INDEX(rhs, i);
     }
 }
 
