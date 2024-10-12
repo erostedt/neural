@@ -78,15 +78,12 @@ void layer_randomize(layer_t *layer)
 
 void layer_update(layer_t *layer, double learning_rate)
 {
-    for (size_t row = 0; row < layer->d_weights.rows; ++row)
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(layer->d_weights); ++i)
     {
-        for (size_t col = 0; col < layer->d_weights.cols; ++col)
-        {
-            MATRIX_AT(layer->weights, row, col) -= learning_rate * MATRIX_AT(layer->d_weights, row, col);
-        }
+        MATRIX_AT_INDEX(layer->weights, i) -= learning_rate * MATRIX_AT_INDEX(layer->d_weights, i);
     }
 
-    for (size_t i = 0; i < layer->d_biases.count; ++i)
+    for (size_t i = 0; i < VECTOR_ELEMENT_COUNT(layer->d_biases); ++i)
     {
         VECTOR_AT(layer->biases, i) -= learning_rate * VECTOR_AT(layer->d_biases, i);
     }

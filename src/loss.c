@@ -20,22 +20,14 @@ void loss_free(loss_t *loss)
 
 void loss_mse(loss_t *loss, matrix_t y_true, matrix_t y_pred)
 {
-    assert(y_pred.rows == y_true.rows);
-    assert(y_pred.cols == y_true.cols);
-    assert(loss->gradient.rows == y_true.rows);
-    assert(loss->gradient.cols == y_true.cols);
-
     loss->value = 0.0;
     MATRIX_ZERO(loss->gradient);
     matrix_copy(loss->gradient, y_pred);
     matrix_subtract(loss->gradient, loss->gradient, y_true);
 
-    for (size_t row = 0; row < loss->gradient.rows; ++row)
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(loss->gradient); ++i)
     {
-        for (size_t col = 0; col < loss->gradient.cols; ++col)
-        {
-            loss->value += MATRIX_AT(loss->gradient, row, col) * MATRIX_AT(loss->gradient, row, col);
-        }
+        loss->value += MATRIX_AT_INDEX(loss->gradient, i) * MATRIX_AT_INDEX(loss->gradient, i);
     }
 
     matrix_scale(loss->gradient, 2.0 / MATRIX_ELEMENT_COUNT(y_true));
@@ -49,11 +41,6 @@ double clamp(double value, double min, double max)
 
 void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
 {
-    assert(y_pred.rows == y_true.rows);
-    assert(y_pred.cols == y_true.cols);
-    assert(loss->gradient.rows == y_true.rows);
-    assert(loss->gradient.cols == y_true.cols);
-
     loss->value = 0.0;
     MATRIX_ZERO(loss->gradient);
     matrix_copy(loss->gradient, y_pred);
@@ -73,6 +60,11 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
 
 void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix_t y_pred)
 {
+    assert(y_pred.rows == y_true.rows);
+    assert(y_pred.cols == y_true.cols);
+    assert(loss->gradient.rows == y_true.rows);
+    assert(loss->gradient.cols == y_true.cols);
+
     switch (loss_type)
     {
     case MSE:

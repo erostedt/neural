@@ -13,24 +13,18 @@ double sigmoid(double x)
 
 void activate_sigmoid(matrix_t matrix)
 {
-    for (size_t row = 0; row < matrix.rows; ++row)
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(matrix); ++i)
     {
-        for (size_t col = 0; col < matrix.cols; ++col)
-        {
-            MATRIX_AT(matrix, row, col) = sigmoid(MATRIX_AT(matrix, row, col));
-        }
+        MATRIX_AT_INDEX(matrix, i) = sigmoid(MATRIX_AT_INDEX(matrix, i));
     }
 }
 
 void activate_sigmoid_gradient(matrix_t sigmoid_output, matrix_t upstream_gradient)
 {
-    for (size_t row = 0; row < sigmoid_output.rows; ++row)
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(sigmoid_output); ++i)
     {
-        for (size_t col = 0; col < sigmoid_output.cols; ++col)
-        {
-            double sig = MATRIX_AT(sigmoid_output, row, col);
-            MATRIX_AT(upstream_gradient, row, col) *= sig * (1.0 - sig);
-        }
+        double sig = MATRIX_AT_INDEX(sigmoid_output, i);
+        MATRIX_AT_INDEX(upstream_gradient, i) *= sig * (1.0 - sig);
     }
 }
 
@@ -66,52 +60,40 @@ void activate_softmax_gradient(matrix_t softmax_output, matrix_t upstream_gradie
 
 void activate_relu(matrix_t matrix)
 {
-    for (size_t row = 0; row < matrix.rows; ++row)
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(matrix); ++i)
     {
-        for (size_t col = 0; col < matrix.cols; ++col)
+        if (MATRIX_AT_INDEX(matrix, i) < 0.0)
         {
-            if (MATRIX_AT(matrix, row, col) < 0.0)
-            {
-                MATRIX_AT(matrix, row, col) = 0.0;
-            }
+            MATRIX_AT_INDEX(matrix, i) = 0.0;
         }
     }
 }
 
 void activate_relu_gradient(matrix_t relu_output, matrix_t upstream_gradient)
 {
-    for (size_t row = 0; row < relu_output.rows; ++row)
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(relu_output); ++i)
     {
-        for (size_t col = 0; col < relu_output.cols; ++col)
+        if (MATRIX_AT_INDEX(relu_output, i) < 0.0)
         {
-            if (MATRIX_AT(relu_output, row, col) < 0.0)
-            {
-                MATRIX_AT(upstream_gradient, row, col) = 0.0;
-            }
+            MATRIX_AT_INDEX(upstream_gradient, i) = 0.0;
         }
     }
 }
 
 void activate_tanh(matrix_t matrix)
 {
-    for (size_t row = 0; row < matrix.rows; ++row)
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(matrix); ++i)
     {
-        for (size_t col = 0; col < matrix.cols; ++col)
-        {
-            MATRIX_AT(matrix, row, col) = tanh(MATRIX_AT(matrix, row, col));
-        }
+        MATRIX_AT_INDEX(matrix, i) = tanh(MATRIX_AT_INDEX(matrix, i));
     }
 }
 
 void activate_tanh_gradient(matrix_t tanh_output, matrix_t upstream_gradient)
 {
-    for (size_t row = 0; row < tanh_output.rows; ++row)
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(tanh_output); ++i)
     {
-        for (size_t col = 0; col < tanh_output.cols; ++col)
-        {
-            double tanh_ = MATRIX_AT(tanh_output, row, col);
-            MATRIX_AT(upstream_gradient, row, col) *= 1.0 - (tanh_ * tanh_);
-        }
+        double tanh_ = MATRIX_AT_INDEX(tanh_output, i);
+        MATRIX_AT_INDEX(upstream_gradient, i) *= 1.0 - (tanh_ * tanh_);
     }
 }
 
