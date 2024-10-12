@@ -8,6 +8,7 @@ typedef enum
     SIGMOID,
     LINEAR,
     TANH,
+    SOFTMAX,
 } activation_type_t;
 
 void activate(matrix_t matrix, activation_type_t activation_type);
