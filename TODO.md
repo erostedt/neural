@@ -1,7 +1,6 @@
 * Use adam optimizer
 
 * Add activation SOFTMAX
-* Add activation TANH
 
 * Add binary crossentropy loss
 * Add catagorical crossentropy loss

@@ -7,6 +7,7 @@ typedef enum
     RELU,
     SIGMOID,
     LINEAR,
+    TANH,
 } activation_type_t;
 
 void activate(matrix_t matrix, activation_type_t activation_type);

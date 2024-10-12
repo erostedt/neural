@@ -71,6 +71,7 @@ void layer_randomize(layer_t *layer)
     {
     case SIGMOID:
     case LINEAR:
+    case TANH:
         matrix_randomize_xavier(layer->weights);
         break;
     case RELU:
