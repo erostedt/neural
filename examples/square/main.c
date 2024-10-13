@@ -1,4 +1,5 @@
 #include "layer.h"
+#include "loss.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -36,12 +37,14 @@ void linspace(matrix_t features, double min, double max)
 int main()
 {
     srand(37);
-    size_t batch_size = 8;
+    size_t batch_size = 4;
     layer_spec_t layers[] = {
+        RELU_LAYER(5),
+        RELU_LAYER(5),
         RELU_LAYER(5),
         LINEAR_LAYER(1),
     };
-    network_t network = network_alloc(8, 1, layers, ARRAY_LEN(layers), MSE);
+    network_t network = network_alloc(batch_size, 1, layers, ARRAY_LEN(layers), MSE);
 
     network_summary(&network);
 
@@ -50,11 +53,12 @@ int main()
     double min = -1.0;
     double max = 1.0;
 
+    double learning_rate = 1e-3;
     for (size_t i = 0; i < 10000; ++i)
     {
         set_features(inputs, min, max);
         set_targets(inputs, targets);
-        network_train(&network, inputs, targets, 1e-3);
+        network_train(&network, inputs, targets, learning_rate, i);
         printf("loss: %lf\n", network.loss.value);
     }
     linspace(inputs, min, max);

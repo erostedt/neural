@@ -1,3 +1,4 @@
+#include "layer.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,9 +13,11 @@ int main()
     network_t network = network_alloc(4, 2, layers, ARRAY_LEN(layers), MSE);
     matrix_t inputs = (matrix_t){4, 2, (double[]){0, 0, 1, 0, 0, 1, 1, 1}};
     matrix_t targets = (matrix_t){4, 1, (double[]){0, 0, 0, 1}};
+
+    double learning_rate = 1e-3;
     for (size_t i = 0; i < 10000; ++i)
     {
-        network_train(&network, inputs, targets, 1e-0);
+        network_train(&network, inputs, targets, learning_rate, i);
         printf("loss: %lf\n", network.loss.value);
     }
 

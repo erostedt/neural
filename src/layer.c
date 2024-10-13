@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <math.h>
 #include <stddef.h>
 
 #include "activation.h"
@@ -23,6 +24,17 @@ layer_t layer_alloc(size_t batch_size, size_t input_count, layer_spec_t spec)
 
     layer.d_inputs = matrix_alloc(batch_size, input_count);
     layer.activation = spec.activation;
+
+    layer.state.m_weights = matrix_alloc(input_count, neuron_count);
+    layer.state.v_weights = matrix_alloc(input_count, neuron_count);
+    layer.state.m_biases = vector_alloc(neuron_count);
+    layer.state.v_biases = vector_alloc(neuron_count);
+
+    MATRIX_ZERO(layer.state.m_weights);
+    MATRIX_ZERO(layer.state.v_weights);
+    VECTOR_ZERO(layer.state.m_biases);
+    VECTOR_ZERO(layer.state.v_biases);
+
     return layer;
 }
 
@@ -34,6 +46,11 @@ void layer_free(layer_t *layer)
     vector_free(&layer->d_biases);
     matrix_free(&layer->outputs);
     matrix_free(&layer->d_outputs);
+
+    matrix_free(&layer->state.m_weights);
+    matrix_free(&layer->state.v_weights);
+    vector_free(&layer->state.m_biases);
+    vector_free(&layer->state.v_biases);
 }
 
 matrix_t layer_forward(layer_t *layer, matrix_t inputs)
@@ -83,15 +100,52 @@ void layer_randomize(layer_t *layer)
     VECTOR_ZERO(layer->biases);
 }
 
-void layer_update(layer_t *layer, double learning_rate)
+void layer_update(layer_t *layer, double learning_rate, size_t epoch)
 {
+    adam_parameters_t adam = (adam_parameters_t){0.9, 0.999, 1e-8};
+    adam_state_t *state = &layer->state;
+    assert(matrix_same_shape(state->m_weights, state->v_weights));
+    assert(matrix_same_shapes(state->m_weights, layer->weights, layer->d_weights));
+
+    assert(vector_same_shape(state->m_biases, state->v_biases));
+    assert(vector_same_shapes(state->m_biases, layer->biases, layer->d_biases));
+
+    double m_hat_scale = 1.0 / (1.0 - pow(adam.beta1, epoch));
+    double v_hat_scale = 1.0 / (1.0 - pow(adam.beta2, epoch));
+
     for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(layer->d_weights); ++i)
     {
-        MATRIX_AT_INDEX(layer->weights, i) -= learning_rate * MATRIX_AT_INDEX(layer->d_weights, i);
+        double g = MATRIX_AT_INDEX(layer->d_weights, i);
+        double m = MATRIX_AT_INDEX(state->m_weights, i);
+        double v = MATRIX_AT_INDEX(state->v_weights, i);
+
+        m = adam.beta1 * m + (1.0 - adam.beta1) * g;
+        v = adam.beta2 * v + (1.0 - adam.beta2) * (g * g);
+
+        double m_hat = m * m_hat_scale;
+        double v_hat = v * v_hat_scale;
+
+        MATRIX_AT_INDEX(layer->weights, i) -= learning_rate * m_hat / (sqrt(v_hat) + adam.epsilon);
+
+        MATRIX_AT_INDEX(state->m_weights, i) = m;
+        MATRIX_AT_INDEX(state->v_weights, i) = v;
     }
 
     for (size_t i = 0; i < VECTOR_ELEMENT_COUNT(layer->d_biases); ++i)
     {
-        VECTOR_AT(layer->biases, i) -= learning_rate * VECTOR_AT(layer->d_biases, i);
+        double g = VECTOR_AT(layer->d_biases, i);
+        double m = VECTOR_AT(state->m_biases, i);
+        double v = VECTOR_AT(state->v_biases, i);
+
+        m = adam.beta1 * m + (1.0 - adam.beta1) * g;
+        v = adam.beta2 * v + (1.0 - adam.beta2) * (g * g);
+
+        double m_hat = m * m_hat_scale;
+        double v_hat = v * v_hat_scale;
+
+        VECTOR_AT(layer->biases, i) -= learning_rate * m_hat / (sqrt(v_hat) + adam.epsilon);
+
+        VECTOR_AT(state->m_biases, i) = m;
+        VECTOR_AT(state->v_biases, i) = v;
     }
 }

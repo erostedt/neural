@@ -31,3 +31,13 @@ void vector_add(vector_t dst, vector_t lhs, vector_t rhs)
         dst.elements[i] = lhs.elements[i] + rhs.elements[i];
     }
 }
+
+bool vector_same_shape(vector_t vec1, vector_t vec2)
+{
+    return vec1.count == vec2.count;
+}
+
+bool vector_same_shapes(vector_t vec1, vector_t vec2, vector_t vec3)
+{
+    return vector_same_shape(vec1, vec2) && vector_same_shape(vec1, vec3);
+}
