@@ -25,17 +25,13 @@ void matrix_free(matrix_t *matrix)
 
 void matrix_copy(matrix_t dst, matrix_t src)
 {
-    assert(dst.rows == src.rows);
-    assert(dst.cols == src.cols);
+    assert(matrix_same_shape(src, dst));
     memcpy(dst.elements, src.elements, MATRIX_ELEMENT_BYTES(src));
 }
 
 void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs)
 {
-    assert(lhs.rows == rhs.rows);
-    assert(lhs.cols == rhs.cols);
-    assert(lhs.rows == dst.rows);
-    assert(lhs.cols == dst.cols);
+    assert(matrix_same_shapes(lhs, rhs, dst));
     for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(lhs); ++i)
     {
         MATRIX_AT_INDEX(dst, i) = MATRIX_AT_INDEX(lhs, i) - MATRIX_AT_INDEX(rhs, i);
@@ -51,4 +47,14 @@ void matrix_scale(matrix_t matrix, double scalar)
             MATRIX_AT(matrix, row, col) *= scalar;
         }
     }
+}
+
+bool matrix_same_shape(matrix_t mat1, matrix_t mat2)
+{
+    return (mat1.rows == mat2.rows) && (mat1.cols == mat2.cols);
+}
+
+bool matrix_same_shapes(matrix_t mat1, matrix_t mat2, matrix_t mat3)
+{
+    return matrix_same_shape(mat1, mat2) && matrix_same_shape(mat1, mat3);
 }

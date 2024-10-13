@@ -35,13 +35,18 @@ typedef struct
 typedef struct
 {
     matrix_t inputs;
-    matrix_t weights;
-    vector_t biases;
-    matrix_t outputs;
     matrix_t d_inputs;
+
+    matrix_t weights;
     matrix_t d_weights;
+
+    vector_t biases;
     vector_t d_biases;
+
+    matrix_t outputs;
     matrix_t d_outputs;
+
+    matrix_t activations;
     activation_type_t activation;
 } layer_t;
 

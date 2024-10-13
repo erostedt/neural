@@ -16,8 +16,10 @@ layer_t layer_alloc(size_t batch_size, size_t input_count, layer_spec_t spec)
     layer.d_weights = matrix_alloc(input_count, neuron_count);
     layer.biases = vector_alloc(neuron_count);
     layer.d_biases = vector_alloc(neuron_count);
+
     layer.outputs = matrix_alloc(batch_size, neuron_count);
     layer.d_outputs = matrix_alloc(batch_size, neuron_count);
+    layer.activations = matrix_alloc(batch_size, neuron_count);
 
     layer.d_inputs = matrix_alloc(batch_size, input_count);
     layer.activation = spec.activation;
@@ -44,8 +46,8 @@ matrix_t layer_forward(layer_t *layer, matrix_t inputs)
         vector_t output = row_vector(layer->outputs, row);
         vector_add(output, output, layer->biases);
     }
-    activate(layer->outputs, layer->activation);
-    return layer->outputs;
+    activate(layer->activations, layer->outputs, layer->activation);
+    return layer->activations;
 }
 
 matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
@@ -55,7 +57,7 @@ matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
     // d_weights = X^T dZ
     // d_biases = sum_i dZ_i
 
-    activate_gradient(layer->d_outputs, layer->outputs, upstream_gradient, layer->activation);
+    activate_gradient(layer->d_outputs, layer->activations, upstream_gradient, layer->activation);
 
     matrix_multiply_ABT(layer->d_inputs, layer->d_outputs, layer->weights);
     matrix_multiply_ATB(layer->d_weights, layer->inputs, layer->d_outputs);

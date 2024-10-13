@@ -62,7 +62,7 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
 
 void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix_t y_pred)
 {
-    assert(y_pred.rows == y_true.rows);
+    assert(matrix_same_shapes(y_pred, y_true, loss->gradient));
     assert(y_pred.cols == y_true.cols);
     assert(loss->gradient.rows == y_true.rows);
     assert(loss->gradient.cols == y_true.cols);
