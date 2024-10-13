@@ -54,6 +54,7 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
         double label = MATRIX_AT_INDEX(y_true, i);
         double pred = clamp(MATRIX_AT_INDEX(y_pred, i), min, max);
         loss->value -= label * log(pred) + (1.0 - label) * log(1.0 - pred);
+        MATRIX_AT_INDEX(loss->gradient, i) /= (MATRIX_AT_INDEX(y_pred, i) * (1.0 - MATRIX_AT_INDEX(y_pred, i)));
     }
 
     matrix_scale(loss->gradient, 1.0 / MATRIX_ELEMENT_COUNT(y_true));
@@ -63,9 +64,6 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
 void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix_t y_pred)
 {
     assert(matrix_same_shapes(y_pred, y_true, loss->gradient));
-    assert(y_pred.cols == y_true.cols);
-    assert(loss->gradient.rows == y_true.rows);
-    assert(loss->gradient.cols == y_true.cols);
 
     switch (loss_type)
     {
