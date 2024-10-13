@@ -1,8 +1,3 @@
-* Use adam optimizer
-
-* Add activation SOFTMAX
-
-* Add binary crossentropy loss
 * Add catagorical crossentropy loss
 
 * Make forwarding after training not requiring same batch size as training?
@@ -14,3 +9,4 @@
 
 * #pragma omp parallel for?
 * Add more tests
+* Use crossentropy/sigmoid/softmax simplification trick at last layer?
