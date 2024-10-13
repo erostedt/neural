@@ -31,6 +31,7 @@ void loss_mse(loss_t *loss, matrix_t y_true, matrix_t y_pred)
     }
 
     matrix_scale(loss->gradient, 2.0 / MATRIX_ELEMENT_COUNT(y_true));
+    loss->value /= y_pred.rows;
 }
 
 double clamp(double value, double min, double max)
@@ -56,6 +57,7 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
     }
 
     matrix_scale(loss->gradient, 1.0 / MATRIX_ELEMENT_COUNT(y_true));
+    loss->value /= y_pred.rows;
 }
 
 void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix_t y_pred)
