@@ -57,8 +57,14 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
         MATRIX_AT_INDEX(loss->gradient, i) /= (MATRIX_AT_INDEX(y_pred, i) * (1.0 - MATRIX_AT_INDEX(y_pred, i)));
     }
 
+    // (TODO) Is below right?
     matrix_scale(loss->gradient, 1.0 / MATRIX_ELEMENT_COUNT(y_true));
     loss->value /= y_pred.rows;
+}
+
+void loss_categorical_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
+{
+    assert(0);
 }
 
 void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix_t y_pred)
