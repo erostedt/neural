@@ -1,5 +1,3 @@
-* Add catagorical crossentropy loss
-
 * Make forwarding after training not requiring same batch size as training?
 
 * Simplify construction of NN
