@@ -55,6 +55,7 @@ void activate_softmax(matrix_t dst, matrix_t outputs)
 
 void activate_softmax_gradient(matrix_t dst, matrix_t activations, matrix_t upstream_gradient)
 {
+    MATRIX_ZERO(dst);
     for (size_t row = 0; row < activations.rows; ++row)
     {
         for (size_t col = 0; col < activations.cols; ++col)
@@ -74,7 +75,7 @@ void activate_softmax_gradient(matrix_t dst, matrix_t activations, matrix_t upst
                 }
             }
 
-            MATRIX_AT(dst, row, col) *= grad_sum * MATRIX_AT(upstream_gradient, row, col);
+            MATRIX_AT(dst, row, col) = grad_sum;
         }
     }
 }
@@ -133,6 +134,9 @@ void activate(matrix_t dst, matrix_t outputs, activation_type_t activation_type)
     case LINEAR:
         matrix_copy(dst, outputs);
         return;
+    case SOFTMAX:
+        activate_softmax(dst, outputs);
+        return;
     default:
         UNREACHABLE("Unexpected activation");
     }
@@ -155,6 +159,9 @@ void activate_gradient(matrix_t dst, matrix_t activations, matrix_t upstream_gra
         return;
     case LINEAR:
         matrix_copy(dst, upstream_gradient);
+        return;
+    case SOFTMAX:
+        activate_softmax_gradient(dst, activations, upstream_gradient);
         return;
     default:
         UNREACHABLE("Unexpected activation");

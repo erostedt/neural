@@ -30,7 +30,7 @@ void loss_mse(loss_t *loss, matrix_t y_true, matrix_t y_pred)
         loss->value += MATRIX_AT_INDEX(loss->gradient, i) * MATRIX_AT_INDEX(loss->gradient, i);
     }
 
-    matrix_scale(loss->gradient, 2.0 / MATRIX_ELEMENT_COUNT(y_true));
+    matrix_scale(loss->gradient, 2.0 / y_true.rows);
     loss->value /= y_pred.rows;
 }
 
@@ -57,14 +57,33 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
         MATRIX_AT_INDEX(loss->gradient, i) /= (MATRIX_AT_INDEX(y_pred, i) * (1.0 - MATRIX_AT_INDEX(y_pred, i)));
     }
 
-    // (TODO) Is below right?
-    matrix_scale(loss->gradient, 1.0 / MATRIX_ELEMENT_COUNT(y_true));
+    matrix_scale(loss->gradient, 1.0 / y_true.rows);
     loss->value /= y_pred.rows;
 }
 
 void loss_categorical_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
 {
-    assert(0);
+    loss->value = 0.0;
+    MATRIX_ZERO(loss->gradient);
+
+    double min = 1e-15;
+    double max = 1.0 - min;
+    for (size_t row = 0; row < loss->gradient.rows; ++row)
+    {
+        for (size_t col = 0; col < loss->gradient.cols; ++col)
+        {
+            double label = MATRIX_AT(y_true, row, col);
+            double pred = clamp(MATRIX_AT(y_pred, row, col), min, max);
+            if (label == 1.0)
+            {
+                loss->value -= log(pred);
+                MATRIX_AT(loss->gradient, row, col) = -1.0 / pred;
+            }
+        }
+    }
+
+    matrix_scale(loss->gradient, 1.0 / y_true.rows);
+    loss->value /= y_pred.rows;
 }
 
 void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix_t y_pred)
@@ -79,6 +98,10 @@ void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix
     case BINARY_CROSS_ENTROPY:
         loss_binary_cross_entropy(loss, y_true, y_pred);
         return;
+    case CATEGORICAL_CROSS_ENTROPY:
+        loss_categorical_cross_entropy(loss, y_true, y_pred);
+        return;
+    default:
         assert(0);
     }
 }

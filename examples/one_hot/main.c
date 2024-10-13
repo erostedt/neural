@@ -1,5 +1,3 @@
-#include "layer.h"
-#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -32,9 +30,9 @@ int main()
         RELU_LAYER(4),
         RELU_LAYER(4),
         RELU_LAYER(4),
-        LINEAR_LAYER(output_count),
+        SOFTMAX_LAYER(output_count),
     };
-    network_t network = network_alloc(batch_size, input_count, layers, ARRAY_LEN(layers), MSE);
+    network_t network = network_alloc(batch_size, input_count, layers, ARRAY_LEN(layers), CATEGORICAL_CROSS_ENTROPY);
     network_summary(&network);
     matrix_t inputs = matrix_alloc(batch_size, input_count);
     matrix_t targets = matrix_alloc(batch_size, output_count);
@@ -53,7 +51,7 @@ int main()
     {
         for (size_t col = 0; col < pred.cols; ++col)
         {
-            printf("%lf, ", MATRIX_AT(pred, row, col));
+            printf("%.2lf (%.2lf), ", MATRIX_AT(pred, row, col), MATRIX_AT(targets, row, col));
         }
         printf("\n");
     }

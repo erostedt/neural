@@ -7,6 +7,7 @@ typedef enum
 {
     MSE,
     BINARY_CROSS_ENTROPY,
+    CATEGORICAL_CROSS_ENTROPY
 } loss_type_t;
 
 typedef struct
