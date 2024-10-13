@@ -26,6 +26,12 @@
         (neuron_count), SIGMOID                                                                                        \
     }
 
+#define SOFTMAX_LAYER(neuron_count)                                                                                    \
+    (layer_spec_t)                                                                                                     \
+    {                                                                                                                  \
+        (neuron_count), SOFTMAX                                                                                        \
+    }
+
 typedef struct
 {
     size_t neuron_count;
