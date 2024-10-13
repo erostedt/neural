@@ -13,7 +13,6 @@ typedef struct
 {
     size_t count;
     double *elements;
-
 } vector_t;
 
 vector_t vector_alloc(size_t count);
