@@ -41,6 +41,7 @@ typedef struct
     matrix_t d_inputs;
     matrix_t d_weights;
     vector_t d_biases;
+    matrix_t d_outputs;
     activation_type_t activation;
 } layer_t;
 
