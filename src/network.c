@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "check.h"
 #include "layer.h"
 #include "loss.h"
 #include "matrix.h"
@@ -9,7 +10,7 @@
 
 network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *layer_specs, size_t size, loss_type_t loss)
 {
-    assert(size > 0);
+    ASSERT(size > 0);
 
     network_t network;
     network.layers = malloc(size * sizeof(layer_t));

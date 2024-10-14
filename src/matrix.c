@@ -1,9 +1,9 @@
-#include <assert.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "check.h"
 #include "matrix.h"
 
 matrix_t matrix_alloc(size_t rows, size_t cols)
@@ -12,7 +12,7 @@ matrix_t matrix_alloc(size_t rows, size_t cols)
     matrix.rows = rows;
     matrix.cols = cols;
     matrix.elements = malloc(MATRIX_ELEMENT_BYTES(matrix));
-    assert(matrix.elements != NULL);
+    ASSERT(matrix.elements != NULL);
     return matrix;
 }
 
@@ -25,13 +25,13 @@ void matrix_free(matrix_t *matrix)
 
 void matrix_copy(matrix_t dst, matrix_t src)
 {
-    assert(matrix_same_shape(src, dst));
+    ASSERT(matrix_same_shape(src, dst));
     memcpy(dst.elements, src.elements, MATRIX_ELEMENT_BYTES(src));
 }
 
 void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs)
 {
-    assert(matrix_same_shapes(lhs, rhs, dst));
+    ASSERT(matrix_same_shapes(lhs, rhs, dst));
     for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(lhs); ++i)
     {
         MATRIX_AT_INDEX(dst, i) = MATRIX_AT_INDEX(lhs, i) - MATRIX_AT_INDEX(rhs, i);

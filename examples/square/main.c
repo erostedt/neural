@@ -1,5 +1,3 @@
-#include "layer.h"
-#include "loss.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,7 +5,7 @@
 
 void set_features(matrix_t features, double min, double max)
 {
-    assert(features.cols == 1);
+    ASSERT(features.cols == 1);
     for (size_t i = 0; i < features.rows; ++i)
     {
         MATRIX_AT(features, i, 0) = uniform(min, max);
@@ -16,9 +14,9 @@ void set_features(matrix_t features, double min, double max)
 
 void set_targets(matrix_t features, matrix_t targets)
 {
-    assert(features.cols == 1);
-    assert(targets.cols == 1);
-    assert(targets.cols == features.cols);
+    ASSERT(features.cols == 1);
+    ASSERT(targets.cols == 1);
+    ASSERT(targets.cols == features.cols);
     for (size_t i = 0; i < features.rows; ++i)
     {
         MATRIX_AT(targets, i, 0) = MATRIX_AT(features, i, 0) * MATRIX_AT(features, i, 0);
@@ -27,7 +25,7 @@ void set_targets(matrix_t features, matrix_t targets)
 
 void linspace(matrix_t features, double min, double max)
 {
-    assert(features.cols == 1);
+    ASSERT(features.cols == 1);
     for (size_t i = 0; i < features.rows; ++i)
     {
         MATRIX_AT(features, i, 0) = min + (max - min) * i / features.rows;

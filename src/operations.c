@@ -1,9 +1,8 @@
-#include <assert.h>
 #include <stddef.h>
 
+#include "check.h"
 #include "matrix.h"
 #include "operations.h"
-#include "random.h"
 #include "vector.h"
 
 vector_t row_vector(matrix_t mat, size_t row)
@@ -13,9 +12,9 @@ vector_t row_vector(matrix_t mat, size_t row)
 
 void matrix_multiply(matrix_t output, matrix_t lhs, matrix_t rhs)
 {
-    assert(lhs.cols == rhs.rows);
-    assert(lhs.rows == output.rows);
-    assert(rhs.cols == output.cols);
+    ASSERT(lhs.cols == rhs.rows);
+    ASSERT(lhs.rows == output.rows);
+    ASSERT(rhs.cols == output.cols);
 
     for (size_t i = 0; i < lhs.rows; ++i)
     {
@@ -32,9 +31,9 @@ void matrix_multiply(matrix_t output, matrix_t lhs, matrix_t rhs)
 
 void matrix_multiply_ATB(matrix_t output, matrix_t lhs, matrix_t rhs)
 {
-    assert(lhs.rows == rhs.rows);
-    assert(output.rows == lhs.cols);
-    assert(output.cols == rhs.cols);
+    ASSERT(lhs.rows == rhs.rows);
+    ASSERT(output.rows == lhs.cols);
+    ASSERT(output.cols == rhs.cols);
 
     for (size_t i = 0; i < lhs.cols; ++i)
     {
@@ -50,9 +49,9 @@ void matrix_multiply_ATB(matrix_t output, matrix_t lhs, matrix_t rhs)
 }
 void matrix_multiply_ABT(matrix_t output, matrix_t lhs, matrix_t rhs)
 {
-    assert(lhs.cols == rhs.cols);
-    assert(output.rows == lhs.rows);
-    assert(output.cols == rhs.rows);
+    ASSERT(lhs.cols == rhs.cols);
+    ASSERT(output.rows == lhs.rows);
+    ASSERT(output.cols == rhs.rows);
 
     for (size_t i = 0; i < lhs.rows; ++i)
     {
@@ -88,13 +87,13 @@ void sum_rows(vector_t output, matrix_t mat)
 
 void one_hot_matrix(matrix_t dst, vector_t classes, size_t class_count)
 {
-    assert(dst.rows == classes.count);
-    assert(dst.cols == class_count);
+    ASSERT(dst.rows == classes.count);
+    ASSERT(dst.cols == class_count);
     MATRIX_ZERO(dst);
     for (size_t i = 0; i < VECTOR_ELEMENT_COUNT(classes); ++i)
     {
         size_t class = VECTOR_AT(classes, i);
-        assert(class < class_count);
+        ASSERT(class < class_count);
         MATRIX_AT(dst, i, class) = 1.0;
     }
 }

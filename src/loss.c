@@ -1,6 +1,6 @@
-#include <assert.h>
 #include <math.h>
 
+#include "check.h"
 #include "loss.h"
 #include "matrix.h"
 
@@ -36,7 +36,7 @@ void loss_mse(loss_t *loss, matrix_t y_true, matrix_t y_pred)
 
 double clamp(double value, double min, double max)
 {
-    assert(min <= max);
+    ASSERT(min <= max);
     return fmax(fmin(value, max), min);
 }
 
@@ -88,7 +88,7 @@ void loss_categorical_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pr
 
 void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix_t y_pred)
 {
-    assert(matrix_same_shapes(y_pred, y_true, loss->gradient));
+    ASSERT(matrix_same_shapes(y_pred, y_true, loss->gradient));
 
     switch (loss_type)
     {
@@ -102,6 +102,6 @@ void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix
         loss_categorical_cross_entropy(loss, y_true, y_pred);
         return;
     default:
-        assert(0);
+        UNREACHABLE("Unexpected loss");
     }
 }

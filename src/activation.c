@@ -1,10 +1,8 @@
-#include <assert.h>
 #include <math.h>
 
 #include "activation.h"
+#include "check.h"
 #include "matrix.h"
-
-#define UNREACHABLE(message) assert(0 && message)
 
 double sigmoid(double x)
 {
@@ -119,7 +117,7 @@ void activate_tanh_gradient(matrix_t dst, matrix_t activations, matrix_t upstrea
 
 void activate(matrix_t dst, matrix_t outputs, activation_type_t activation_type)
 {
-    assert(matrix_same_shape(dst, outputs));
+    ASSERT(matrix_same_shape(dst, outputs));
     switch (activation_type)
     {
     case SIGMOID:
@@ -145,7 +143,7 @@ void activate(matrix_t dst, matrix_t outputs, activation_type_t activation_type)
 void activate_gradient(matrix_t dst, matrix_t activations, matrix_t upstream_gradient,
                        activation_type_t activation_type)
 {
-    assert(matrix_same_shapes(dst, activations, upstream_gradient));
+    ASSERT(matrix_same_shapes(dst, activations, upstream_gradient));
     switch (activation_type)
     {
     case SIGMOID:

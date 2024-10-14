@@ -1,8 +1,8 @@
-#include <assert.h>
 #include <math.h>
 #include <stddef.h>
 
 #include "activation.h"
+#include "check.h"
 #include "initialization.h"
 #include "layer.h"
 #include "matrix.h"
@@ -104,11 +104,11 @@ void layer_update(layer_t *layer, double learning_rate, size_t epoch)
 {
     adam_parameters_t adam = (adam_parameters_t){0.9, 0.999, 1e-8};
     adam_state_t *state = &layer->state;
-    assert(matrix_same_shape(state->m_weights, state->v_weights));
-    assert(matrix_same_shapes(state->m_weights, layer->weights, layer->d_weights));
+    ASSERT(matrix_same_shape(state->m_weights, state->v_weights));
+    ASSERT(matrix_same_shapes(state->m_weights, layer->weights, layer->d_weights));
 
-    assert(vector_same_shape(state->m_biases, state->v_biases));
-    assert(vector_same_shapes(state->m_biases, layer->biases, layer->d_biases));
+    ASSERT(vector_same_shape(state->m_biases, state->v_biases));
+    ASSERT(vector_same_shapes(state->m_biases, layer->biases, layer->d_biases));
 
     double m_hat_scale = 1.0 / (1.0 - pow(adam.beta1, epoch));
     double v_hat_scale = 1.0 / (1.0 - pow(adam.beta2, epoch));

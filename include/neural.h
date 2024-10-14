@@ -1,6 +1,7 @@
 #pragma once
 
 #include "activation.h"
+#include "check.h"
 #include "initialization.h"
 #include "layer.h"
 #include "loss.h"
