@@ -5,20 +5,28 @@
 
 int main()
 {
-    srand(37);
+    const size_t BATCH_SIZE = 4;
+    const size_t INPUT_SIZE = 2;
+    const size_t OUTPUT_SIZE = 1;
+    const size_t HIDDEN_NODES = 4;
+    const double LEARNING_RATE = 1e-3;
+    const size_t EPOCHS = 10000;
+    const size_t SEED = 37;
+    const loss_type_t loss = BINARY_CROSS_ENTROPY;
+
+    srand(SEED);
     layer_spec_t layers[] = {
-        SIGMOID_LAYER(4),
-        SIGMOID_LAYER(1),
+        LAYER_SIGMOID(HIDDEN_NODES),
+        LAYER_SIGMOID(OUTPUT_SIZE),
     };
-    network_t network = network_alloc(4, 2, layers, ARRAY_LEN(layers), BINARY_CROSS_ENTROPY);
+    network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), loss);
 
-    matrix_t inputs = (matrix_t){4, 2, (double[]){0, 0, 1, 0, 0, 1, 1, 1}};
-    matrix_t targets = (matrix_t){4, 1, (double[]){0, 1, 1, 0}};
-    double learning_rate = 1e-3;
+    matrix_t inputs = (matrix_t){BATCH_SIZE, INPUT_SIZE, (double[]){0, 0, 1, 0, 0, 1, 1, 1}};
+    matrix_t targets = (matrix_t){BATCH_SIZE, OUTPUT_SIZE, (double[]){0, 1, 1, 0}};
 
-    for (size_t i = 0; i < 10000; ++i)
+    for (size_t i = 0; i < EPOCHS; ++i)
     {
-        network_train(&network, inputs, targets, learning_rate, i);
+        network_train(&network, inputs, targets, LEARNING_RATE, i);
         printf("loss: %lf\n", network.loss.value);
     }
 

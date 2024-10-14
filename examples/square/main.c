@@ -34,29 +34,35 @@ void linspace(matrix_t features, double min, double max)
 
 int main()
 {
-    srand(37);
-    size_t batch_size = 4;
+    const size_t BATCH_SIZE = 4;
+    const size_t INPUT_SIZE = 1;
+    const size_t OUTPUT_SIZE = 1;
+    const double LEARNING_RATE = 1e-3;
+    const size_t EPOCHS = 10000;
+    const size_t SEED = 37;
+    const loss_type_t loss = MSE;
+
+    srand(SEED);
     layer_spec_t layers[] = {
         LAYER_RELU(5),
         LAYER_RELU(5),
         LAYER_RELU(5),
         LAYER_LINEAR(1),
     };
-    network_t network = network_alloc(batch_size, 1, layers, ARRAY_LEN(layers), MSE);
+    network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), loss);
 
     network_summary(&network);
 
-    matrix_t inputs = matrix_alloc(batch_size, 1);
-    matrix_t targets = matrix_alloc(batch_size, 1);
+    matrix_t inputs = matrix_alloc(BATCH_SIZE, INPUT_SIZE);
+    matrix_t targets = matrix_alloc(BATCH_SIZE, OUTPUT_SIZE);
     double min = -1.0;
     double max = 1.0;
 
-    double learning_rate = 1e-3;
-    for (size_t i = 0; i < 10000; ++i)
+    for (size_t i = 0; i < EPOCHS; ++i)
     {
         set_features(inputs, min, max);
         set_targets(inputs, targets);
-        network_train(&network, inputs, targets, learning_rate, i);
+        network_train(&network, inputs, targets, LEARNING_RATE, i);
         printf("loss: %lf\n", network.loss.value);
     }
     linspace(inputs, min, max);
