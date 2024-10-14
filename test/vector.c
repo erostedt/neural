@@ -1,14 +1,8 @@
-#include <math.h>
 #include <stdbool.h>
 
 #include "utest.h"
 
 #include "vector.h"
-
-bool isclose(double x, double y)
-{
-    return fabs(x - y) < 1e-7;
-}
 
 UTEST(vector, zero)
 {

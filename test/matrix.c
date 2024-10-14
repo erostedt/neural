@@ -1,23 +1,40 @@
 #include "utest.h"
 
+#include "comparison.h"
 #include "matrix.h"
 #include "operations.h"
 
-UTEST(matrix, matmulmat)
+UTEST(matrix, matrix_multiply)
 {
-    matrix_t lhs = matrix_alloc(3, 2);
-    lhs.elements = (double[6]){1, 2, 3, 4, 5, 6};
-    matrix_t rhs = matrix_alloc(2, 3);
-    rhs.elements = (double[6]){7, 8, 9, 10, 11, 12};
+    matrix_t lhs = (matrix_t){3, 2, (double[6]){1, 2, 3, 4, 5, 6}};
+    matrix_t rhs = (matrix_t){2, 3, (double[6]){7, 8, 9, 10, 11, 12}};
     matrix_t dst = matrix_alloc(3, 3);
+
     matrix_multiply(dst, lhs, rhs);
-    ASSERT_EQ(MATRIX_AT(dst, 0, 0), 27);
-    ASSERT_EQ(MATRIX_AT(dst, 0, 1), 30);
-    ASSERT_EQ(MATRIX_AT(dst, 0, 2), 33);
-    ASSERT_EQ(MATRIX_AT(dst, 1, 0), 61);
-    ASSERT_EQ(MATRIX_AT(dst, 1, 1), 68);
-    ASSERT_EQ(MATRIX_AT(dst, 1, 2), 75);
-    ASSERT_EQ(MATRIX_AT(dst, 2, 0), 95);
-    ASSERT_EQ(MATRIX_AT(dst, 2, 1), 106);
-    ASSERT_EQ(MATRIX_AT(dst, 2, 2), 117);
+    matrix_t expected_output = (matrix_t){3, 3, (double[9]){27, 30, 33, 61, 68, 75, 95, 106, 117}};
+
+    ASSERT_TRUE(matrix_equals(dst, expected_output));
+}
+
+UTEST(matrix, matrix_multiply_ABT)
+{
+    matrix_t lhs = (matrix_t){3, 2, (double[6]){1, 2, 3, 4, 5, 6}};
+    matrix_t rhs = (matrix_t){3, 2, (double[6]){7, 10, 8, 11, 9, 12}};
+    matrix_t dst = matrix_alloc(3, 3);
+
+    matrix_multiply_ABT(dst, lhs, rhs);
+    matrix_t expected_output = (matrix_t){3, 3, (double[9]){27, 30, 33, 61, 68, 75, 95, 106, 117}};
+
+    ASSERT_TRUE(matrix_equals(dst, expected_output));
+}
+
+UTEST(matrix, matrix_multiply_ATB)
+{
+    matrix_t lhs = (matrix_t){2, 3, (double[6]){1, 3, 5, 2, 4, 6}};
+    matrix_t rhs = (matrix_t){2, 3, (double[6]){7, 8, 9, 10, 11, 12}};
+    matrix_t dst = matrix_alloc(3, 3);
+    matrix_multiply_ATB(dst, lhs, rhs);
+    matrix_t expected_output = (matrix_t){3, 3, (double[9]){27, 30, 33, 61, 68, 75, 95, 106, 117}};
+
+    ASSERT_TRUE(matrix_equals(dst, expected_output));
 }
