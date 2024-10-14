@@ -1,5 +1,3 @@
-* Make adam parameters configurable.
-
 * Clean up repo structure
 * Clean up code structure in files
 * Add 1 or 2 more examples
