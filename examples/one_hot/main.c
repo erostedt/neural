@@ -3,6 +3,8 @@
 
 #include <neural.h>
 
+#define ARRAY_LEN(arr) sizeof((arr)) / sizeof((arr)[0])
+
 void set_inputs(matrix_t inputs)
 {
     for (size_t row = 0; row < inputs.rows; ++row)
@@ -44,9 +46,10 @@ int main()
     set_inputs(inputs);
     set_targets(targets);
 
+    adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
     for (size_t i = 0; i < EPOCHS; ++i)
     {
-        network_train(&network, inputs, targets, LEARNING_RATE, i);
+        network_train(&network, inputs, targets, optimizer, i);
         printf("loss: %lf\n", network.loss.value);
     }
 

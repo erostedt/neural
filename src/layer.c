@@ -100,9 +100,8 @@ void layer_randomize(layer_t *layer)
     VECTOR_ZERO(layer->biases);
 }
 
-void layer_update(layer_t *layer, double learning_rate, size_t epoch)
+void layer_update(layer_t *layer, adam_parameters_t optimizer, size_t epoch)
 {
-    adam_parameters_t adam = (adam_parameters_t){0.9, 0.999, 1e-8};
     adam_state_t *state = &layer->state;
     ASSERT(matrix_same_shape(state->m_weights, state->v_weights));
     ASSERT(matrix_same_shapes(state->m_weights, layer->weights, layer->d_weights));
@@ -110,8 +109,8 @@ void layer_update(layer_t *layer, double learning_rate, size_t epoch)
     ASSERT(vector_same_shape(state->m_biases, state->v_biases));
     ASSERT(vector_same_shapes(state->m_biases, layer->biases, layer->d_biases));
 
-    double m_hat_scale = 1.0 / (1.0 - pow(adam.beta1, epoch));
-    double v_hat_scale = 1.0 / (1.0 - pow(adam.beta2, epoch));
+    double m_hat_scale = 1.0 / (1.0 - pow(optimizer.beta1, epoch));
+    double v_hat_scale = 1.0 / (1.0 - pow(optimizer.beta2, epoch));
 
     for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(layer->d_weights); ++i)
     {
@@ -119,13 +118,13 @@ void layer_update(layer_t *layer, double learning_rate, size_t epoch)
         double m = MATRIX_AT_INDEX(state->m_weights, i);
         double v = MATRIX_AT_INDEX(state->v_weights, i);
 
-        m = adam.beta1 * m + (1.0 - adam.beta1) * g;
-        v = adam.beta2 * v + (1.0 - adam.beta2) * (g * g);
+        m = optimizer.beta1 * m + (1.0 - optimizer.beta1) * g;
+        v = optimizer.beta2 * v + (1.0 - optimizer.beta2) * (g * g);
 
         double m_hat = m * m_hat_scale;
         double v_hat = v * v_hat_scale;
 
-        MATRIX_AT_INDEX(layer->weights, i) -= learning_rate * m_hat / (sqrt(v_hat) + adam.epsilon);
+        MATRIX_AT_INDEX(layer->weights, i) -= optimizer.learning_rate * m_hat / (sqrt(v_hat) + optimizer.epsilon);
 
         MATRIX_AT_INDEX(state->m_weights, i) = m;
         MATRIX_AT_INDEX(state->v_weights, i) = v;
@@ -137,13 +136,13 @@ void layer_update(layer_t *layer, double learning_rate, size_t epoch)
         double m = VECTOR_AT(state->m_biases, i);
         double v = VECTOR_AT(state->v_biases, i);
 
-        m = adam.beta1 * m + (1.0 - adam.beta1) * g;
-        v = adam.beta2 * v + (1.0 - adam.beta2) * (g * g);
+        m = optimizer.beta1 * m + (1.0 - optimizer.beta1) * g;
+        v = optimizer.beta2 * v + (1.0 - optimizer.beta2) * (g * g);
 
         double m_hat = m * m_hat_scale;
         double v_hat = v * v_hat_scale;
 
-        VECTOR_AT(layer->biases, i) -= learning_rate * m_hat / (sqrt(v_hat) + adam.epsilon);
+        VECTOR_AT(layer->biases, i) -= optimizer.learning_rate * m_hat / (sqrt(v_hat) + optimizer.epsilon);
 
         VECTOR_AT(state->m_biases, i) = m;
         VECTOR_AT(state->v_biases, i) = v;

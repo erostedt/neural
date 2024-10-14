@@ -3,6 +3,8 @@
 
 #include <neural.h>
 
+#define ARRAY_LEN(arr) sizeof((arr)) / sizeof((arr)[0])
+
 int main()
 {
     const size_t BATCH_SIZE = 4;
@@ -22,10 +24,11 @@ int main()
     network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), loss);
     matrix_t inputs = (matrix_t){BATCH_SIZE, INPUT_SIZE, (double[]){0, 0, 1, 0, 0, 1, 1, 1}};
     matrix_t targets = (matrix_t){BATCH_SIZE, OUTPUT_SIZE, (double[]){0, 0, 0, 1}};
+    adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
 
     for (size_t i = 0; i < EPOCHS; ++i)
     {
-        network_train(&network, inputs, targets, LEARNING_RATE, i);
+        network_train(&network, inputs, targets, optimizer, i);
         printf("loss: %lf\n", network.loss.value);
     }
 

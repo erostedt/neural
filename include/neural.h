@@ -8,7 +8,6 @@
 #include "matrix.h"
 #include "network.h"
 #include "operations.h"
+#include "optimizer.h"
 #include "random.h"
 #include "vector.h"
-
-#define ARRAY_LEN(arr) sizeof((arr)) / sizeof((arr)[0])

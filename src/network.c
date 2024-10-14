@@ -58,20 +58,20 @@ matrix_t network_backward(network_t *network, matrix_t loss_gradient)
     return loss_gradient;
 }
 
-void network_update(network_t *network, double learning_rate, size_t epoch)
+void network_update(network_t *network, adam_parameters_t optimizer, size_t epoch)
 {
     for (size_t i = 0; i < network->layer_count; ++i)
     {
-        layer_update(&network->layers[i], learning_rate, epoch + 1);
+        layer_update(&network->layers[i], optimizer, epoch + 1);
     }
 }
 
-void network_train(network_t *network, matrix_t inputs, matrix_t targets, double learning_rate, size_t epoch)
+void network_train(network_t *network, matrix_t inputs, matrix_t targets, adam_parameters_t optimizer, size_t epoch)
 {
     matrix_t pred = network_forward(network, inputs);
     loss_calculate(&network->loss, network->loss_type, targets, pred);
     network_backward(network, network->loss.gradient);
-    network_update(network, learning_rate, epoch);
+    network_update(network, optimizer, epoch);
 }
 
 void network_summary(network_t *network)
