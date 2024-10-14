@@ -37,10 +37,10 @@ int main()
     srand(37);
     size_t batch_size = 4;
     layer_spec_t layers[] = {
-        RELU_LAYER(5),
-        RELU_LAYER(5),
-        RELU_LAYER(5),
-        LINEAR_LAYER(1),
+        LAYER_RELU(5),
+        LAYER_RELU(5),
+        LAYER_RELU(5),
+        LAYER_LINEAR(1),
     };
     network_t network = network_alloc(batch_size, 1, layers, ARRAY_LEN(layers), MSE);
 

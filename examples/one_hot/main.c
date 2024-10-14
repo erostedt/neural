@@ -27,10 +27,10 @@ int main()
     size_t output_count = 4;
 
     layer_spec_t layers[] = {
-        RELU_LAYER(4),
-        RELU_LAYER(4),
-        RELU_LAYER(4),
-        SOFTMAX_LAYER(output_count),
+        LAYER_RELU(4),
+        LAYER_RELU(4),
+        LAYER_RELU(4),
+        LAYER_SOFTMAX(output_count),
     };
     network_t network = network_alloc(batch_size, input_count, layers, ARRAY_LEN(layers), CATEGORICAL_CROSS_ENTROPY);
     network_summary(&network);

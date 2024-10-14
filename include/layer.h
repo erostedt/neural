@@ -5,28 +5,28 @@
 #include "matrix.h"
 #include "vector.h"
 
-#define RELU_LAYER(neuron_count)                                                                                       \
+#define LAYER_RELU(neuron_count)                                                                                       \
     (layer_spec_t)                                                                                                     \
     {                                                                                                                  \
         (neuron_count), RELU                                                                                           \
     }
-#define LINEAR_LAYER(neuron_count)                                                                                     \
+#define LAYER_LINEAR(neuron_count)                                                                                     \
     (layer_spec_t)                                                                                                     \
     {                                                                                                                  \
         (neuron_count), LINEAR                                                                                         \
     }
-#define TANH_LAYER(neuron_count)                                                                                       \
+#define LAYER_TANH(neuron_count)                                                                                       \
     (layer_spec_t)                                                                                                     \
     {                                                                                                                  \
         (neuron_count), TANH                                                                                           \
     }
-#define SIGMOID_LAYER(neuron_count)                                                                                    \
+#define LAYER_SIGMOID(neuron_count)                                                                                    \
     (layer_spec_t)                                                                                                     \
     {                                                                                                                  \
         (neuron_count), SIGMOID                                                                                        \
     }
 
-#define SOFTMAX_LAYER(neuron_count)                                                                                    \
+#define LAYER_SOFTMAX(neuron_count)                                                                                    \
     (layer_spec_t)                                                                                                     \
     {                                                                                                                  \
         (neuron_count), SOFTMAX                                                                                        \

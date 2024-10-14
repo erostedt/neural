@@ -7,8 +7,8 @@ int main()
 {
     srand(37);
     layer_spec_t layers[] = {
-        SIGMOID_LAYER(4),
-        SIGMOID_LAYER(1),
+        LAYER_SIGMOID(4),
+        LAYER_SIGMOID(1),
     };
     network_t network = network_alloc(4, 2, layers, ARRAY_LEN(layers), BINARY_CROSS_ENTROPY);
     network_summary(&network);
