@@ -5,6 +5,7 @@
 
 #include "check.h"
 #include "matrix.h"
+#include "operations.h"
 
 matrix_t matrix_alloc(size_t rows, size_t cols)
 {
@@ -57,4 +58,22 @@ bool matrix_same_shape(matrix_t mat1, matrix_t mat2)
 bool matrix_same_shapes(matrix_t mat1, matrix_t mat2, matrix_t mat3)
 {
     return matrix_same_shape(mat1, mat2) && matrix_same_shape(mat1, mat3);
+}
+
+void matrix_split_into(matrix_t dst1, matrix_t dst2, matrix_t src)
+{
+    ASSERT(dst1.rows + dst2.rows == src.rows);
+    ASSERT(dst1.cols == src.cols);
+    ASSERT(dst2.cols == src.cols);
+
+    for (size_t i = 0; i < dst1.rows; ++i)
+    {
+        vector_copy(row_vector(dst1, i), row_vector(src, i));
+    }
+
+    for (size_t i = 0; i < dst2.rows; ++i)
+    {
+        size_t src_index = dst1.rows + i;
+        vector_copy(row_vector(dst2, i), row_vector(src, src_index));
+    }
 }
