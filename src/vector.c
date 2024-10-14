@@ -21,6 +21,15 @@ void vector_free(vector_t *vector)
     free(vector->elements);
 }
 
+void vector_copy(vector_t dst, vector_t src)
+{
+    ASSERT(dst.count == src.count);
+    for (size_t i = 0; i < dst.count; ++i)
+    {
+        VECTOR_AT(dst, i) = VECTOR_AT(src, i);
+    }
+}
+
 void vector_add(vector_t dst, vector_t lhs, vector_t rhs)
 {
     ASSERT(lhs.count == rhs.count);

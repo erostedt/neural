@@ -5,6 +5,7 @@
 #include "loss.h"
 #include "matrix.h"
 #include "network.h"
+#include "operations.h"
 #include "stdlib.h"
 #include "vector.h"
 
@@ -66,12 +67,84 @@ void network_update(network_t *network, adam_parameters_t optimizer, size_t epoc
     }
 }
 
-void network_train(network_t *network, matrix_t inputs, matrix_t targets, adam_parameters_t optimizer, size_t epoch)
+size_t network_batch_size(network_t *network)
 {
-    matrix_t pred = network_forward(network, inputs);
-    loss_calculate(&network->loss, network->loss_type, targets, pred);
-    network_backward(network, network->loss.gradient);
-    network_update(network, optimizer, epoch);
+    ASSERT(network->layer_count > 0);
+    return network->layers[0].outputs.rows;
+}
+
+void shuffle(size_t *elements, size_t size)
+{
+    if (size < 2)
+    {
+        return;
+    }
+
+    for (size_t i = size - 1; i > 0; --i)
+    {
+        size_t j = rand() % (i + 1);
+        size_t temp = elements[i];
+        elements[i] = elements[j];
+        elements[j] = temp;
+    }
+}
+
+size_t *indices_alloc(size_t count)
+{
+    size_t *indices = malloc(count * sizeof(count));
+    ASSERT(indices != NULL);
+    for (size_t i = 0; i < count; ++i)
+    {
+        indices[i] = i;
+    }
+    return indices;
+}
+
+void batch_copy(matrix_t dst, matrix_t src, size_t *indices, size_t batch_size)
+{
+    for (size_t i = 0; i < batch_size; ++i)
+    {
+        size_t index = indices[i];
+        vector_copy(row_vector(dst, i), row_vector(src, index));
+    }
+}
+
+void network_train(network_t *network, matrix_t inputs, matrix_t targets, adam_parameters_t optimizer, size_t epochs)
+{
+    network_summary(network);
+    size_t batch_size = network_batch_size(network);
+    size_t input_size = inputs.cols;
+    size_t target_size = targets.cols;
+    matrix_t input_batch = matrix_alloc(batch_size, input_size);
+    matrix_t target_batch = matrix_alloc(batch_size, target_size);
+
+    size_t *indices = indices_alloc(inputs.rows);
+    shuffle(indices, inputs.rows);
+
+    ASSERT(inputs.rows >= batch_size);
+    for (size_t epoch = 0; epoch < epochs; ++epoch)
+    {
+        double loss_value = 0.0f;
+        size_t i = 0;
+        for (; i < inputs.rows / batch_size; ++i)
+        {
+            size_t offset = i * batch_size;
+            batch_copy(input_batch, inputs, indices + offset, batch_size);
+            batch_copy(target_batch, targets, indices + offset, batch_size);
+
+            matrix_t pred = network_forward(network, input_batch);
+            loss_calculate(&network->loss, network->loss_type, target_batch, pred);
+            loss_value += network->loss.value;
+            network_backward(network, network->loss.gradient);
+            network_update(network, optimizer, epoch);
+        }
+        loss_value /= (i + 1);
+        printf("loss: %lf\n", loss_value);
+    }
+
+    matrix_free(&input_batch);
+    matrix_free(&target_batch);
+    free(indices);
 }
 
 void network_summary(network_t *network)
