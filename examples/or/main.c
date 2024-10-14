@@ -10,7 +10,7 @@ int main()
     const size_t BATCH_SIZE = 4;
     const size_t INPUT_SIZE = 2;
     const size_t OUTPUT_SIZE = 1;
-    const size_t HIDDEN_NODES = 4;
+    const size_t HIDDEN_NODES = 8;
     const double LEARNING_RATE = 1e-3;
     const size_t EPOCHS = 10000;
     const size_t SEED = 37;
@@ -27,11 +27,7 @@ int main()
     matrix_t targets = (matrix_t){BATCH_SIZE, OUTPUT_SIZE, (double[]){0, 1, 1, 1}};
 
     adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
-    for (size_t i = 0; i < EPOCHS; ++i)
-    {
-        network_train(&network, inputs, targets, optimizer, i);
-        printf("loss: %lf\n", network.loss.value);
-    }
+    network_train(&network, inputs, targets, optimizer, EPOCHS);
 
     matrix_t pred = network_forward(&network, inputs);
     for (size_t i = 0; i < pred.rows; ++i)

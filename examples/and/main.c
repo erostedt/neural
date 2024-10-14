@@ -25,12 +25,7 @@ int main()
     matrix_t inputs = (matrix_t){BATCH_SIZE, INPUT_SIZE, (double[]){0, 0, 1, 0, 0, 1, 1, 1}};
     matrix_t targets = (matrix_t){BATCH_SIZE, OUTPUT_SIZE, (double[]){0, 0, 0, 1}};
     adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
-
-    for (size_t i = 0; i < EPOCHS; ++i)
-    {
-        network_train(&network, inputs, targets, optimizer, i);
-        printf("loss: %lf\n", network.loss.value);
-    }
+    network_train(&network, inputs, targets, optimizer, EPOCHS);
 
     matrix_t pred = network_forward(&network, inputs);
     for (size_t i = 0; i < pred.rows; ++i)

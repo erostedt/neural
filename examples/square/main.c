@@ -1,3 +1,4 @@
+#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -36,6 +37,7 @@ void linspace(matrix_t features, double min, double max)
 
 int main()
 {
+    const size_t SAMPLE_COUNT = 150;
     const size_t BATCH_SIZE = 4;
     const size_t INPUT_SIZE = 1;
     const size_t OUTPUT_SIZE = 1;
@@ -55,24 +57,25 @@ int main()
 
     network_summary(&network);
 
-    matrix_t inputs = matrix_alloc(BATCH_SIZE, INPUT_SIZE);
-    matrix_t targets = matrix_alloc(BATCH_SIZE, OUTPUT_SIZE);
+    matrix_t inputs = matrix_alloc(SAMPLE_COUNT, INPUT_SIZE);
+    matrix_t targets = matrix_alloc(SAMPLE_COUNT, OUTPUT_SIZE);
     double min = -1.0;
     double max = 1.0;
+    set_features(inputs, min, max);
+    set_targets(inputs, targets);
 
     adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
-    for (size_t i = 0; i < EPOCHS; ++i)
-    {
-        set_features(inputs, min, max);
-        set_targets(inputs, targets);
-        network_train(&network, inputs, targets, optimizer, i);
-        printf("loss: %lf\n", network.loss.value);
-    }
-    linspace(inputs, min, max);
-    set_targets(inputs, targets);
-    matrix_t pred = network_forward(&network, inputs);
+    network_train(&network, inputs, targets, optimizer, EPOCHS);
+
+    matrix_t test_inputs = matrix_alloc(BATCH_SIZE, INPUT_SIZE);
+    matrix_t test_targets = matrix_alloc(BATCH_SIZE, INPUT_SIZE);
+    linspace(test_inputs, min, max);
+    set_targets(test_inputs, test_targets);
+
+    matrix_t pred = network_forward(&network, test_inputs);
     for (size_t i = 0; i < pred.rows; ++i)
     {
-        printf("(%lf)^2 = %lf (%lf)\n", MATRIX_AT(inputs, i, 0), MATRIX_AT(pred, i, 0), MATRIX_AT(targets, i, 0));
+        printf("(%lf)^2 = %lf (%lf)\n", MATRIX_AT(test_inputs, i, 0), MATRIX_AT(pred, i, 0),
+               MATRIX_AT(test_targets, i, 0));
     }
 }

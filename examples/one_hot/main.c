@@ -34,24 +34,19 @@ int main()
     srand(SEED);
 
     layer_spec_t layers[] = {
-        LAYER_RELU(4),
-        LAYER_RELU(4),
-        LAYER_RELU(4),
+        LAYER_RELU(8),
+        LAYER_RELU(16),
+        LAYER_RELU(32),
         LAYER_SOFTMAX(OUTPUT_SIZE),
     };
     network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), loss);
-    network_summary(&network);
     matrix_t inputs = matrix_alloc(BATCH_SIZE, INPUT_SIZE);
     matrix_t targets = matrix_alloc(BATCH_SIZE, OUTPUT_SIZE);
     set_inputs(inputs);
     set_targets(targets);
 
     adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
-    for (size_t i = 0; i < EPOCHS; ++i)
-    {
-        network_train(&network, inputs, targets, optimizer, i);
-        printf("loss: %lf\n", network.loss.value);
-    }
+    network_train(&network, inputs, targets, optimizer, EPOCHS);
 
     matrix_t pred = network_forward(&network, inputs);
     for (size_t row = 0; row < pred.rows; ++row)
