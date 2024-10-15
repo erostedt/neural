@@ -5,6 +5,7 @@
 
 #include "iris.h"
 #include "matrix.h"
+#include "network.h"
 
 #define ARRAY_LEN(arr) sizeof((arr)) / sizeof((arr)[0])
 
@@ -27,13 +28,13 @@ int main()
         LAYER_SOFTMAX(OUTPUT_SIZE),
     };
 
-    matrix_t train_features = matrix_alloc(142, INPUT_SIZE);
-    matrix_t test_features = matrix_alloc(8, INPUT_SIZE);
+    matrix_t train_features = matrix_alloc(140, INPUT_SIZE);
+    matrix_t test_features = matrix_alloc(10, INPUT_SIZE);
 
     matrix_t targets = matrix_alloc(species.count, OUTPUT_SIZE);
     one_hot_matrix(targets, species, OUTPUT_SIZE);
-    matrix_t train_targets = matrix_alloc(142, OUTPUT_SIZE);
-    matrix_t test_targets = matrix_alloc(8, OUTPUT_SIZE);
+    matrix_t train_targets = matrix_alloc(140, OUTPUT_SIZE);
+    matrix_t test_targets = matrix_alloc(10, OUTPUT_SIZE);
 
     matrix_split_into(train_features, test_features, features);
     matrix_split_into(train_targets, test_targets, targets);
@@ -44,7 +45,8 @@ int main()
     adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
     network_train(&network, train_features, train_targets, optimizer, EPOCHS);
 
-    matrix_t pred = network_forward(&network, test_features);
+    matrix_t pred = matrix_alloc(10, OUTPUT_SIZE);
+    network_predict(&network, test_features, pred);
     for (size_t row = 0; row < pred.rows; ++row)
     {
         for (size_t col = 0; col < pred.cols; ++col)

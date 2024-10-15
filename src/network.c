@@ -41,6 +41,12 @@ void network_free(network_t *network)
     network->layer_count = 0;
 }
 
+size_t network_batch_size(network_t *network)
+{
+    ASSERT(network->layer_count > 0);
+    return network->layers[0].outputs.rows;
+}
+
 matrix_t network_forward(network_t *network, matrix_t inputs)
 {
     for (size_t i = 0; i < network->layer_count; ++i)
@@ -48,6 +54,44 @@ matrix_t network_forward(network_t *network, matrix_t inputs)
         inputs = layer_forward(&network->layers[i], inputs);
     }
     return inputs;
+}
+
+void network_predict(network_t *network, matrix_t inputs, matrix_t prediction)
+{
+    size_t batch_size = network_batch_size(network);
+    size_t sample_count = inputs.rows;
+    size_t input_size = inputs.cols;
+    size_t prediction_size = prediction.cols;
+    for (size_t i = 0; i < sample_count / batch_size; ++i)
+    {
+        matrix_t batch = {batch_size, input_size, inputs.elements + i * batch_size * input_size};
+        matrix_t dst = {batch_size, prediction_size, prediction.elements + i * batch_size * prediction_size};
+        matrix_copy(dst, network_forward(network, batch));
+    }
+
+    if (sample_count % batch_size == 0)
+    {
+        return;
+    }
+
+    matrix_t batch = matrix_alloc(batch_size, input_size);
+    MATRIX_ZERO(batch);
+    size_t remainder = sample_count % batch_size;
+    {
+        size_t start = input_size * batch_size * (sample_count / batch_size);
+        matrix_t src = {remainder, input_size, inputs.elements + start};
+        matrix_t dst = {remainder, input_size, batch.elements};
+        matrix_copy(dst, src);
+    }
+
+    matrix_t tail = network_forward(network, batch);
+    {
+        size_t start_pred = prediction_size * batch_size * (sample_count / batch_size);
+        matrix_t src = {remainder, input_size, tail.elements};
+        matrix_t dst = {remainder, input_size, prediction.elements + start_pred};
+        matrix_copy(dst, src);
+    }
+    matrix_free(&batch);
 }
 
 matrix_t network_backward(network_t *network, matrix_t loss_gradient)
@@ -65,12 +109,6 @@ void network_update(network_t *network, adam_parameters_t optimizer, size_t epoc
     {
         layer_update(&network->layers[i], optimizer, epoch + 1);
     }
-}
-
-size_t network_batch_size(network_t *network)
-{
-    ASSERT(network->layer_count > 0);
-    return network->layers[0].outputs.rows;
 }
 
 void shuffle(size_t *elements, size_t size)
