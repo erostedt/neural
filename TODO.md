@@ -6,7 +6,6 @@
 * Split training data in iris sample
 * Add network_predict that does batch predictions?
 
-* Make forwarding after training not requiring same batch size as training?
 * Simplify construction of NN
 * #pragma omp parallel for?
 * Add more tests
