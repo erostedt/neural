@@ -14,8 +14,13 @@ network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *lay
     ASSERT(size > 0);
 
     network_t network;
-    network.layers = malloc(size * sizeof(layer_t));
 
+    network.loss = loss_alloc(batch_size, layer_specs[size - 1].neuron_count);
+    network.loss_type = loss;
+    network.temp_buffer = matrix_alloc(batch_size, input_count);
+
+    network.layer_count = size;
+    network.layers = malloc(size * sizeof(layer_t));
     for (size_t layer_index = 0; layer_index < size; ++layer_index)
     {
         layer_spec_t spec = layer_specs[layer_index];
@@ -24,9 +29,6 @@ network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *lay
         layer_randomize(&layer);
         network.layers[layer_index] = layer;
     }
-    network.layer_count = size;
-    network.loss = loss_alloc(batch_size, layer_specs[size - 1].neuron_count);
-    network.loss_type = loss;
     return network;
 }
 
@@ -37,6 +39,7 @@ void network_free(network_t *network)
         layer_free(&network->layers[i]);
     }
     loss_free(&network->loss);
+    matrix_free(&network->temp_buffer);
     free(network->layers);
     network->layer_count = 0;
 }
@@ -74,7 +77,10 @@ void network_predict(network_t *network, matrix_t inputs, matrix_t prediction)
         return;
     }
 
-    matrix_t batch = matrix_alloc(batch_size, input_size);
+    matrix_t batch = network->temp_buffer;
+    printf("%zu, %zu\n", inputs.rows, inputs.cols);
+    printf("%zu, %zu\n", batch.rows, batch.cols);
+    printf("%zu, %zu\n", network->temp_buffer.rows, network->temp_buffer.cols);
     MATRIX_ZERO(batch);
     size_t remainder = sample_count % batch_size;
     {
@@ -91,7 +97,6 @@ void network_predict(network_t *network, matrix_t inputs, matrix_t prediction)
         matrix_t dst = {remainder, input_size, prediction.elements + start_pred};
         matrix_copy(dst, src);
     }
-    matrix_free(&batch);
 }
 
 matrix_t network_backward(network_t *network, matrix_t loss_gradient)

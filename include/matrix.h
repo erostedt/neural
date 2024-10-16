@@ -21,6 +21,7 @@ matrix_t matrix_alloc(size_t rows, size_t cols);
 void matrix_free(matrix_t *matrix);
 bool matrix_same_shape(matrix_t mat1, matrix_t mat2);
 bool matrix_same_shapes(matrix_t mat1, matrix_t mat2, matrix_t mat3);
+void matrix_copy_first_rows(matrix_t dst, matrix_t src, size_t rows);
 void matrix_copy(matrix_t dst, matrix_t src);
 void matrix_split_into(matrix_t dst1, matrix_t dst2, matrix_t src);
 

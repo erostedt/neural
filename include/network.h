@@ -9,6 +9,7 @@ typedef struct
     size_t layer_count;
     loss_t loss;
     loss_type_t loss_type;
+    matrix_t temp_buffer;
 } network_t;
 
 network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *layer_specs, size_t size,
