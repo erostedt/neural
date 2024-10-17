@@ -6,6 +6,7 @@
 #include "check.h"
 #include "matrix.h"
 #include "operations.h"
+#include "vector.h"
 
 matrix_t matrix_alloc(size_t rows, size_t cols)
 {
@@ -35,7 +36,7 @@ void matrix_copy_first_rows(matrix_t dst, matrix_t src, size_t rows)
 void matrix_copy(matrix_t dst, matrix_t src)
 {
     ASSERT(matrix_same_shape(src, dst));
-    matrix_copy_first_rows(dst, src, dst.rows);
+    memcpy(dst.elements, src.elements, MATRIX_ELEMENT_BYTES(src));
 }
 
 void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs)
@@ -49,12 +50,9 @@ void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs)
 
 void matrix_scale(matrix_t matrix, double scalar)
 {
-    for (size_t row = 0; row < matrix.rows; ++row)
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(matrix); ++i)
     {
-        for (size_t col = 0; col < matrix.cols; ++col)
-        {
-            MATRIX_AT(matrix, row, col) *= scalar;
-        }
+        MATRIX_AT_INDEX(matrix, i) *= scalar;
     }
 }
 
@@ -84,4 +82,22 @@ void matrix_split_into(matrix_t dst1, matrix_t dst2, matrix_t src)
         size_t src_index = dst1.rows + i;
         vector_copy(row_vector(dst2, i), row_vector(src, src_index));
     }
+}
+
+void matrix_permute_rows(matrix_t mat, size_t *indices)
+{
+    if (mat.rows < 2)
+    {
+        return;
+    }
+
+    vector_t temp = vector_alloc(mat.cols);
+    for (size_t i = 0; i < mat.rows; ++i)
+    {
+        size_t j = indices[i];
+        vector_copy(temp, row_vector(mat, i));
+        vector_copy(row_vector(mat, i), row_vector(mat, j));
+        vector_copy(row_vector(mat, j), temp);
+    }
+    vector_free(&temp);
 }
