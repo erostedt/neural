@@ -102,6 +102,15 @@ void layer_randomize(layer_t *layer)
 
 void layer_update(layer_t *layer, adam_parameters_t optimizer, size_t epoch)
 {
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(layer->d_weights); ++i)
+    {
+        MATRIX_AT_INDEX(layer->weights, i) -= optimizer.learning_rate * MATRIX_AT_INDEX(layer->d_weights, i);
+    }
+    for (size_t i = 0; i < VECTOR_ELEMENT_COUNT(layer->d_biases); ++i)
+    {
+        VECTOR_AT(layer->biases, i) -= optimizer.learning_rate * MATRIX_AT_INDEX(layer->d_biases, i);
+    }
+    /*
     adam_state_t *state = &layer->state;
     ASSERT(matrix_same_shape(state->m_weights, state->v_weights));
     ASSERT(matrix_same_shapes(state->m_weights, layer->weights, layer->d_weights));
@@ -147,4 +156,5 @@ void layer_update(layer_t *layer, adam_parameters_t optimizer, size_t epoch)
         VECTOR_AT(state->m_biases, i) = m;
         VECTOR_AT(state->v_biases, i) = v;
     }
+    */
 }
