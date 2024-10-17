@@ -30,8 +30,8 @@ void loss_mse(loss_t *loss, matrix_t y_true, matrix_t y_pred)
         loss->value += MATRIX_AT_INDEX(loss->gradient, i) * MATRIX_AT_INDEX(loss->gradient, i);
     }
 
-    matrix_scale(loss->gradient, 2.0 / y_true.rows);
-    loss->value /= y_pred.rows;
+    matrix_scale(loss->gradient, 2.0 / MATRIX_ELEMENT_COUNT(y_pred));
+    loss->value /= MATRIX_ELEMENT_COUNT(y_pred);
 }
 
 double clamp(double value, double min, double max)
@@ -57,8 +57,8 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
         MATRIX_AT_INDEX(loss->gradient, i) /= (MATRIX_AT_INDEX(y_pred, i) * (1.0 - MATRIX_AT_INDEX(y_pred, i)));
     }
 
-    matrix_scale(loss->gradient, 1.0 / y_true.rows);
-    loss->value /= y_pred.rows;
+    matrix_scale(loss->gradient, 1.0 / MATRIX_ELEMENT_COUNT(y_pred));
+    loss->value /= MATRIX_ELEMENT_COUNT(y_pred);
 }
 
 void loss_categorical_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
@@ -82,8 +82,8 @@ void loss_categorical_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pr
         }
     }
 
-    matrix_scale(loss->gradient, 1.0 / y_true.rows);
-    loss->value /= y_pred.rows;
+    matrix_scale(loss->gradient, 1.0 / MATRIX_ELEMENT_COUNT(y_pred));
+    loss->value /= MATRIX_ELEMENT_COUNT(y_pred);
 }
 
 void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix_t y_pred)
