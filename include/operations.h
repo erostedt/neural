@@ -10,3 +10,4 @@ void matrix_multiply_ABT(matrix_t output, matrix_t lhs, matrix_t rhs);
 double sum_row(matrix_t mat, size_t row);
 void sum_rows(vector_t output, matrix_t mat);
 void one_hot_matrix(matrix_t dst, vector_t classes, size_t class_count);
+size_t *indices_alloc(size_t count);

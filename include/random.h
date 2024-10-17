@@ -16,3 +16,19 @@ static double normal(double mean, double std)
     double z = sqrt(-2.0 * log(u1)) * cos(2.0 * M_PI * u2);
     return z * std + mean;
 }
+
+static void shuffle(size_t *elements, size_t size)
+{
+    if (size < 2)
+    {
+        return;
+    }
+
+    for (size_t i = size - 1; i > 0; --i)
+    {
+        size_t j = rand() % (i + 1);
+        size_t temp = elements[i];
+        elements[i] = elements[j];
+        elements[j] = temp;
+    }
+}

@@ -6,6 +6,7 @@
 #include "matrix.h"
 #include "network.h"
 #include "operations.h"
+#include "random.h"
 #include "stdlib.h"
 #include "vector.h"
 
@@ -116,33 +117,6 @@ void network_update(network_t *network, adam_parameters_t optimizer, size_t epoc
     }
 }
 
-void shuffle(size_t *elements, size_t size)
-{
-    if (size < 2)
-    {
-        return;
-    }
-
-    for (size_t i = size - 1; i > 0; --i)
-    {
-        size_t j = rand() % (i + 1);
-        size_t temp = elements[i];
-        elements[i] = elements[j];
-        elements[j] = temp;
-    }
-}
-
-size_t *indices_alloc(size_t count)
-{
-    size_t *indices = malloc(count * sizeof(count));
-    ASSERT(indices != NULL);
-    for (size_t i = 0; i < count; ++i)
-    {
-        indices[i] = i;
-    }
-    return indices;
-}
-
 void batch_copy(matrix_t dst, matrix_t src, size_t *indices, size_t batch_size)
 {
     for (size_t i = 0; i < batch_size; ++i)
@@ -162,11 +136,11 @@ void network_train(network_t *network, matrix_t inputs, matrix_t targets, adam_p
     matrix_t target_batch = matrix_alloc(batch_size, target_size);
 
     size_t *indices = indices_alloc(inputs.rows);
-    shuffle(indices, inputs.rows);
 
     ASSERT(inputs.rows >= batch_size);
     for (size_t epoch = 0; epoch < epochs; ++epoch)
     {
+        shuffle(indices, inputs.rows);
         double loss_value = 0.0f;
         size_t i = 0;
         for (; i < inputs.rows / batch_size; ++i)
@@ -177,6 +151,7 @@ void network_train(network_t *network, matrix_t inputs, matrix_t targets, adam_p
 
             matrix_t pred = network_forward(network, input_batch);
             loss_calculate(&network->loss, network->loss_type, target_batch, pred);
+
             loss_value += network->loss.value;
             network_backward(network, network->loss.gradient);
             network_update(network, optimizer, epoch);
@@ -196,6 +171,32 @@ void network_summary(network_t *network)
     {
         matrix_t w = network->layers[i].weights;
         vector_t b = network->layers[i].biases;
+        printf("Layer %zu: weights (%zu, %zu), biases %zu\n", i + 1, w.rows, w.cols, b.count);
+    }
+    fflush(stdout);
+}
+
+void network_summary2(network_t *network)
+{
+    for (size_t i = 0; i < network->layer_count; ++i)
+    {
+        matrix_t w = network->layers[i].weights;
+        vector_t b = network->layers[i].biases;
+        printf("%zu: W = ", i);
+        for (size_t row = 0; row < w.rows; ++row)
+        {
+            for (size_t col = 0; col < w.cols; ++col)
+            {
+                printf("%lf, ", MATRIX_AT(w, row, col));
+            }
+            printf("\n");
+        }
+
+        printf("b = ");
+        for (size_t row = 0; row < w.rows; ++row)
+        {
+            printf("%lf\n", VECTOR_AT(w, row));
+        }
         printf("Layer %zu: weights (%zu, %zu), biases %zu\n", i + 1, w.rows, w.cols, b.count);
     }
     fflush(stdout);

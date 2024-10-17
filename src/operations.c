@@ -97,3 +97,14 @@ void one_hot_matrix(matrix_t dst, vector_t classes, size_t class_count)
         MATRIX_AT(dst, i, class) = 1.0;
     }
 }
+
+size_t *indices_alloc(size_t count)
+{
+    size_t *indices = malloc(count * sizeof(count));
+    ASSERT(indices != NULL);
+    for (size_t i = 0; i < count; ++i)
+    {
+        indices[i] = i;
+    }
+    return indices;
+}
