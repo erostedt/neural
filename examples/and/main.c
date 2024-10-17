@@ -11,7 +11,7 @@ int main()
     const size_t INPUT_SIZE = 2;
     const size_t OUTPUT_SIZE = 1;
     const size_t HIDDEN_NODES = 4;
-    const double LEARNING_RATE = 1e-3;
+    const double LEARNING_RATE = 1e-1;
     const size_t EPOCHS = 10000;
     const size_t SEED = 37;
     const loss_type_t loss = BINARY_CROSS_ENTROPY;

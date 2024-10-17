@@ -26,7 +26,7 @@ int main()
     const size_t BATCH_SIZE = 4;
     const size_t INPUT_SIZE = 1;
     const size_t OUTPUT_SIZE = 4;
-    const double LEARNING_RATE = 1e-3;
+    const double LEARNING_RATE = 1e-1;
     const size_t EPOCHS = 10000;
     const size_t SEED = 37;
     const loss_type_t loss = CATEGORICAL_CROSS_ENTROPY;
@@ -34,9 +34,8 @@ int main()
     srand(SEED);
 
     layer_spec_t layers[] = {
-        LAYER_RELU(8),
-        LAYER_RELU(16),
-        LAYER_RELU(32),
+        LAYER_SIGMOID(8),
+        LAYER_SIGMOID(16),
         LAYER_SOFTMAX(OUTPUT_SIZE),
     };
     network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), loss);
@@ -49,12 +48,16 @@ int main()
     network_train(&network, inputs, targets, optimizer, EPOCHS);
 
     matrix_t pred = network_forward(&network, inputs);
+    size_t corrects = 0;
     for (size_t row = 0; row < pred.rows; ++row)
     {
-        for (size_t col = 0; col < pred.cols; ++col)
+        size_t y_pred = vector_argmax(row_vector(pred, row));
+        size_t y_true = vector_argmax(row_vector(targets, row));
+        printf("%zu (%zu)\n", y_pred, y_true);
+        if (y_pred == y_true)
         {
-            printf("%.2lf (%.2lf), ", MATRIX_AT(pred, row, col), MATRIX_AT(targets, row, col));
+            ++corrects;
         }
-        printf("\n");
     }
+    printf("Accuracy: %lf\n", (double)corrects / pred.rows);
 }
