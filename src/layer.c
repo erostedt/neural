@@ -100,17 +100,8 @@ void layer_randomize(layer_t *layer)
     VECTOR_ZERO(layer->biases);
 }
 
-void layer_update(layer_t *layer, adam_parameters_t optimizer, size_t epoch)
+void layer_update(layer_t *layer, adam_parameters_t optimizer, size_t t)
 {
-    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(layer->d_weights); ++i)
-    {
-        MATRIX_AT_INDEX(layer->weights, i) -= optimizer.learning_rate * MATRIX_AT_INDEX(layer->d_weights, i);
-    }
-    for (size_t i = 0; i < VECTOR_ELEMENT_COUNT(layer->d_biases); ++i)
-    {
-        VECTOR_AT(layer->biases, i) -= optimizer.learning_rate * MATRIX_AT_INDEX(layer->d_biases, i);
-    }
-    /*
     adam_state_t *state = &layer->state;
     ASSERT(matrix_same_shape(state->m_weights, state->v_weights));
     ASSERT(matrix_same_shapes(state->m_weights, layer->weights, layer->d_weights));
@@ -118,8 +109,8 @@ void layer_update(layer_t *layer, adam_parameters_t optimizer, size_t epoch)
     ASSERT(vector_same_shape(state->m_biases, state->v_biases));
     ASSERT(vector_same_shapes(state->m_biases, layer->biases, layer->d_biases));
 
-    double m_hat_scale = 1.0 / (1.0 - pow(optimizer.beta1, epoch));
-    double v_hat_scale = 1.0 / (1.0 - pow(optimizer.beta2, epoch));
+    double m_hat_scale = 1.0 / (1.0 - pow(optimizer.beta1, (double)t));
+    double v_hat_scale = 1.0 / (1.0 - pow(optimizer.beta2, (double)t));
 
     for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(layer->d_weights); ++i)
     {
@@ -130,13 +121,18 @@ void layer_update(layer_t *layer, adam_parameters_t optimizer, size_t epoch)
         m = optimizer.beta1 * m + (1.0 - optimizer.beta1) * g;
         v = optimizer.beta2 * v + (1.0 - optimizer.beta2) * (g * g);
 
+        MATRIX_AT_INDEX(state->m_weights, i) = m;
+        MATRIX_AT_INDEX(state->v_weights, i) = v;
+
         double m_hat = m * m_hat_scale;
         double v_hat = v * v_hat_scale;
 
-        MATRIX_AT_INDEX(layer->weights, i) -= optimizer.learning_rate * m_hat / (sqrt(v_hat) + optimizer.epsilon);
+        if (v_hat < 0)
+        {
+            v_hat = 0.0f;
+        }
 
-        MATRIX_AT_INDEX(state->m_weights, i) = m;
-        MATRIX_AT_INDEX(state->v_weights, i) = v;
+        MATRIX_AT_INDEX(layer->weights, i) -= optimizer.learning_rate * m_hat / (sqrt(v_hat) + optimizer.epsilon);
     }
 
     for (size_t i = 0; i < VECTOR_ELEMENT_COUNT(layer->d_biases); ++i)
@@ -148,13 +144,17 @@ void layer_update(layer_t *layer, adam_parameters_t optimizer, size_t epoch)
         m = optimizer.beta1 * m + (1.0 - optimizer.beta1) * g;
         v = optimizer.beta2 * v + (1.0 - optimizer.beta2) * (g * g);
 
+        VECTOR_AT(state->m_biases, i) = m;
+        VECTOR_AT(state->v_biases, i) = v;
+
         double m_hat = m * m_hat_scale;
         double v_hat = v * v_hat_scale;
 
-        VECTOR_AT(layer->biases, i) -= optimizer.learning_rate * m_hat / (sqrt(v_hat) + optimizer.epsilon);
+        if (v_hat < 0)
+        {
+            v_hat = 0.0f;
+        }
 
-        VECTOR_AT(state->m_biases, i) = m;
-        VECTOR_AT(state->v_biases, i) = v;
+        VECTOR_AT(layer->biases, i) -= optimizer.learning_rate * m_hat / (sqrt(v_hat) + optimizer.epsilon);
     }
-    */
 }

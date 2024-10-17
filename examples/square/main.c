@@ -41,16 +41,15 @@ int main()
     const size_t BATCH_SIZE = 4;
     const size_t INPUT_SIZE = 1;
     const size_t OUTPUT_SIZE = 1;
-    const double LEARNING_RATE = 1e-2;
+    const double LEARNING_RATE = 1e-3;
     const size_t EPOCHS = 10000;
     const size_t SEED = 37;
     const loss_type_t loss = MSE;
 
     srand(SEED);
     layer_spec_t layers[] = {
-        LAYER_RELU(5),
-        LAYER_RELU(5),
-        LAYER_RELU(5),
+        LAYER_RELU(8),
+        LAYER_RELU(16),
         LAYER_LINEAR(1),
     };
     network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), loss);

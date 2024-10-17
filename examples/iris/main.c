@@ -17,11 +17,11 @@
 int main()
 {
     const size_t SAMPLE_COUNT = 150;
-    const size_t BATCH_SIZE = 32;
+    const size_t BATCH_SIZE = 16;
     const size_t INPUT_SIZE = 4;
     const double TRAINING_FRACTION = 0.7;
     const size_t OUTPUT_SIZE = 3;
-    const double LEARNING_RATE = 1e-3;
+    const double LEARNING_RATE = 1e-4;
     const size_t EPOCHS = 10000;
     const size_t SEED = 37;
     const loss_type_t loss = CATEGORICAL_CROSS_ENTROPY;
