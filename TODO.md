@@ -1,9 +1,10 @@
 * Clean up repo structure
 * Clean up code structure in files
-* Add boston housing example
+* Add 1 more regression example
 * Can any more functions be removed?
 * Find a better name for layer_spec_t
-* Split training data in iris sample
+* Make it possible to standardize dataset
+* Why does adam cause NaN?
 
 * Fix const correctness
 * Fix inconsistant naming
