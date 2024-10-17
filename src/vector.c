@@ -62,7 +62,7 @@ size_t vector_argmax(vector_t vec)
 {
     ASSERT(VECTOR_ELEMENT_COUNT(vec) > 0);
     size_t amax = 0;
-    size_t max = VECTOR_AT(vec, 0);
+    double max = VECTOR_AT(vec, 0);
     for (size_t i = 1; i < VECTOR_ELEMENT_COUNT(vec); ++i)
     {
         if (VECTOR_AT(vec, i) > max)
@@ -72,4 +72,20 @@ size_t vector_argmax(vector_t vec)
         }
     }
     return amax;
+}
+
+void vector_permute(vector_t vec, size_t *indices)
+{
+    if (vec.count < 2)
+    {
+        return;
+    }
+
+    for (size_t i = 0; i < vec.count; ++i)
+    {
+        size_t j = indices[i];
+        double temp = VECTOR_AT(vec, i);
+        VECTOR_AT(vec, i) = VECTOR_AT(vec, j);
+        VECTOR_AT(vec, j) = temp;
+    }
 }
