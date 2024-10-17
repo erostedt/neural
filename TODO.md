@@ -4,7 +4,6 @@
 * Can any more functions be removed?
 * Find a better name for layer_spec_t
 * Make it possible to standardize dataset
-* Why does adam cause NaN?
 
 * Fix const correctness
 * Fix inconsistant naming
