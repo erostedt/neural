@@ -41,17 +41,6 @@ void vector_add(vector_t dst, vector_t lhs, vector_t rhs)
     }
 }
 
-void vector_subtract(vector_t  dst, vector_t  lhs, vector_t rhs)
-{
-    ASSERT(lhs.count == rhs.count);
-    ASSERT(dst.count == rhs.count);
-    size_t n = lhs.count;
-    for (size_t i = 0; i < n; ++i)
-    {
-        dst.elements[i] = lhs.elements[i] - rhs.elements[i];
-    }
-}
-
 void vector_scale(vector_t dst, vector_t src, double scalar)
 {
     ASSERT(dst.count == src.count);
@@ -86,20 +75,4 @@ size_t vector_argmax(vector_t vec)
         }
     }
     return amax;
-}
-
-void vector_permute(vector_t vec, const size_t *indices)
-{
-    if (vec.count < 2)
-    {
-        return;
-    }
-
-    for (size_t i = 0; i < vec.count; ++i)
-    {
-        size_t j = indices[i];
-        double temp = VECTOR_AT(vec, i);
-        VECTOR_AT(vec, i) = VECTOR_AT(vec, j);
-        VECTOR_AT(vec, j) = temp;
-    }
 }

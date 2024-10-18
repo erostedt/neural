@@ -39,7 +39,7 @@ int main()
     const size_t SEED = 37;
     const loss_type_t loss = MSE;
 
-    srand(SEED);
+    set_seed(SEED);
     layer_type_t layers[] = {
         LAYER_RELU(8),
         LAYER_RELU(16),

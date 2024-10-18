@@ -18,7 +18,7 @@ void loss_free(loss_t *loss)
     matrix_free(&loss->gradient);
 }
 
-void loss_mse(loss_t *loss, matrix_t y_true, matrix_t y_pred)
+void loss_mse(loss_t *loss, matrix_t y_pred, matrix_t y_true)
 {
     loss->value = 0.0;
     MATRIX_ZERO(loss->gradient);
@@ -40,7 +40,7 @@ double clamp(double value, double min, double max)
     return fmax(fmin(value, max), min);
 }
 
-void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
+void loss_binary_cross_entropy(loss_t *loss, matrix_t y_pred, matrix_t y_true)
 {
     loss->value = 0.0;
     MATRIX_ZERO(loss->gradient);
@@ -61,7 +61,7 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
     loss->value /= MATRIX_ELEMENT_COUNT(y_pred);
 }
 
-void loss_categorical_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pred)
+void loss_categorical_cross_entropy(loss_t *loss, matrix_t y_pred, matrix_t y_true)
 {
     loss->value = 0.0;
     MATRIX_ZERO(loss->gradient);
@@ -86,20 +86,20 @@ void loss_categorical_cross_entropy(loss_t *loss, matrix_t y_true, matrix_t y_pr
     loss->value /= MATRIX_ELEMENT_COUNT(y_pred);
 }
 
-void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_true, matrix_t y_pred)
+void loss_calculate(loss_t *loss, loss_type_t loss_type, matrix_t y_pred, matrix_t y_true)
 {
     ASSERT(matrix_same_shapes(y_pred, y_true, loss->gradient));
 
     switch (loss_type)
     {
     case MSE:
-        loss_mse(loss, y_true, y_pred);
+        loss_mse(loss, y_pred, y_true);
         return;
     case BINARY_CROSS_ENTROPY:
-        loss_binary_cross_entropy(loss, y_true, y_pred);
+        loss_binary_cross_entropy(loss, y_pred, y_true);
         return;
     case CATEGORICAL_CROSS_ENTROPY:
-        loss_categorical_cross_entropy(loss, y_true, y_pred);
+        loss_categorical_cross_entropy(loss, y_pred, y_true);
         return;
     default:
         UNREACHABLE("Unexpected loss");

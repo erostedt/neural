@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 #include <neural.h>
 
@@ -16,7 +15,7 @@ int main()
     const size_t SEED = 37;
     const loss_type_t loss = BINARY_CROSS_ENTROPY;
 
-    srand(SEED);
+    set_seed(SEED);
     layer_type_t layers[] = {
         LAYER_SIGMOID(HIDDEN_NODES),
         LAYER_SIGMOID(OUTPUT_SIZE),
