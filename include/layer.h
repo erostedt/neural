@@ -64,4 +64,4 @@ void layer_free(layer_t *layer);
 matrix_t layer_forward(layer_t *layer, matrix_t inputs);
 matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient);
 void layer_update(layer_t *layer, adam_parameters_t optimizer, size_t epoch);
-void layer_randomize(layer_t *layer);
+void layer_initialize(layer_t *layer);

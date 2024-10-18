@@ -74,7 +74,7 @@ size_t vector_argmax(vector_t vec)
     return amax;
 }
 
-void vector_permute(vector_t vec, size_t *indices)
+void vector_permute(vector_t vec, const size_t *indices)
 {
     if (vec.count < 2)
     {

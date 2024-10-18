@@ -5,7 +5,6 @@
 * Find a better name for layer_spec_t
 * Make it possible to standardize dataset
 
-* Fix const correctness
 * Fix inconsistant naming
 * Simplify construction of NN
 * #pragma omp parallel for?

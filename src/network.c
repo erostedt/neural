@@ -10,7 +10,7 @@
 #include "stdlib.h"
 #include "vector.h"
 
-network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *layer_specs, size_t size, loss_type_t loss)
+network_t network_alloc(size_t batch_size, size_t input_count, const layer_spec_t *layer_specs, size_t size, loss_type_t loss)
 {
     ASSERT(size > 0);
 
@@ -27,7 +27,7 @@ network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *lay
         layer_spec_t spec = layer_specs[layer_index];
         layer_t layer = layer_alloc(batch_size, input_count, spec);
         input_count = spec.neuron_count;
-        layer_randomize(&layer);
+        layer_initialize(&layer);
         network.layers[layer_index] = layer;
     }
     return network;
@@ -117,7 +117,7 @@ void network_update(network_t *network, adam_parameters_t optimizer, size_t epoc
     }
 }
 
-void batch_copy(matrix_t dst, matrix_t src, size_t *indices, size_t batch_size)
+void batch_copy(matrix_t dst, matrix_t src, const size_t *indices, size_t batch_size)
 {
     for (size_t i = 0; i < batch_size; ++i)
     {
@@ -165,38 +165,12 @@ void network_train(network_t *network, matrix_t inputs, matrix_t targets, adam_p
     free(indices);
 }
 
-void network_summary(network_t *network)
+void network_summary(const network_t *network)
 {
     for (size_t i = 0; i < network->layer_count; ++i)
     {
         matrix_t w = network->layers[i].weights;
         vector_t b = network->layers[i].biases;
-        printf("Layer %zu: weights (%zu, %zu), biases %zu\n", i + 1, w.rows, w.cols, b.count);
-    }
-    fflush(stdout);
-}
-
-void network_summary2(network_t *network)
-{
-    for (size_t i = 0; i < network->layer_count; ++i)
-    {
-        matrix_t w = network->layers[i].weights;
-        vector_t b = network->layers[i].biases;
-        printf("%zu: W = ", i);
-        for (size_t row = 0; row < w.rows; ++row)
-        {
-            for (size_t col = 0; col < w.cols; ++col)
-            {
-                printf("%lf, ", MATRIX_AT(w, row, col));
-            }
-            printf("\n");
-        }
-
-        printf("b = ");
-        for (size_t row = 0; row < w.rows; ++row)
-        {
-            printf("%lf\n", VECTOR_AT(w, row));
-        }
         printf("Layer %zu: weights (%zu, %zu), biases %zu\n", i + 1, w.rows, w.cols, b.count);
     }
     fflush(stdout);

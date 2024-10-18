@@ -23,8 +23,8 @@ int main()
     };
     network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), loss);
     network_summary(&network);
-    matrix_t inputs = (matrix_t){BATCH_SIZE, INPUT_SIZE, (double[]){0, 0, 1, 0, 0, 1, 1, 1}};
-    matrix_t targets = (matrix_t){BATCH_SIZE, OUTPUT_SIZE, (double[]){0, 1, 1, 1}};
+    matrix_t inputs = {BATCH_SIZE, INPUT_SIZE, (double[]){0, 0, 1, 0, 0, 1, 1, 1}};
+    matrix_t targets = {BATCH_SIZE, OUTPUT_SIZE, (double[]){0, 1, 1, 1}};
 
     adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
     network_train(&network, inputs, targets, optimizer, EPOCHS);

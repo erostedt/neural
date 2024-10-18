@@ -12,10 +12,10 @@ typedef struct
     matrix_t temp_buffer;
 } network_t;
 
-network_t network_alloc(size_t batch_size, size_t input_count, layer_spec_t *layer_specs, size_t size,
+network_t network_alloc(size_t batch_size, size_t input_count, const layer_spec_t *layer_specs, size_t size,
                         loss_type_t loss);
 void network_free(network_t *network);
 matrix_t network_forward(network_t *network, matrix_t inputs);
 void network_predict(network_t *network, matrix_t inputs, matrix_t prediction);
 void network_train(network_t *network, matrix_t inputs, matrix_t targets, adam_parameters_t optimizer, size_t epochs);
-void network_summary(network_t *network);
+void network_summary(const network_t *network);

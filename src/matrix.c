@@ -25,14 +25,6 @@ void matrix_free(matrix_t *matrix)
     free(matrix->elements);
 }
 
-void matrix_copy_first_rows(matrix_t dst, matrix_t src, size_t rows)
-{
-    ASSERT(rows <= src.rows && rows <= dst.rows);
-    ASSERT(src.cols == dst.cols);
-    size_t byte_count = src.cols * rows * sizeof(*dst.elements);
-    memcpy(dst.elements, src.elements, byte_count);
-}
-
 void matrix_copy(matrix_t dst, matrix_t src)
 {
     ASSERT(matrix_same_shape(src, dst));
@@ -84,7 +76,7 @@ void matrix_split_into(matrix_t dst1, matrix_t dst2, matrix_t src)
     }
 }
 
-void matrix_permute_rows(matrix_t mat, size_t *indices)
+void matrix_permute_rows(matrix_t mat, const size_t *indices)
 {
     if (mat.rows < 2)
     {

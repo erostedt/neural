@@ -37,8 +37,8 @@ void linspace(matrix_t features, double min, double max)
 
 int main()
 {
-    const size_t SAMPLE_COUNT = 150;
-    const size_t BATCH_SIZE = 4;
+    const size_t SAMPLE_COUNT = 300;
+    const size_t BATCH_SIZE = 16;
     const size_t INPUT_SIZE = 1;
     const size_t OUTPUT_SIZE = 1;
     const double LEARNING_RATE = 1e-3;

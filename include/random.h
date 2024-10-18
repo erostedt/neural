@@ -2,6 +2,12 @@
 #include <math.h>
 #include <stdlib.h>
 
+
+static void set_seed(unsigned int seed)
+{
+    srand(seed);
+}
+
 static double uniform(double min, double max)
 {
     double x = (double)rand() / RAND_MAX;

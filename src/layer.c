@@ -83,7 +83,7 @@ matrix_t layer_backward(layer_t *layer, matrix_t upstream_gradient)
     return layer->d_inputs;
 }
 
-void layer_randomize(layer_t *layer)
+void layer_initialize(layer_t *layer)
 {
     switch (layer->activation)
     {
@@ -91,10 +91,10 @@ void layer_randomize(layer_t *layer)
     case LINEAR:
     case TANH:
     case SOFTMAX:
-        matrix_randomize_xavier(layer->weights);
+        matrix_initialize_xavier(layer->weights);
         break;
     case RELU:
-        matrix_randomize_he(layer->weights);
+        matrix_initialize_he(layer->weights);
         break;
     }
     VECTOR_ZERO(layer->biases);
