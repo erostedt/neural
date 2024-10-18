@@ -17,7 +17,7 @@ int main()
     const loss_type_t loss = BINARY_CROSS_ENTROPY;
 
     srand(SEED);
-    layer_spec_t layers[] = {
+    layer_type_t layers[] = {
         LAYER_SIGMOID(HIDDEN_NODES),
         LAYER_SIGMOID(OUTPUT_SIZE),
     };

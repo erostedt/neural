@@ -1,4 +1,3 @@
-#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -47,7 +46,7 @@ int main()
     const loss_type_t loss = MSE;
 
     srand(SEED);
-    layer_spec_t layers[] = {
+    layer_type_t layers[] = {
         LAYER_RELU(8),
         LAYER_RELU(16),
         LAYER_LINEAR(1),

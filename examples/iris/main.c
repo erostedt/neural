@@ -2,7 +2,6 @@
 
 #include <neural.h>
 
-#include "dataset.h"
 #include "iris.h"
 
 #define ARRAY_LEN(arr) sizeof((arr)) / sizeof((arr)[0])
@@ -21,7 +20,7 @@ int main()
 
     set_seed(SEED);
 
-    layer_spec_t layers[] = {
+    layer_type_t layers[] = {
         LAYER_RELU(8),
         LAYER_RELU(16),
         LAYER_SOFTMAX(OUTPUT_SIZE),

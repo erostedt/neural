@@ -11,13 +11,13 @@
 #include "stdlib.h"
 #include "vector.h"
 
-network_t network_alloc(size_t batch_size, size_t input_count, const layer_spec_t *layer_specs, size_t size, loss_type_t loss)
+network_t network_alloc(size_t batch_size, size_t input_count, const layer_type_t *layer_types, size_t size, loss_type_t loss)
 {
     ASSERT(size > 0);
 
     network_t network;
 
-    network.loss = loss_alloc(batch_size, layer_specs[size - 1].neuron_count);
+    network.loss = loss_alloc(batch_size, layer_types[size - 1].neuron_count);
     network.loss_type = loss;
     network.temp_buffer = matrix_alloc(batch_size, input_count);
 
@@ -25,7 +25,7 @@ network_t network_alloc(size_t batch_size, size_t input_count, const layer_spec_
     network.layers = malloc(size * sizeof(layer_t));
     for (size_t layer_index = 0; layer_index < size; ++layer_index)
     {
-        layer_spec_t spec = layer_specs[layer_index];
+        layer_type_t spec = layer_types[layer_index];
         layer_t layer = layer_alloc(batch_size, input_count, spec);
         input_count = spec.neuron_count;
         layer_initialize(&layer);

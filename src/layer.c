@@ -9,10 +9,10 @@
 #include "operations.h"
 #include "vector.h"
 
-layer_t layer_alloc(size_t batch_size, size_t input_count, layer_spec_t spec)
+layer_t layer_alloc(size_t batch_size, size_t input_count, layer_type_t type)
 {
     layer_t layer;
-    size_t neuron_count = spec.neuron_count;
+    size_t neuron_count = type.neuron_count;
     layer.weights = matrix_alloc(input_count, neuron_count);
     layer.d_weights = matrix_alloc(input_count, neuron_count);
     layer.biases = vector_alloc(neuron_count);
@@ -23,7 +23,7 @@ layer_t layer_alloc(size_t batch_size, size_t input_count, layer_spec_t spec)
     layer.activations = matrix_alloc(batch_size, neuron_count);
 
     layer.d_inputs = matrix_alloc(batch_size, input_count);
-    layer.activation = spec.activation;
+    layer.activation = type.activation;
 
     layer.state.m_weights = matrix_alloc(input_count, neuron_count);
     layer.state.v_weights = matrix_alloc(input_count, neuron_count);

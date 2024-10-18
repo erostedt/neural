@@ -17,7 +17,7 @@ int main()
 
     srand(SEED);
 
-    layer_spec_t layers[] = {
+    layer_type_t layers[] = {
         LAYER_SIGMOID(8),
         LAYER_SIGMOID(16),
         LAYER_SOFTMAX(OUTPUT_SIZE),
