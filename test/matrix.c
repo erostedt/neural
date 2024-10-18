@@ -1,40 +1,62 @@
 #include "utest.h"
-
 #include "comparison.h"
+
+#include "check.h"
 #include "matrix.h"
-#include "operations.h"
 
-UTEST(matrix, matrix_multiply)
+/*
+UTEST(matrix, matrix_alloc)
 {
-    matrix_t lhs = {3, 2, (double[6]){1, 2, 3, 4, 5, 6}};
-    matrix_t rhs = {2, 3, (double[6]){7, 8, 9, 10, 11, 12}};
-    matrix_t dst = matrix_alloc(3, 3);
-
-    matrix_multiply(dst, lhs, rhs);
-    matrix_t expected_output = {3, 3, (double[9]){27, 30, 33, 61, 68, 75, 95, 106, 117}};
-
-    ASSERT_TRUE(matrix_equals(dst, expected_output));
+    matrix_t matrix_alloc(size_t rows, size_t cols);
+    NOT_IMPLEMENTED();
 }
 
-UTEST(matrix, matrix_multiply_ABT)
+UTEST(matrix, matrix_alloc_like)
 {
-    matrix_t lhs = {3, 2, (double[6]){1, 2, 3, 4, 5, 6}};
-    matrix_t rhs = {3, 2, (double[6]){7, 10, 8, 11, 9, 12}};
-    matrix_t dst = matrix_alloc(3, 3);
-
-    matrix_multiply_ABT(dst, lhs, rhs);
-    matrix_t expected_output = {3, 3, (double[9]){27, 30, 33, 61, 68, 75, 95, 106, 117}};
-
-    ASSERT_TRUE(matrix_equals(dst, expected_output));
+    matrix_t matrix_alloc_like(matrix_t matrix);
+    NOT_IMPLEMENTED();
 }
 
-UTEST(matrix, matrix_multiply_ATB)
+UTEST(matrix, matrix_free)
 {
-    matrix_t lhs = {2, 3, (double[6]){1, 3, 5, 2, 4, 6}};
-    matrix_t rhs = {2, 3, (double[6]){7, 8, 9, 10, 11, 12}};
-    matrix_t dst = matrix_alloc(3, 3);
-    matrix_multiply_ATB(dst, lhs, rhs);
-    matrix_t expected_output = {3, 3, (double[9]){27, 30, 33, 61, 68, 75, 95, 106, 117}};
-
-    ASSERT_TRUE(matrix_equals(dst, expected_output));
+    void matrix_free(matrix_t *matrix);
+    NOT_IMPLEMENTED();
 }
+
+UTEST(matrix, matrix_same_shape)
+{
+    bool matrix_same_shape(matrix_t mat1, matrix_t mat2);
+    NOT_IMPLEMENTED();
+}
+
+UTEST(matrix, matrix_same_shapes)
+{
+    bool matrix_same_shapes(matrix_t mat1, matrix_t mat2, matrix_t mat3);
+    NOT_IMPLEMENTED();
+}
+
+UTEST(matrix, matrix_copy)
+{
+    void matrix_copy(matrix_t dst, matrix_t src);
+    NOT_IMPLEMENTED();
+}
+
+UTEST(matrix, matrix_subtract)
+{
+    void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs);
+    NOT_IMPLEMENTED();
+}
+
+UTEST(matrix, matrix_scale)
+{
+    void matrix_scale(matrix_t matrix, double scalar);
+    NOT_IMPLEMENTED();
+}
+
+MATRIX_AT(mat, row, col)
+MATRIX_AT_INDEX(mat, index)
+MATRIX_ELEMENT_COUNT(mat)
+MATRIX_ELEMENT_BYTES(mat)
+MATRIX_ZERO(mat)
+
+*/

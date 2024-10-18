@@ -23,7 +23,6 @@ void matrix_free(matrix_t *matrix);
 bool matrix_same_shape(matrix_t mat1, matrix_t mat2);
 bool matrix_same_shapes(matrix_t mat1, matrix_t mat2, matrix_t mat3);
 void matrix_copy(matrix_t dst, matrix_t src);
-void matrix_split_into(matrix_t dst1, matrix_t dst2, matrix_t src);
 
 void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs);
 void matrix_scale(matrix_t matrix, double scalar);
