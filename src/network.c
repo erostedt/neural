@@ -80,9 +80,6 @@ void network_predict(network_t *network, matrix_t inputs, matrix_t prediction)
     }
 
     matrix_t batch = network->temp_buffer;
-    printf("%zu, %zu\n", inputs.rows, inputs.cols);
-    printf("%zu, %zu\n", batch.rows, batch.cols);
-    printf("%zu, %zu\n", network->temp_buffer.rows, network->temp_buffer.cols);
     MATRIX_ZERO(batch);
     size_t remainder = sample_count % batch_size;
     {

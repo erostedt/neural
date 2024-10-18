@@ -2,6 +2,7 @@
 
 #include <neural.h>
 
+#include "dataset.h"
 #include "iris.h"
 
 #define ARRAY_LEN(arr) sizeof((arr)) / sizeof((arr)[0])
@@ -14,7 +15,7 @@ int main()
     const double TRAINING_FRACTION = 0.7;
     const size_t OUTPUT_SIZE = 3;
     const double LEARNING_RATE = 1e-4;
-    const size_t EPOCHS = 10000;
+    const size_t EPOCHS = 6000;
     const size_t SEED = 37;
     const loss_type_t LOSS = CATEGORICAL_CROSS_ENTROPY;
 
@@ -26,6 +27,7 @@ int main()
         LAYER_SOFTMAX(OUTPUT_SIZE),
     };
 
+    standardize(features);
     matrix_t targets = matrix_alloc(species.count, OUTPUT_SIZE);
     one_hot_encode(targets, species, OUTPUT_SIZE);
 

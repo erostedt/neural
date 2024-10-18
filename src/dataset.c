@@ -1,8 +1,11 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "check.h"
+#include "matrix.h"
 #include "operations.h"
 #include "random.h"
+#include "vector.h"
 #include "dataset.h"
 
 
@@ -100,3 +103,44 @@ dataset_t train_test_split(matrix_t features, matrix_t targets, double train_fra
 }
 
 
+void standardize(matrix_t features)
+{
+    ASSERT(features.rows > 0);
+
+    vector_t means = vector_alloc(features.cols);
+    vector_t stds = vector_alloc(features.cols);
+    VECTOR_ZERO(means);
+    VECTOR_ZERO(stds);
+
+    for (size_t row = 0; row < features.rows; ++row)
+    {
+         vector_add(means, means, row_vector(features, row));
+    }
+
+    vector_scale(means, means, 1.0/features.rows);
+
+    for (size_t row = 0; row < features.rows; ++row)
+    {
+        for (size_t col = 0; col < features.cols; ++col)
+        {
+            double diff = MATRIX_AT(features, row, col) - VECTOR_AT(means, col);
+            VECTOR_AT(stds, col) += diff * diff;
+        }
+    }
+
+    for (size_t col = 0; col < features.cols; ++col)
+    {
+        VECTOR_AT(stds, col) = sqrt(VECTOR_AT(stds, col) / features.rows);
+    }
+
+    for (size_t row = 0; row < features.rows; ++row)
+    {
+        for (size_t col = 0; col < features.cols; ++col)
+        {
+            MATRIX_AT(features, row, col) = (MATRIX_AT(features, row, col) - VECTOR_AT(means, col)) / VECTOR_AT(stds, col);
+        }
+    }
+
+    vector_free(&means);
+    vector_free(&stds);
+}

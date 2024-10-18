@@ -41,6 +41,27 @@ void vector_add(vector_t dst, vector_t lhs, vector_t rhs)
     }
 }
 
+void vector_subtract(vector_t  dst, vector_t  lhs, vector_t rhs)
+{
+    ASSERT(lhs.count == rhs.count);
+    ASSERT(dst.count == rhs.count);
+    size_t n = lhs.count;
+    for (size_t i = 0; i < n; ++i)
+    {
+        dst.elements[i] = lhs.elements[i] - rhs.elements[i];
+    }
+}
+
+void vector_scale(vector_t dst, vector_t src, double scalar)
+{
+    ASSERT(dst.count == src.count);
+    for (size_t i = 0; i < src.count; ++i)
+    {
+        dst.elements[i] = src.elements[i] * scalar;
+    }
+}
+
+
 bool vector_same_shape(vector_t vec1, vector_t vec2)
 {
     return vec1.count == vec2.count;

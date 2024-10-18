@@ -19,6 +19,8 @@ vector_t vector_alloc(size_t count);
 void vector_free(vector_t *vector);
 void vector_copy(vector_t dst, vector_t src);
 void vector_add(vector_t dst, vector_t lhs, vector_t rhs);
+void vector_subtract(vector_t  dst, vector_t  lhs, vector_t rhs);
+void vector_scale(vector_t dst, vector_t src, double scalar);
 bool vector_same_shape(vector_t vec1, vector_t vec2);
 bool vector_same_shapes(vector_t vec1, vector_t vec2, vector_t vec3);
 void vector_permute(vector_t vec, const size_t *indices);
