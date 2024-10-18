@@ -91,10 +91,10 @@ void layer_initialize(layer_t *layer)
     case LINEAR:
     case TANH:
     case SOFTMAX:
-        matrix_initialize_xavier(layer->weights);
+        initialize_xavier(layer->weights);
         break;
     case RELU:
-        matrix_initialize_he(layer->weights);
+        initialize_he(layer->weights);
         break;
     }
     VECTOR_ZERO(layer->biases);

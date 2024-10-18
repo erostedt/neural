@@ -13,7 +13,7 @@ int main()
     const double LEARNING_RATE = 1e-1;
     const size_t EPOCHS = 10000;
     const size_t SEED = 37;
-    const loss_type_t loss = CATEGORICAL_CROSS_ENTROPY;
+    const loss_type_t LOSS = CATEGORICAL_CROSS_ENTROPY;
 
     srand(SEED);
 
@@ -22,14 +22,14 @@ int main()
         LAYER_SIGMOID(16),
         LAYER_SOFTMAX(OUTPUT_SIZE),
     };
-    network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), loss);
-    matrix_t inputs = {BATCH_SIZE, INPUT_SIZE, (double[]){0, 1, 2, 3}};
+    network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), LOSS);
+    matrix_t features = {BATCH_SIZE, INPUT_SIZE, (double[]){0, 1, 2, 3}};
     matrix_t targets = {BATCH_SIZE, OUTPUT_SIZE, (double[]){1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
 
     adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
-    network_train(&network, inputs, targets, optimizer, EPOCHS);
+    network_train(&network, features, targets, optimizer, EPOCHS);
 
-    matrix_t pred = network_forward(&network, inputs);
+    matrix_t pred = network_forward(&network, features);
     size_t corrects = 0;
     for (size_t row = 0; row < pred.rows; ++row)
     {
