@@ -85,26 +85,3 @@ void sum_rows(vector_t output, matrix_t mat)
     }
 }
 
-void one_hot_matrix(matrix_t dst, vector_t classes, size_t class_count)
-{
-    ASSERT(dst.rows == classes.count);
-    ASSERT(dst.cols == class_count);
-    MATRIX_ZERO(dst);
-    for (size_t i = 0; i < VECTOR_ELEMENT_COUNT(classes); ++i)
-    {
-        size_t class = VECTOR_AT(classes, i);
-        ASSERT(class < class_count);
-        MATRIX_AT(dst, i, class) = 1.0;
-    }
-}
-
-size_t *indices_alloc(size_t count)
-{
-    size_t *indices = malloc(count * sizeof(count));
-    ASSERT(indices != NULL);
-    for (size_t i = 0; i < count; ++i)
-    {
-        indices[i] = i;
-    }
-    return indices;
-}

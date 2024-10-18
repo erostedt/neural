@@ -27,9 +27,9 @@ int main()
         LAYER_SOFTMAX(OUTPUT_SIZE),
     };
 
-    size_t *indices = indices_alloc(SAMPLE_COUNT);
+    size_t *indices = range(SAMPLE_COUNT);
     shuffle(indices, SAMPLE_COUNT);
-    matrix_permute_rows(features, indices);
+    permute_rows(features, indices);
     vector_permute(species, indices);
 
     const size_t training_samples = (size_t)(TRAINING_FRACTION * SAMPLE_COUNT);
@@ -38,7 +38,7 @@ int main()
     matrix_t test_features = matrix_alloc(testing_samples, INPUT_SIZE);
 
     matrix_t targets = matrix_alloc(species.count, OUTPUT_SIZE);
-    one_hot_matrix(targets, species, OUTPUT_SIZE);
+    one_hot_encode(targets, species, OUTPUT_SIZE);
 
     matrix_t train_targets = matrix_alloc(training_samples, OUTPUT_SIZE);
     matrix_t test_targets = matrix_alloc(testing_samples, OUTPUT_SIZE);

@@ -76,20 +76,3 @@ void matrix_split_into(matrix_t dst1, matrix_t dst2, matrix_t src)
     }
 }
 
-void matrix_permute_rows(matrix_t mat, const size_t *indices)
-{
-    if (mat.rows < 2)
-    {
-        return;
-    }
-
-    vector_t temp = vector_alloc(mat.cols);
-    for (size_t i = 0; i < mat.rows; ++i)
-    {
-        size_t j = indices[i];
-        vector_copy(temp, row_vector(mat, i));
-        vector_copy(row_vector(mat, i), row_vector(mat, j));
-        vector_copy(row_vector(mat, j), temp);
-    }
-    vector_free(&temp);
-}

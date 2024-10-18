@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "check.h"
+#include "dataset.h"
 #include "layer.h"
 #include "loss.h"
 #include "matrix.h"
@@ -135,7 +136,7 @@ void network_train(network_t *network, matrix_t inputs, matrix_t targets, adam_p
     matrix_t input_batch = matrix_alloc(batch_size, input_size);
     matrix_t target_batch = matrix_alloc(batch_size, target_size);
 
-    size_t *indices = indices_alloc(inputs.rows);
+    size_t *indices = range(inputs.rows);
 
     ASSERT(inputs.rows >= batch_size);
     for (size_t epoch = 0; epoch < epochs; ++epoch)

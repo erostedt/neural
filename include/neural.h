@@ -2,6 +2,7 @@
 
 #include "activation.h"
 #include "check.h"
+#include "dataset.h"
 #include "initialization.h"
 #include "layer.h"
 #include "loss.h"

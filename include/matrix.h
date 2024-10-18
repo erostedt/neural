@@ -26,4 +26,3 @@ void matrix_split_into(matrix_t dst1, matrix_t dst2, matrix_t src);
 
 void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs);
 void matrix_scale(matrix_t matrix, double scalar);
-void matrix_permute_rows(matrix_t mat, const size_t *indices);
