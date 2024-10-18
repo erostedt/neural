@@ -111,7 +111,7 @@ void activate_tanh_gradient(matrix_t dst, matrix_t activations, matrix_t upstrea
     for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(activations); ++i)
     {
         double tanh_ = MATRIX_AT_INDEX(activations, i);
-        MATRIX_AT_INDEX(dst, i) *= (1.0 - (tanh_ * tanh_)) * MATRIX_AT_INDEX(upstream_gradient, i);
+        MATRIX_AT_INDEX(dst, i) = (1.0 - (tanh_ * tanh_)) * MATRIX_AT_INDEX(upstream_gradient, i);
     }
 }
 
