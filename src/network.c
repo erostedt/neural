@@ -148,7 +148,7 @@ void network_train(network_t *network, matrix_t inputs, matrix_t targets, adam_p
             batch_copy(target_batch, targets, indices + offset, batch_size);
 
             matrix_t pred = network_forward(network, input_batch);
-            loss_calculate(&network->loss, network->loss_type, target_batch, pred);
+            loss_calculate(&network->loss, network->loss_type, pred, target_batch);
 
             loss_value += network->loss.value;
             network_backward(network, network->loss.gradient);
