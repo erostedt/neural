@@ -51,13 +51,6 @@ bool vector_same_shapes(vector_t vec1, vector_t vec2, vector_t vec3)
     return vector_same_shape(vec1, vec2) && vector_same_shape(vec1, vec3);
 }
 
-void vector_one_hot(vector_t vec, size_t class)
-{
-    ASSERT(class < VECTOR_ELEMENT_COUNT(vec));
-    VECTOR_ZERO(vec);
-    VECTOR_AT(vec, class) = 1.0f;
-}
-
 size_t vector_argmax(vector_t vec)
 {
     ASSERT(VECTOR_ELEMENT_COUNT(vec) > 0);

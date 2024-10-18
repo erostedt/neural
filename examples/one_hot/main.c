@@ -5,22 +5,6 @@
 
 #define ARRAY_LEN(arr) sizeof((arr)) / sizeof((arr)[0])
 
-void set_inputs(matrix_t inputs)
-{
-    for (size_t row = 0; row < inputs.rows; ++row)
-    {
-        MATRIX_AT(inputs, row, 0) = row;
-    }
-}
-
-void set_targets(matrix_t targets)
-{
-    for (size_t row = 0; row < targets.rows; ++row)
-    {
-        vector_one_hot(row_vector(targets, row), row);
-    }
-}
-
 int main()
 {
     const size_t BATCH_SIZE = 4;
@@ -39,10 +23,8 @@ int main()
         LAYER_SOFTMAX(OUTPUT_SIZE),
     };
     network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), loss);
-    matrix_t inputs = matrix_alloc(BATCH_SIZE, INPUT_SIZE);
-    matrix_t targets = matrix_alloc(BATCH_SIZE, OUTPUT_SIZE);
-    set_inputs(inputs);
-    set_targets(targets);
+    matrix_t inputs = {BATCH_SIZE, INPUT_SIZE, (double[]){0, 1, 2, 3}};
+    matrix_t targets = {BATCH_SIZE, OUTPUT_SIZE, (double[]){1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
 
     adam_parameters_t optimizer = optimizer_default(LEARNING_RATE);
     network_train(&network, inputs, targets, optimizer, EPOCHS);
