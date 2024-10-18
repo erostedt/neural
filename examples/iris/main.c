@@ -15,7 +15,7 @@ int main()
     const double TRAINING_FRACTION = 0.7;
     const size_t OUTPUT_SIZE = 3;
     const double LEARNING_RATE = 1e-4;
-    const size_t EPOCHS = 6000;
+    const size_t EPOCHS = 10000;
     const size_t SEED = 37;
     const loss_type_t LOSS = CATEGORICAL_CROSS_ENTROPY;
 
@@ -27,11 +27,13 @@ int main()
         LAYER_SOFTMAX(OUTPUT_SIZE),
     };
 
-    standardize(features);
     matrix_t targets = matrix_alloc(species.count, OUTPUT_SIZE);
     one_hot_encode(targets, species, OUTPUT_SIZE);
 
     dataset_t dataset = train_test_split(features, targets, TRAINING_FRACTION);
+    standardization_t standardization = calculate_standardization(dataset.train_features);
+    standardize(dataset.train_features, dataset.train_features, standardization);
+    standardize(dataset.test_features, dataset.test_features, standardization);
 
     network_t network = network_alloc(BATCH_SIZE, INPUT_SIZE, layers, ARRAY_LEN(layers), LOSS);
     network_summary(&network);
