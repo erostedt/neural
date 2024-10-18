@@ -69,3 +69,47 @@ UTEST(activation_gradient, tanh)
     activate_gradient(outputs, activations, gradients, TANH);
     ASSERT_TRUE(matrix_equals(outputs, expected_outputs));
 }
+
+UTEST(activation, linear)
+{
+    matrix_t outputs = {3, 2, (double[]){-1000.0, -5.8, 0.0, 1.0, 3.123, 1000.0}};
+    matrix_t activations = {3, 2, (double[6]){0}};
+    matrix_t expected_activations = {3, 2, (double[]){-1000.0, -5.8, 0.0, 1.0, 3.123, 1000.0}};
+
+    activate(activations, outputs, LINEAR);
+    ASSERT_TRUE(matrix_equals(activations, expected_activations));
+}
+
+UTEST(activation_gradient, linear)
+{
+    matrix_t activations = {3, 2, (double[]){-1.0, -0.6, 0.0, 0.6, 0.8, 1.0}};
+    matrix_t gradients = {3, 2, (double[6]){-1.0, 2.0, -3.0, 4.0, -5.0, 6.0}};
+    matrix_t outputs = {3, 2, (double[6]){0}};
+
+    matrix_t expected_outputs = {3, 2, (double[]){-1.0, 2.0, -3.0, 4.0, -5.0, 6.0}};
+
+    activate_gradient(outputs, activations, gradients, LINEAR);
+    ASSERT_TRUE(matrix_equals(outputs, expected_outputs));
+}
+
+UTEST(activation, softmax)
+{
+    matrix_t outputs = {4, 2, (double[]){1000.0, -1000.0, -1000.0, 1000.0, 50.0, 50.0, 2.5, 7.5}};
+    matrix_t activations = {4, 2, (double[8]){0}};
+    matrix_t expected_activations = {4, 2, (double[]){1.0, 0.0, 0.0, 1.0, 0.5, 0.5, 0.00669285, 0.99330715}};
+
+    activate(activations, outputs, SOFTMAX);
+    ASSERT_TRUE(matrix_equals(activations, expected_activations));
+}
+
+UTEST(activation_gradient, softmax)
+{
+    matrix_t activations = {4, 2, (double[]){1.0, 0.0, 0.0, 1.0, 0.5, 0.5, 0.00669285, 0.99330715}};
+    matrix_t gradients = {4, 2, (double[8]){-1.0, 2.0, -3.0, 4.0, -5.0, 6.0, -7.0, 8.0}};
+    matrix_t outputs = {4, 2, (double[8]){0}};
+
+    matrix_t expected_outputs = {4, 2, (double[]){0.0, 0.0, 0.0, 0.0, -2.75, 2.75, -0.0997208363831625, 0.0997208363831625}};
+
+    activate_gradient(outputs, activations, gradients, SOFTMAX);
+    ASSERT_TRUE(matrix_equals(outputs, expected_outputs));
+}
