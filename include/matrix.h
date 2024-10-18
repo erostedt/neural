@@ -18,6 +18,7 @@ typedef struct
 } matrix_t;
 
 matrix_t matrix_alloc(size_t rows, size_t cols);
+matrix_t matrix_alloc_like(matrix_t matrix);
 void matrix_free(matrix_t *matrix);
 bool matrix_same_shape(matrix_t mat1, matrix_t mat2);
 bool matrix_same_shapes(matrix_t mat1, matrix_t mat2, matrix_t mat3);
