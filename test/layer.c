@@ -55,10 +55,22 @@ UTEST(layer, not)
     ASSERT_LT(MATRIX_AT(pred, 1, 0), 0.5);
 }
 
-/*
-LAYER_RELU(neuron_count)
-LAYER_LINEAR(neuron_count)
-LAYER_TANH(neuron_count)
-LAYER_SIGMOID(neuron_count)
-LAYER_SOFTMAX(neuron_count)
-*/
+UTEST(layer, macros)
+{
+    layer_type_t layers[] = {LAYER_RELU(3), LAYER_LINEAR(5), LAYER_TANH(30), LAYER_SIGMOID(12), LAYER_SOFTMAX(4)};
+
+    ASSERT_EQ(layers[0].activation, RELU);
+    ASSERT_EQ(layers[0].neuron_count, 3);
+
+    ASSERT_EQ(layers[1].activation, LINEAR);
+    ASSERT_EQ(layers[1].neuron_count, 5);
+
+    ASSERT_EQ(layers[2].activation, TANH);
+    ASSERT_EQ(layers[2].neuron_count, 30);
+
+    ASSERT_EQ(layers[3].activation, SIGMOID);
+    ASSERT_EQ(layers[3].neuron_count, 12);
+
+    ASSERT_EQ(layers[4].activation, SOFTMAX);
+    ASSERT_EQ(layers[4].neuron_count, 4);
+}
