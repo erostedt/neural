@@ -25,4 +25,4 @@ bool matrix_same_shapes(matrix_t mat1, matrix_t mat2, matrix_t mat3);
 void matrix_copy(matrix_t dst, matrix_t src);
 
 void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs);
-void matrix_scale(matrix_t matrix, double scalar);
+void matrix_scale(matrix_t dst, matrix_t src, double scalar);
