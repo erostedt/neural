@@ -39,6 +39,12 @@ double clamp(double value, double min, double max)
     return fmax(fmin(value, max), min);
 }
 
+bool isclose(double x, double y)
+{
+    return fabs(x - y) < 1e-8;
+}
+
+
 void loss_binary_cross_entropy(loss_t *loss, matrix_t y_pred, matrix_t y_true)
 {
     loss->value = 0.0;
@@ -71,7 +77,7 @@ void loss_categorical_cross_entropy(loss_t *loss, matrix_t y_pred, matrix_t y_tr
         {
             double label = MATRIX_AT(y_true, row, col);
             double pred = clamp(MATRIX_AT(y_pred, row, col), min, max);
-            if (label == 1.0)
+            if (isclose(label, 1.0))
             {
                 loss->value -= log(pred);
                 MATRIX_AT(loss->gradient, row, col) = -1.0 / pred;
