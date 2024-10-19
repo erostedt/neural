@@ -105,7 +105,7 @@ dataset_t train_test_split(matrix_t features, matrix_t targets, double train_fra
 
 standardization_t calculate_standardization(matrix_t features)
 {
-    ASSERT(features.rows > 0);
+    ASSERT(features.rows > 1);
 
     vector_t means = vector_alloc(features.cols);
     vector_t stds = vector_alloc(features.cols);
@@ -130,7 +130,7 @@ standardization_t calculate_standardization(matrix_t features)
 
     for (size_t col = 0; col < features.cols; ++col)
     {
-        VECTOR_AT(stds, col) = sqrt(VECTOR_AT(stds, col) / features.rows);
+        VECTOR_AT(stds, col) = sqrt(VECTOR_AT(stds, col) / (features.rows - 1));
     }
 
 
@@ -145,7 +145,7 @@ void standardize(matrix_t dst, matrix_t features, standardization_t standardizat
     {
         for (size_t col = 0; col < features.cols; ++col)
         {
-            MATRIX_AT(features, row, col) = (MATRIX_AT(features, row, col) - VECTOR_AT(means, col)) / VECTOR_AT(stds, col);
+            MATRIX_AT(dst, row, col) = (MATRIX_AT(features, row, col) - VECTOR_AT(means, col)) / VECTOR_AT(stds, col);
         }
     }
 }
