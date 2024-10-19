@@ -1,10 +1,6 @@
 #include "comparison.h"
 #include "utest.h"
 
-#include <stdbool.h>
-
-#include "check.h"
-
 #include "vector.h"
 
 UTEST(vector, vector_alloc)
