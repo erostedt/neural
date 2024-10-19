@@ -2,7 +2,6 @@
 #include "utest.h"
 
 #include "loss.h"
-#include "check.h"
 
 
 UTEST(dataset, loss_alloc)
