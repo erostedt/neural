@@ -13,9 +13,9 @@ int main()
     const size_t BATCH_SIZE = 16;
     const double TRAINING_FRACTION = 0.7;
     const size_t OUTPUT_SIZE = 3;
-    const double LEARNING_RATE = 1e-4;
+    const double LEARNING_RATE = 1e-3;
     const size_t EPOCHS = 10000;
-    const size_t SEED = 37;
+    const size_t SEED = 39;
     const loss_type_t LOSS = CATEGORICAL_CROSS_ENTROPY;
 
     set_seed(SEED);
