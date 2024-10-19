@@ -21,6 +21,7 @@ void matrix_free(matrix_t *matrix)
     matrix->rows = 0;
     matrix->cols = 0;
     free(matrix->elements);
+    matrix->elements = NULL;
 }
 
 void matrix_copy(matrix_t dst, matrix_t src)
@@ -38,11 +39,12 @@ void matrix_subtract(matrix_t dst, matrix_t lhs, matrix_t rhs)
     }
 }
 
-void matrix_scale(matrix_t matrix, double scalar)
+void matrix_scale(matrix_t dst, matrix_t src, double scalar)
 {
-    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(matrix); ++i)
+    ASSERT(matrix_same_shape(src, dst));
+    for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(src); ++i)
     {
-        MATRIX_AT_INDEX(matrix, i) *= scalar;
+        MATRIX_AT_INDEX(dst, i) = MATRIX_AT_INDEX(src, i) * scalar;
     }
 }
 
