@@ -5,8 +5,8 @@
 #include <stddef.h>
 
 #define VECTOR_AT(vec, index) (vec).elements[(index)]
-#define VECTOR_ELEMENT_COUNT(vec) (vec).count
-#define VECTOR_ELEMENT_BYTES(vec) VECTOR_ELEMENT_COUNT(vec) * sizeof(*(vec).elements)
+#define VECTOR_ELEMENT_COUNT(vec) ((vec).count)
+#define VECTOR_ELEMENT_BYTES(vec) (VECTOR_ELEMENT_COUNT(vec) * sizeof(*(vec).elements))
 #define VECTOR_ZERO(vector) memset((vector).elements, 0, VECTOR_ELEMENT_BYTES((vector)))
 
 typedef struct
