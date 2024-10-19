@@ -15,15 +15,14 @@ loss_t loss_alloc(size_t input_count, size_t feature_count)
 
 void loss_free(loss_t *loss)
 {
+    loss->value = 0;
     matrix_free(&loss->gradient);
 }
 
 void loss_mse(loss_t *loss, matrix_t y_pred, matrix_t y_true)
 {
     loss->value = 0.0;
-    MATRIX_ZERO(loss->gradient);
-    matrix_copy(loss->gradient, y_pred);
-    matrix_subtract(loss->gradient, loss->gradient, y_true);
+    matrix_subtract(loss->gradient, y_pred, y_true);
 
     for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(loss->gradient); ++i)
     {
@@ -43,11 +42,9 @@ double clamp(double value, double min, double max)
 void loss_binary_cross_entropy(loss_t *loss, matrix_t y_pred, matrix_t y_true)
 {
     loss->value = 0.0;
-    MATRIX_ZERO(loss->gradient);
-    matrix_copy(loss->gradient, y_pred);
-    matrix_subtract(loss->gradient, loss->gradient, y_true);
+    matrix_subtract(loss->gradient, y_pred, y_true);
 
-    double min = 1e-15;
+    double min = 1e-8;
     double max = 1.0 - min;
     for (size_t i = 0; i < MATRIX_ELEMENT_COUNT(loss->gradient); ++i)
     {
