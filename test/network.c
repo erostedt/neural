@@ -1,9 +1,5 @@
-#include "matrix.h"
 #include "utest.h"
-#include "comparison.h"
 
-#include "check.h"
-#include "vector.h"
 #include "network.h"
 
 UTEST(network, network_alloc)
