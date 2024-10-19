@@ -2,7 +2,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-
 static void set_seed(unsigned int seed)
 {
     srand(seed);

@@ -108,7 +108,8 @@ UTEST(activation_gradient, softmax)
     matrix_t gradients = {4, 2, (double[8]){-1.0, 2.0, -3.0, 4.0, -5.0, 6.0, -7.0, 8.0}};
     matrix_t outputs = {4, 2, (double[8]){0}};
 
-    matrix_t expected_outputs = {4, 2, (double[]){0.0, 0.0, 0.0, 0.0, -2.75, 2.75, -0.0997208363831625, 0.0997208363831625}};
+    matrix_t expected_outputs = {4, 2,
+                                 (double[]){0.0, 0.0, 0.0, 0.0, -2.75, 2.75, -0.0997208363831625, 0.0997208363831625}};
 
     activate_gradient(outputs, activations, gradients, SOFTMAX);
     ASSERT_TRUE(matrix_equals(outputs, expected_outputs));

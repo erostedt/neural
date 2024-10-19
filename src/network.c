@@ -11,7 +11,8 @@
 #include "stdlib.h"
 #include "vector.h"
 
-network_t network_alloc(size_t batch_size, size_t input_count, const layer_type_t *layer_types, size_t size, loss_type_t loss)
+network_t network_alloc(size_t batch_size, size_t input_count, const layer_type_t *layer_types, size_t size,
+                        loss_type_t loss)
 {
     ASSERT(size > 0);
 

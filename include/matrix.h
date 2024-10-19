@@ -6,7 +6,7 @@
 
 #define MATRIX_AT(mat, row, col) (mat).elements[(row) * (mat).cols + (col)]
 #define MATRIX_AT_INDEX(mat, index) (mat).elements[(index)]
-#define MATRIX_ELEMENT_COUNT(mat) ((mat).rows *(mat).cols)
+#define MATRIX_ELEMENT_COUNT(mat) ((mat).rows * (mat).cols)
 #define MATRIX_ELEMENT_BYTES(mat) (MATRIX_ELEMENT_COUNT(mat) * sizeof(*(mat).elements))
 #define MATRIX_ZERO(mat) memset((mat).elements, 0, MATRIX_ELEMENT_BYTES((mat)))
 

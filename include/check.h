@@ -34,7 +34,7 @@ static void _unreachable(const char *file, int line, const char *msg)
     exit(EXIT_FAILURE);
 }
 
-static void _not_implemented(const char *file, const char* function)
+static void _not_implemented(const char *file, const char *function)
 {
     fprintf(stderr, "Funtion:\t[%s], in file [%s] is not implemented!\n", function, file);
     exit(EXIT_FAILURE);

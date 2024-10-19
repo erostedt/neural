@@ -84,4 +84,3 @@ void sum_rows(vector_t output, matrix_t mat)
         VECTOR_AT(output, row) = sum_row(mat, row);
     }
 }
-

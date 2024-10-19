@@ -2,12 +2,11 @@
 #include <stdlib.h>
 
 #include "check.h"
+#include "dataset.h"
 #include "matrix.h"
 #include "operations.h"
 #include "random.h"
 #include "vector.h"
-#include "dataset.h"
-
 
 size_t *range(size_t count)
 {
@@ -19,7 +18,6 @@ size_t *range(size_t count)
     }
     return indices;
 }
-
 
 void permute_rows(matrix_t dataset, const size_t *indices)
 {
@@ -39,7 +37,6 @@ void permute_rows(matrix_t dataset, const size_t *indices)
     vector_free(&temp);
 }
 
-
 void one_hot_encode(matrix_t dst, vector_t classes, size_t class_count)
 {
     ASSERT(dst.rows == classes.count);
@@ -52,8 +49,6 @@ void one_hot_encode(matrix_t dst, vector_t classes, size_t class_count)
         MATRIX_AT(dst, i, class) = 1.0;
     }
 }
-
-
 
 void split_into(matrix_t dst1, matrix_t dst2, matrix_t src)
 {
@@ -72,7 +67,6 @@ void split_into(matrix_t dst1, matrix_t dst2, matrix_t src)
         vector_copy(row_vector(dst2, i), row_vector(src, src_index));
     }
 }
-
 
 dataset_t train_test_split(matrix_t features, matrix_t targets, double train_fraction)
 {
@@ -102,7 +96,6 @@ dataset_t train_test_split(matrix_t features, matrix_t targets, double train_fra
     return (dataset_t){train_features, train_targets, test_features, test_targets};
 }
 
-
 standardization_t calculate_standardization(matrix_t features)
 {
     ASSERT(features.rows > 1);
@@ -114,10 +107,10 @@ standardization_t calculate_standardization(matrix_t features)
 
     for (size_t row = 0; row < features.rows; ++row)
     {
-         vector_add(means, means, row_vector(features, row));
+        vector_add(means, means, row_vector(features, row));
     }
 
-    vector_scale(means, means, 1.0/features.rows);
+    vector_scale(means, means, 1.0 / features.rows);
 
     for (size_t row = 0; row < features.rows; ++row)
     {
@@ -132,7 +125,6 @@ standardization_t calculate_standardization(matrix_t features)
     {
         VECTOR_AT(stds, col) = sqrt(VECTOR_AT(stds, col) / (features.rows - 1));
     }
-
 
     return (standardization_t){means, stds};
 }

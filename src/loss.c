@@ -44,7 +44,6 @@ bool isclose(double x, double y)
     return fabs(x - y) < 1e-8;
 }
 
-
 void loss_binary_cross_entropy(loss_t *loss, matrix_t y_pred, matrix_t y_true)
 {
     loss->value = 0.0;
@@ -56,7 +55,8 @@ void loss_binary_cross_entropy(loss_t *loss, matrix_t y_pred, matrix_t y_true)
     {
         double label = MATRIX_AT_INDEX(y_true, i);
         double pred = clamp(MATRIX_AT_INDEX(y_pred, i), min, max);
-        loss->value -= label * log(pred) + (1.0 - label) * log(1.0 - pred);;
+        loss->value -= label * log(pred) + (1.0 - label) * log(1.0 - pred);
+        ;
 
         MATRIX_AT_INDEX(loss->gradient, i) /= (pred * (1.0 - pred));
     }

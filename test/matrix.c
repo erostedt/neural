@@ -1,12 +1,11 @@
-#include "utest.h"
 #include "comparison.h"
+#include "utest.h"
 
 #include "matrix.h"
 
-
 UTEST(matrix, matrix_at)
 {
-    matrix_t matrix = {3, 2, (double[]) {1, 2, 3, 4, 5, 6}};
+    matrix_t matrix = {3, 2, (double[]){1, 2, 3, 4, 5, 6}};
     ASSERT_TRUE(isclose(MATRIX_AT(matrix, 0, 0), 1));
     ASSERT_TRUE(isclose(MATRIX_AT(matrix, 0, 1), 2));
     ASSERT_TRUE(isclose(MATRIX_AT(matrix, 1, 0), 3));
@@ -17,7 +16,7 @@ UTEST(matrix, matrix_at)
 
 UTEST(matrix, matrix_at_index)
 {
-    matrix_t matrix = {3, 2, (double[]) {1, 2, 3, 4, 5, 6}};
+    matrix_t matrix = {3, 2, (double[]){1, 2, 3, 4, 5, 6}};
     ASSERT_TRUE(isclose(MATRIX_AT_INDEX(matrix, 0), 1));
     ASSERT_TRUE(isclose(MATRIX_AT_INDEX(matrix, 1), 2));
     ASSERT_TRUE(isclose(MATRIX_AT_INDEX(matrix, 2), 3));
@@ -28,21 +27,21 @@ UTEST(matrix, matrix_at_index)
 
 UTEST(matrix, matrix_element_count)
 {
-    matrix_t matrix = {3, 2, (double[]) {1, 2, 3, 4, 5, 6}};
+    matrix_t matrix = {3, 2, (double[]){1, 2, 3, 4, 5, 6}};
     ASSERT_EQ(MATRIX_ELEMENT_COUNT(matrix), 6);
 }
 
 UTEST(matrix, matrix_element_bytes)
 {
-    matrix_t matrix = {3, 2, (double[]) {1, 2, 3, 4, 5, 6}};
+    matrix_t matrix = {3, 2, (double[]){1, 2, 3, 4, 5, 6}};
     ASSERT_EQ(MATRIX_ELEMENT_BYTES(matrix), 6 * sizeof(double));
 }
 
 UTEST(matrix, matrix_zero)
 {
-    matrix_t matrix = {3, 2, (double[]) {1, 2, 3, 4, 5, 6}};
+    matrix_t matrix = {3, 2, (double[]){1, 2, 3, 4, 5, 6}};
     MATRIX_ZERO(matrix);
-    matrix_t expected_outputs = {3, 2, (double[6]) {0}};
+    matrix_t expected_outputs = {3, 2, (double[6]){0}};
     ASSERT_TRUE(matrix_equals(matrix, expected_outputs));
 }
 
@@ -95,33 +94,31 @@ UTEST(matrix, matrix_same_shapes)
 
 UTEST(matrix, matrix_copy)
 {
-    matrix_t src = {3, 2, (double[]) {1, 2, 3, 4, 5, 6}};
-    matrix_t dst = {3, 2, (double[6]) {0}};
+    matrix_t src = {3, 2, (double[]){1, 2, 3, 4, 5, 6}};
+    matrix_t dst = {3, 2, (double[6]){0}};
     matrix_copy(dst, src);
     ASSERT_TRUE(matrix_equals(src, dst));
 }
 
 UTEST(matrix, matrix_subtract)
 {
-    matrix_t lhs = {3, 2, (double[]) {1, 2, 3, 4, 5, 6}};
-    matrix_t rhs = {3, 2, (double[]) {6, 5, 4, 3, 2, 1}};
-    matrix_t dst = {3, 2, (double[6]) {0}};
+    matrix_t lhs = {3, 2, (double[]){1, 2, 3, 4, 5, 6}};
+    matrix_t rhs = {3, 2, (double[]){6, 5, 4, 3, 2, 1}};
+    matrix_t dst = {3, 2, (double[6]){0}};
     matrix_subtract(dst, lhs, rhs);
 
-    matrix_t expected_outputs = {3, 2, (double[]) {-5, -3, -1, 1, 3, 5}};
+    matrix_t expected_outputs = {3, 2, (double[]){-5, -3, -1, 1, 3, 5}};
     ASSERT_TRUE(matrix_equals(expected_outputs, dst));
 }
 
 UTEST(matrix, matrix_scale)
 {
-    matrix_t matrix = {3, 2, (double[]) {1, 2, 3, 4, 5, 6}};
-    matrix_t scaled = {3, 2, (double[6]) {0}};
+    matrix_t matrix = {3, 2, (double[]){1, 2, 3, 4, 5, 6}};
+    matrix_t scaled = {3, 2, (double[6]){0}};
     double scalar = 3.0;
-    matrix_scale(scaled , matrix , scalar);
+    matrix_scale(scaled, matrix, scalar);
 
-    matrix_t expected_outputs = {3, 2, (double[]) {3, 6, 9, 12, 15, 18}};
+    matrix_t expected_outputs = {3, 2, (double[]){3, 6, 9, 12, 15, 18}};
 
     ASSERT_TRUE(matrix_equals(expected_outputs, scaled));
-
 }
-

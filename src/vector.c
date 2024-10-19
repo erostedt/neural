@@ -51,7 +51,6 @@ void vector_scale(vector_t dst, vector_t src, double scalar)
     }
 }
 
-
 bool vector_same_shape(vector_t vec1, vector_t vec2)
 {
     return vec1.count == vec2.count;

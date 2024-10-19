@@ -13,7 +13,6 @@ typedef struct
     matrix_t test_targets;
 } dataset_t;
 
-
 typedef struct
 {
     vector_t means;

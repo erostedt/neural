@@ -41,7 +41,6 @@ UTEST(vector, vector_element_bytes)
     ASSERT_EQ(VECTOR_ELEMENT_BYTES(vector), 3 * sizeof(double));
 }
 
-
 UTEST(vector, vector_free)
 {
     vector_t vector = vector_alloc(3);
