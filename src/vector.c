@@ -19,6 +19,7 @@ void vector_free(vector_t *vector)
 {
     vector->count = 0;
     free(vector->elements);
+    vector->elements = NULL;
 }
 
 void vector_copy(vector_t dst, vector_t src)
