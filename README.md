@@ -2,7 +2,7 @@
 neural is a neural network library written in pure C with no only C standard library and math as dependencies.
 
 # Install
-* Run `./install.sh` for debug version or `./install.sh Release` for release version.
+* Build using cmake and make by running: `./install.sh` for debug version or `./install.sh Release` for release version.
 
 # Pros
 * Simple syntax
